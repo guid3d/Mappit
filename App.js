@@ -1,9 +1,6 @@
 // In App.js in a new project
 
 import * as React from "react";
-import { View, Text } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainStackView from "./navigators/MainStack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import {
@@ -11,17 +8,21 @@ import {
   QueryClientProvider,
   useQuery,
 } from "@tanstack/react-query";
+import { Provider as PaperProvider } from "react-native-paper";
+import Toast from "react-native-toast-message";
 
-// const Stack = createNativeStackNavigator();
 const queryClient = new QueryClient();
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <SafeAreaProvider>
-        <MainStackView />
-      </SafeAreaProvider>
-    </QueryClientProvider>
+    <PaperProvider>
+      <QueryClientProvider client={queryClient}>
+        <SafeAreaProvider>
+          <MainStackView />
+          <Toast />
+        </SafeAreaProvider>
+      </QueryClientProvider>
+    </PaperProvider>
   );
 }
 
