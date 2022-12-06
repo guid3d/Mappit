@@ -6,115 +6,82 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import MapView, { Marker, Overlay } from "react-native-maps";
 import { useQuery } from "@tanstack/react-query";
 import * as Location from "expo-location";
 import { FAB } from "react-native-paper";
-import BottomSheet from "@gorhom/bottom-sheet";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
-
-import api from "../../api/api";
+import api, { stationDummy } from "../../api/api";
+import { getUserLocation } from "./components/GetUserLocation";
+import LocationModal from "../LocationModal";
 
 const Maps = () => {
-  // useEffect(() => {
-  //   (async () => {
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status !== "granted") {
-  //       Toast.show({
-  //         type: "error",
-  //         text1: "Error",
-  //         text2: "Permission to access location was denied",
-  //       });
-  //       // setErrorMsg("Permission to access location was denied");
-  //       return;
-  //     } else {
-  //       let location = await Location.getCurrentPositionAsync({});
-  //       let coords = location.coords
-  //       setmyLocation(coords);
-  //       setRegion({...region, coords});
-  //     }
-  //   })();s
-  // }, []);
-
-  // ref
-  const bottomSheetRef = useRef(null);
-
-  // variables
-  const snapPoints = useMemo(() => ["50%", "90%"], []);
-
-  // callbacks
-  const handleSheetChanges = useCallback((index) => {
-    console.log("handleSheetChanges", index);
+  useEffect(() => {
+    // This will start the app with user location, but have to handle it faster
+    getUserLocation(setRegion, setCurrentLocation);
   }, []);
-
-  const [region, setRegion] = useState({
-    latitude: 48.1351,
-    longitude: 11.575,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  });
-  const [myLocation, setmyLocation] = useState({
-    latitude: 48.1351,
-    longitude: 11.575,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  });
-
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["stationLocations", region.latitude, region.longitude],
-    queryFn: () =>
-      api.stationLocations({
-        latitude: region.latitude,
-        longtitude: region.longitude,
-      }),
-    keepPreviousData: true,
-  });
+  const [currentLocation, setCurrentLocation] = useState();
+  const [region, setRegion] = useState();
+  const [selectedLocation, setSelectedLocation] = useState();
 
   return (
-    <View style={styles.container}>
-      {isLoading ? (
-        <ActivityIndicator />
-      ) : error ? (
-        <Text>An error has occurred: </Text>
-      ) : (
-        <View>
+    <BottomSheetModalProvider>
+      {region ? (
+        <View style={styles.container}>
           <MapView
             style={styles.map}
             region={region}
             onRegionChangeComplete={(region) => {
-              setRegion(region);
+              // setRegion(region);
               // console.log(region)
             }}
+            showsUserLocation
+            // showsMyLocationButton
+            // followsUserLocation
           >
-            {data.locations.map((marker, index) => (
+            {stationDummy.locations.map((marker, index) => (
               <Marker
                 key={index}
+                // image={markerPng}
                 coordinate={marker}
                 title={marker.name}
                 description={marker.id}
-              />
+                onPress={() => {
+                  setSelectedLocation(marker);
+                  console.log(marker)
+                }}
+              >
+                <View style={styles.marker} />
+              </Marker>
             ))}
           </MapView>
-          <FAB
-            icon="crosshairs-gps"
+          {/* <FAB
+            icon={"crosshairs-gps"}
             style={styles.myLocationFAB}
-            onPress={() => setRegion(myLocation)}
+            // onPress={refetch}
             // color="white"
+          /> */}
+          <LocationModal
+            selectedLocation={selectedLocation}
+            currentLocation={currentLocation}
+            // isLoading={isInitialLoading}
+            // closedByStationData={data}
           />
-          <BottomSheet
-            ref={bottomSheetRef}
-            index={1}
-            snapPoints={snapPoints}
-            onChange={handleSheetChanges}
-          >
-            <View style={styles.contentContainer}>
-              <Text>Awesome 🎉</Text>
-            </View>
-          </BottomSheet>
+        </View>
+      ) : (
+        <View style={styles.activityIndicator}>
+          <ActivityIndicator />
         </View>
       )}
-    </View>
+    </BottomSheetModalProvider>
   );
 };
 
@@ -124,6 +91,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  activityIndicator: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   map: {
     width: "100%",
     height: "100%",
@@ -132,7 +104,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     margin: 30,
     right: 0,
-    bottom: 0,
+    top: 0,
     backgroundColor: "#fff",
+  },
+  marker: {
+    width: 10,
+    height: 10,
+    backgroundColor: "blue",
+    borderRadius: 10,
   },
 });
