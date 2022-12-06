@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-query";
 import { Provider as PaperProvider } from "react-native-paper";
 import Toast from "react-native-toast-message";
+import { CurrentLocationProvider } from "./hooks/useCurrentLocation";
 
 const queryClient = new QueryClient();
 
@@ -18,8 +19,10 @@ function App() {
     <PaperProvider>
       <QueryClientProvider client={queryClient}>
         <SafeAreaProvider>
-          <MainStackView />
-          <Toast />
+          <CurrentLocationProvider>
+            <MainStackView />
+            <Toast />
+          </CurrentLocationProvider>
         </SafeAreaProvider>
       </QueryClientProvider>
     </PaperProvider>

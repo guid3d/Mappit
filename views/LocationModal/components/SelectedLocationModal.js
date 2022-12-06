@@ -17,6 +17,7 @@ import {
   BottomSheetHandle,
   BottomSheetModal,
   BottomSheetModalProvider,
+  useBottomSheetModal,
 } from "@gorhom/bottom-sheet";
 
 const SelectedLocationModal = ({ selectedLocation }) => {
@@ -28,9 +29,10 @@ const SelectedLocationModal = ({ selectedLocation }) => {
   }, [selectedLocation]);
 
   const bottomSheetModalLocationRef = useRef(null);
+  const { dismiss } = useBottomSheetModal();
 
   // variables
-  const snapPoints = useMemo(() => ["25%", "50%"], []);
+  const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
 
   // callbacks
   const handlePresentLocationPress = useCallback(() => {
@@ -39,10 +41,8 @@ const SelectedLocationModal = ({ selectedLocation }) => {
     }
   }, []);
   const handleDismissLocationPress = useCallback(() => {
-    if (bottomSheetModalLocationRef.current) {
-      bottomSheetModalLocationRef.current.dismiss();
-    }
-  }, []);
+    dismiss("Location");
+  }, [dismiss]);
 
   // renders
   const renderHeaderHandle = useCallback(
@@ -73,7 +73,7 @@ const SelectedLocationModal = ({ selectedLocation }) => {
       ref={bottomSheetModalLocationRef}
       snapPoints={snapPoints}
       handleComponent={renderHeaderHandle(selectedLocation)}
-      children={renderBottomSheetContent(handleDismissLocationPress)}
+      // children={renderBottomSheetContent(handleDismissLocationPress)}
     />
   );
 };

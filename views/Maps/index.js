@@ -34,7 +34,7 @@ const Maps = () => {
 
   return (
     <BottomSheetModalProvider>
-      {region ? (
+      {region && currentLocation ? (
         <View style={styles.container}>
           <MapView
             style={styles.map}
@@ -56,7 +56,7 @@ const Maps = () => {
                 description={marker.id}
                 onPress={() => {
                   setSelectedLocation(marker);
-                  console.log(marker)
+                  console.log(marker);
                 }}
               >
                 <View style={styles.marker} />
