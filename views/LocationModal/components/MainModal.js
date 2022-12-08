@@ -24,7 +24,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import api from "../../../api/api";
 
-const MainModal = ({ currentLocation }) => {
+const MainModal = ({ currentLocation, setSelectedLocation, selectedLocation, snapPoints, markerRef }) => {
   useEffect(() => {
     // handlePresentMainPress();
     bottomSheetModalMainRef.current.present();
@@ -53,7 +53,7 @@ const MainModal = ({ currentLocation }) => {
   // refs
   const bottomSheetModalMainRef = useRef(null);
   // variables
-  const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
+  // const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
   // callbacks
   const handlePresentMainPress = useCallback(() => {
     if (bottomSheetModalMainRef.current) {
@@ -98,13 +98,20 @@ const MainModal = ({ currentLocation }) => {
           //   keyExtractor={(i) => i.id}
           //   renderItem={renderItem}
           // />
-          <BottomSheetScrollView>
+          <View>
             {data?.locations.map((station, index) => (
-              <View key={index} style={styles.stationList}>
+              <TouchableOpacity
+                key={index}
+                style={styles.stationList}
+                onPress={() => {
+                  setSelectedLocation(station);
+                  // markerRef.current.showCallout();
+                }}
+              >
                 <Text style={styles.stationListText}>{station.name}</Text>
-              </View>
+              </TouchableOpacity>
             ))}
-          </BottomSheetScrollView>
+          </View>
         )}
       </BottomSheetScrollView>
     </BottomSheetModal>

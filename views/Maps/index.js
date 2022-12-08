@@ -31,6 +31,7 @@ const Maps = () => {
   const [currentLocation, setCurrentLocation] = useState();
   const [region, setRegion] = useState();
   const [selectedLocation, setSelectedLocation] = useState();
+  const markerRef = useRef(null);
 
   return (
     <BottomSheetModalProvider>
@@ -46,6 +47,7 @@ const Maps = () => {
             showsUserLocation
             // showsMyLocationButton
             // followsUserLocation
+            // ref={mapRef}
           >
             {stationDummy.locations.map((marker, index) => (
               <Marker
@@ -58,6 +60,7 @@ const Maps = () => {
                   setSelectedLocation(marker);
                   console.log(marker);
                 }}
+                ref={markerRef}
               >
                 <View style={styles.marker} />
               </Marker>
@@ -66,12 +69,14 @@ const Maps = () => {
           {/* <FAB
             icon={"crosshairs-gps"}
             style={styles.myLocationFAB}
-            // onPress={refetch}
+            // onPress={() => {}}
             // color="white"
           /> */}
           <LocationModal
             selectedLocation={selectedLocation}
             currentLocation={currentLocation}
+            setSelectedLocation={setSelectedLocation}
+            markerRef={markerRef}
             // isLoading={isInitialLoading}
             // closedByStationData={data}
           />

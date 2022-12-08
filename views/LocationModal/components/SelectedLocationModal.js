@@ -20,7 +20,7 @@ import {
   useBottomSheetModal,
 } from "@gorhom/bottom-sheet";
 
-const SelectedLocationModal = ({ selectedLocation }) => {
+const SelectedLocationModal = ({ selectedLocation, snapPoints }) => {
   useEffect(() => {
     if (selectedLocation) {
       handlePresentLocationPress();
@@ -32,7 +32,7 @@ const SelectedLocationModal = ({ selectedLocation }) => {
   const { dismiss } = useBottomSheetModal();
 
   // variables
-  const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
+  // const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
 
   // callbacks
   const handlePresentLocationPress = useCallback(() => {
