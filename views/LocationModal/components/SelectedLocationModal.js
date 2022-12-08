@@ -49,10 +49,24 @@ const SelectedLocationModal = ({ selectedLocation }) => {
     (location) => (props) =>
       (
         <BottomSheetHandle
-          style={styles.container}
+          style={styles.headerContainer}
           indicatorStyle={styles.indicator}
         >
           <Text style={styles.title}>{location?.name}</Text>
+          <TouchableOpacity onPress={handleDismissLocationPress}>
+            <View
+              style={{
+                width: 25,
+                height: 25,
+                backgroundColor: "#f0f0f0",
+                borderRadius: 25,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text>X</Text>
+            </View>
+          </TouchableOpacity>
         </BottomSheetHandle>
       ),
     []
@@ -87,6 +101,12 @@ const styles = StyleSheet.create({
     // borderBottomWidth: 1,
     // borderBottomColor: "rgba(0,0,0,0.075)",
     zIndex: 99999,
+  },
+  headerContainer: {
+    paddingBottom: 12,
+    paddingHorizontal: 16,
+    // justifyContent: "space-between",
+    // flexDirection: "row",
   },
   title: {
     marginTop: 16,
