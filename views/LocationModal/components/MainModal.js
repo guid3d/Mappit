@@ -80,36 +80,6 @@ const MainModal = ({ currentLocation }) => {
     []
   );
 
-  // const renderItem = useCallback(
-  //   ({ item }) => (
-  //     <View style={styles.stationList}>
-  //       <Text style={styles.stationListText}>{item.name}</Text>
-  //     </View>
-  //   ),
-  //   []
-  // );
-  const renderBottomSheetContent = () => (
-    // <ContactList type="FlatList" onItemPress={onPress} count={6} />
-    <View style={styles.container}>
-      {isFetching ? (
-        <ActivityIndicator />
-      ) : (
-        // <BottomSheetFlatList
-        //   data={data?.locations}
-        //   keyExtractor={(i) => i.id}
-        //   renderItem={renderItem}
-        // />
-        <View>
-          {data?.locations.map((station, index) => (
-            <View key={index} style={styles.stationList}>
-              <Text style={styles.stationListText}>{station.name}</Text>
-            </View>
-          ))}
-          <Button title="Modal Location" />
-        </View>
-      )}
-    </View>
-  );
   return (
     <BottomSheetModal
       name="Main"
@@ -117,8 +87,27 @@ const MainModal = ({ currentLocation }) => {
       snapPoints={snapPoints}
       enablePanDownToClose={false}
       handleComponent={renderHeaderHandle("Nearby Stations")}
-      children={renderBottomSheetContent}
-    />
+      // children={renderBottomSheetContent}
+    >
+      <BottomSheetScrollView contentContainerStyle={styles.container}>
+        {isFetching ? (
+          <ActivityIndicator />
+        ) : (
+          // <BottomSheetFlatList
+          //   data={data?.locations}
+          //   keyExtractor={(i) => i.id}
+          //   renderItem={renderItem}
+          // />
+          <BottomSheetScrollView>
+            {data?.locations.map((station, index) => (
+              <View key={index} style={styles.stationList}>
+                <Text style={styles.stationListText}>{station.name}</Text>
+              </View>
+            ))}
+          </BottomSheetScrollView>
+        )}
+      </BottomSheetScrollView>
+    </BottomSheetModal>
   );
 };
 
