@@ -21,7 +21,7 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 import api, { stationDummy } from "../../api/api";
 import { getUserLocation } from "./components/GetUserLocation";
-import LocationModal from "../LocationModal";
+import Modal from "../Modal";
 
 const Maps = () => {
   useEffect(() => {
@@ -72,7 +72,7 @@ const Maps = () => {
             // onPress={() => {}}
             // color="white"
           /> */}
-          <LocationModal
+          <Modal
             selectedLocation={selectedLocation}
             currentLocation={currentLocation}
             setSelectedLocation={setSelectedLocation}
@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   marker: {
-    width: 10,
-    height: 10,
+    width: 5,
+    height: 5,
     backgroundColor: "blue",
     borderRadius: 10,
   },

@@ -10,11 +10,11 @@ import React, { useMemo } from "react";
 import MainModal from "./components/MainModal";
 import SelectedLocationModal from "./components/SelectedLocationModal";
 
-const LocationModal = ({
+const Modal = ({
   selectedLocation,
   currentLocation,
   setSelectedLocation,
-  markerRef
+  markerRef,
 }) => {
   const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
 
@@ -28,12 +28,13 @@ const LocationModal = ({
         markerRef={markerRef}
       />
       <SelectedLocationModal
-        selectedLocation={selectedLocation}
         currentLocation={currentLocation}
+        selectedLocation={selectedLocation}
+        setSelectedLocation={setSelectedLocation}
         snapPoints={snapPoints}
       />
     </View>
   );
 };
 
-export default LocationModal;
+export default Modal;

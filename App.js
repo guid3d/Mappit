@@ -19,10 +19,10 @@ function App() {
     <PaperProvider>
       <QueryClientProvider client={queryClient}>
         <SafeAreaProvider>
-          <CurrentLocationProvider>
+          {/* <CurrentLocationProvider> */}
             <MainStackView />
             <Toast />
-          </CurrentLocationProvider>
+          {/* </CurrentLocationProvider> */}
         </SafeAreaProvider>
       </QueryClientProvider>
     </PaperProvider>

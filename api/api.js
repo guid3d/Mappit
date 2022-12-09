@@ -20,10 +20,46 @@ export const threadDummy = {
       threadID: 1,
       timeToLast: 3000,
       likes: 200,
+      numberOfComments: 287,
+      timeStamp:  "2022-12-09T22:33:16+01:00",
+      content: `Someone jumps into the track!\nsadd\nadsd`,
       childThreadID: 8,
       motherThreadID: null,
       commentIDArray: [1, 3, 4, 7],
       creatorName: "CoolKidsEatPho",
+      lineColor: "orange",
+      lineName: "Fürstenried West",
+      lineNumber: "U3",
+    },
+    {
+      threadID: 2,
+      timeToLast: 3000,
+      likes: 260,
+      numberOfComments: 287,
+      timeStamp:  "2022-12-09T22:33:16+01:00",
+      content: `Someone jumps into the track!\nsadd\nadsd`,
+      childThreadID: 8,
+      motherThreadID: null,
+      commentIDArray: [1, 3, 4, 7],
+      creatorName: "CoolKidsEatPho",
+      lineColor: "orange",
+      lineName: "Fürstenried West",
+      lineNumber: "U3",
+    },
+    {
+      threadID: 3,
+      timeToLast: 3000,
+      likes: 930,
+      numberOfComments: 287,
+      timeStamp:  "2022-12-09T22:33:16+01:00",
+      content: `Someone jumps into the track!\nsadd\nadsd`,
+      childThreadID: 8,
+      motherThreadID: null,
+      commentIDArray: [1, 3, 4, 7],
+      creatorName: "CoolKidsEatPho",
+      lineColor: "orange",
+      lineName: "Fürstenried West",
+      lineNumber: "U3",
     },
   ],
 };
@@ -33,44 +69,45 @@ export const commentDummy = {
     {
       commentID: 1,
       text: "This shit is stupid as fxck!",
-      creatorName: "BooBoo"
+      creatorName: "BooBoo",
     },
     {
       commentID: 2,
       text: "This shit is stupid as fxck!",
-      creatorName: "BooBoo"
+      creatorName: "BooBoo",
     },
     {
       commentID: 3,
       text: "This shit is stupid as fxck!",
-      creatorName: "BooBoo"
-    }
-    , {
+      creatorName: "BooBoo",
+    },
+    {
       commentID: 4,
       text: "This shit is stupid as fxck!",
-      creatorName: "BooBoo"
-    }
-    , {
+      creatorName: "BooBoo",
+    },
+    {
       commentID: 5,
       text: "This shit is stupid as fxck!",
-      creatorName: "BooBoo"
-    }
-    , {
+      creatorName: "BooBoo",
+    },
+    {
       commentID: 6,
       text: "This shit is stupid as fxck!",
-      creatorName: "BooBoo"
-    }
-    , {
+      creatorName: "BooBoo",
+    },
+    {
       commentID: 7,
       text: "This shit is stupid as fxck!",
-      creatorName: "BooBoo"
-    } , {
+      creatorName: "BooBoo",
+    },
+    {
       commentID: 8,
       text: "This shit is stupid as fxck!",
-      creatorName: "BooBoo"
-    }
-  ]
-}
+      creatorName: "BooBoo",
+    },
+  ],
+};
 
 export const stationDummy = {
   locations: [

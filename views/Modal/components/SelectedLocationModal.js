@@ -14,18 +14,27 @@ import React, {
   useState,
 } from "react";
 import {
+  BottomSheetFlatList,
   BottomSheetHandle,
   BottomSheetModal,
   BottomSheetModalProvider,
+  BottomSheetScrollView,
   useBottomSheetModal,
 } from "@gorhom/bottom-sheet";
+import { Ionicons } from "@expo/vector-icons";
+import ThreadBubble from "./ThreadBubble";
+import { threadDummy } from "../../../api/api";
 
-const SelectedLocationModal = ({ selectedLocation, snapPoints }) => {
+const SelectedLocationModal = ({
+  selectedLocation,
+  snapPoints,
+  setSelectedLocation,
+}) => {
   useEffect(() => {
     if (selectedLocation) {
       handlePresentLocationPress();
     }
-    // console.log(selectedLocation);
+    console.log(selectedLocation);
   }, [selectedLocation]);
 
   const bottomSheetModalLocationRef = useRef(null);
@@ -42,6 +51,7 @@ const SelectedLocationModal = ({ selectedLocation, snapPoints }) => {
   }, []);
   const handleDismissLocationPress = useCallback(() => {
     dismiss("Location");
+    setSelectedLocation();
   }, [dismiss]);
 
   // renders
@@ -71,9 +81,16 @@ const SelectedLocationModal = ({ selectedLocation, snapPoints }) => {
                   alignItems: "center",
                 }}
               >
-                <Text>X</Text>
+                <Ionicons name="close" size={18} color="#555555" />
               </View>
             </TouchableOpacity>
+          </View>
+          <View style={{ flexDirection: "row", paddingBottom: 10 }}>
+            {selectedLocation?.products.map((product, index) => (
+              <View key={index} style={{ paddingHorizontal: 5 }}>
+                <Text>{product}</Text>
+              </View>
+            ))}
           </View>
         </BottomSheetHandle>
       ),
@@ -89,6 +106,9 @@ const SelectedLocationModal = ({ selectedLocation, snapPoints }) => {
     []
   );
 
+  const renderFlatListItem = useCallback(({ item, index }) => (
+    <ThreadBubble item={item} />
+  ));
   return (
     <BottomSheetModal
       name="Location"
@@ -96,7 +116,14 @@ const SelectedLocationModal = ({ selectedLocation, snapPoints }) => {
       snapPoints={snapPoints}
       handleComponent={renderHeaderHandle(selectedLocation)}
       // children={renderBottomSheetContent(handleDismissLocationPress)}
-    />
+    >
+      <BottomSheetFlatList
+        data={threadDummy.threads}
+        renderItem={renderFlatListItem}
+        contentContainerStyle={styles.container}
+        // ListHeaderComponent={renderFlatListHeader}
+      />
+    </BottomSheetModal>
   );
 };
 
@@ -108,7 +135,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     // borderBottomWidth: 1,
     // borderBottomColor: "rgba(0,0,0,0.075)",
-    zIndex: 99999,
+    // zIndex: 99999,
   },
   headerContainer: {
     paddingBottom: 12,
