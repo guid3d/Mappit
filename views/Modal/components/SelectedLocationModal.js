@@ -24,6 +24,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import ThreadBubble from "./ThreadBubble";
 import { threadDummy } from "../../../api/api";
+import MVVProduct from "./MVVProduct";
 
 const SelectedLocationModal = ({
   selectedLocation,
@@ -39,9 +40,6 @@ const SelectedLocationModal = ({
 
   const bottomSheetModalLocationRef = useRef(null);
   const { dismiss } = useBottomSheetModal();
-
-  // variables
-  // const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
 
   // callbacks
   const handlePresentLocationPress = useCallback(() => {
@@ -86,9 +84,9 @@ const SelectedLocationModal = ({
             </TouchableOpacity>
           </View>
           <View style={{ flexDirection: "row", paddingBottom: 10 }}>
-            {selectedLocation?.products.map((product, index) => (
+            {location?.products.map((product, index) => (
               <View key={index} style={{ paddingHorizontal: 5 }}>
-                <Text>{product}</Text>
+                <MVVProduct product={"BUS"} />
               </View>
             ))}
           </View>

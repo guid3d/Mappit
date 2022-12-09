@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import moment from "moment";
 
 const ThreadBubble = ({ item }) => {
   return (
@@ -17,7 +18,7 @@ const ThreadBubble = ({ item }) => {
               {item.lineNumber} {item.lineName}
             </Text>
           </View>
-          <Text style={styles.timestamp}>10 mins</Text>
+          <Text style={styles.timestamp}>{moment(item.timeStamp).fromNow()}</Text>
         </View>
         <Text style={{ marginBottom: 10 }}>{item.content}</Text>
       </View>
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
   },
   timestamp: {
     margin: 5,
+    color: "#696969"
   },
   destinationName: {
     color: "white",
@@ -94,9 +96,13 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 5,
+    color: "#494949"
+
   },
   textAfterIcon: {
     marginRight: 10,
+    color: "#494949"
+
   },
   iconAndText: {
     flexDirection: "row",
