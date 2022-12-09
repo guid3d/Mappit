@@ -14,6 +14,64 @@ export default {
   // },
 };
 
+export const threadDummy = {
+  threads: [
+    {
+      threadID: 1,
+      timeToLast: 3000,
+      likes: 200,
+      childThreadID: 8,
+      motherThreadID: null,
+      commentIDArray: [1, 3, 4, 7],
+      creatorName: "CoolKidsEatPho",
+    },
+  ],
+};
+
+export const commentDummy = {
+  comments: [
+    {
+      commentID: 1,
+      text: "This shit is stupid as fxck!",
+      creatorName: "BooBoo"
+    },
+    {
+      commentID: 2,
+      text: "This shit is stupid as fxck!",
+      creatorName: "BooBoo"
+    },
+    {
+      commentID: 3,
+      text: "This shit is stupid as fxck!",
+      creatorName: "BooBoo"
+    }
+    , {
+      commentID: 4,
+      text: "This shit is stupid as fxck!",
+      creatorName: "BooBoo"
+    }
+    , {
+      commentID: 5,
+      text: "This shit is stupid as fxck!",
+      creatorName: "BooBoo"
+    }
+    , {
+      commentID: 6,
+      text: "This shit is stupid as fxck!",
+      creatorName: "BooBoo"
+    }
+    , {
+      commentID: 7,
+      text: "This shit is stupid as fxck!",
+      creatorName: "BooBoo"
+    } , {
+      commentID: 8,
+      text: "This shit is stupid as fxck!",
+      creatorName: "BooBoo"
+    }
+  ]
+}
+
 export const stationDummy = {
   locations: [
     {

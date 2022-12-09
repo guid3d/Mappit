@@ -52,21 +52,29 @@ const SelectedLocationModal = ({ selectedLocation, snapPoints }) => {
           style={styles.headerContainer}
           indicatorStyle={styles.indicator}
         >
-          <Text style={styles.title}>{location?.name}</Text>
-          <TouchableOpacity onPress={handleDismissLocationPress}>
-            <View
-              style={{
-                width: 25,
-                height: 25,
-                backgroundColor: "#f0f0f0",
-                borderRadius: 25,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text>X</Text>
-            </View>
-          </TouchableOpacity>
+          <View
+            style={{
+              justifyContent: "space-between",
+              flexDirection: "row",
+              marginTop: 16,
+            }}
+          >
+            <Text style={styles.title}>{location?.name}</Text>
+            <TouchableOpacity onPress={handleDismissLocationPress}>
+              <View
+                style={{
+                  width: 25,
+                  height: 25,
+                  backgroundColor: "#f0f0f0",
+                  borderRadius: 25,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text>X</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </BottomSheetHandle>
       ),
     []
@@ -109,7 +117,6 @@ const styles = StyleSheet.create({
     // flexDirection: "row",
   },
   title: {
-    marginTop: 16,
     fontSize: 24,
     // lineHeight: 20,
     // textAlign: "center",
