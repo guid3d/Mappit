@@ -25,12 +25,15 @@ import { Ionicons } from "@expo/vector-icons";
 import ThreadBubble from "./ThreadBubble";
 import { threadDummy } from "../../../api/api";
 import MVVProduct from "./MVVProduct";
+import { useNavigation } from "@react-navigation/native";
 
 const SelectedLocationModal = ({
   selectedLocation,
   snapPoints,
   setSelectedLocation,
 }) => {
+  const navigation = useNavigation();
+
   useEffect(() => {
     if (selectedLocation) {
       handlePresentLocationPress();
@@ -109,21 +112,67 @@ const SelectedLocationModal = ({
   );
 
   const renderFlatListItem = useCallback(({ item, index }) => (
-    <ThreadBubble item={item} />
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate("ReadThread");
+      }}
+    >
+      <ThreadBubble item={item} />
+    </TouchableOpacity>
   ));
+
+  const renderFlatListHeader = useCallback(() => (
+    <View
+      style={{
+        marginTop: 10,
+        marginBottom: 5,
+        justifyContent: "space-between",
+        flexDirection: "row",
+      }}
+    >
+      <Text
+        style={{
+          fontWeight: "500",
+          fontSize: 18,
+          color: "#010101",
+          paddingVertical: 5,
+        }}
+      >
+        Thread
+      </Text>
+      <TouchableOpacity
+        style={{
+          backgroundColor: "#24a0ed",
+          padding: 5,
+          borderRadius: 30,
+          paddingHorizontal: 20,
+        }}
+        onPress={() => {
+          navigation.navigate("AddThread");
+        }}
+      >
+        <Text style={{ fontWeight: "500", fontSize: 16, color: "#fff" }}>
+          Add
+        </Text>
+      </TouchableOpacity>
+    </View>
+  ));
+
   return (
     <BottomSheetModal
       name="Location"
       ref={bottomSheetModalLocationRef}
       snapPoints={snapPoints}
       handleComponent={renderHeaderHandle(selectedLocation)}
+      enablePanDownToClose={false}
+
       // children={renderBottomSheetContent(handleDismissLocationPress)}
     >
       <BottomSheetFlatList
         data={threadDummy.threads}
         renderItem={renderFlatListItem}
         contentContainerStyle={styles.container}
-        // ListHeaderComponent={renderFlatListHeader}
+        ListHeaderComponent={renderFlatListHeader}
       />
     </BottomSheetModal>
   );
@@ -135,13 +184,13 @@ const styles = StyleSheet.create({
   container: {
     paddingBottom: 12,
     paddingHorizontal: 16,
-    // borderBottomWidth: 1,
-    // borderBottomColor: "rgba(0,0,0,0.075)",
     // zIndex: 99999,
   },
   headerContainer: {
     paddingBottom: 12,
     paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "rgba(0,0,0,0.075)",
     // justifyContent: "space-between",
     // flexDirection: "row",
   },
