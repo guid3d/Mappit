@@ -12,6 +12,11 @@ import { useQuery } from "@tanstack/react-query";
 import * as Location from "expo-location";
 import { FAB } from "react-native-paper";
 import BottomSheet from "@gorhom/bottom-sheet";
+const { InstantSearch, SearchBox, Hits, Highlight, Configure } = 'react-instantsearch-dom';
+import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
+const searchClient = instantMeiliSearch(
+  "http://localhost:7700"
+);
 
 
 import api from "../../api/api";
@@ -102,7 +107,7 @@ const Maps = () => {
             onPress={() => setRegion(myLocation)}
             // color="white"
           />
-          <BottomSheet
+          {/* <BottomSheet
             ref={bottomSheetRef}
             index={1}
             snapPoints={snapPoints}
@@ -111,7 +116,7 @@ const Maps = () => {
             <View style={styles.contentContainer}>
               <Text>Awesome 🎉</Text>
             </View>
-          </BottomSheet>
+          </BottomSheet>  */}
         </View>
       )}
     </View>
