@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Maps from "../views/Maps";
-import ThreadList from "../views/ThreadList";
 import AddThread from "../views/AddThread";
 import ReadThread from "../views/ReadThread";
 
