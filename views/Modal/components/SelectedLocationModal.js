@@ -27,11 +27,7 @@ import { threadDummy } from "../../../api/api";
 import MVVProduct from "./MVVProduct";
 import { useNavigation } from "@react-navigation/native";
 
-const SelectedLocationModal = ({
-  selectedLocation,
-  snapPoints,
-  setSelectedLocation,
-}) => {
+const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -43,6 +39,8 @@ const SelectedLocationModal = ({
 
   const bottomSheetModalLocationRef = useRef(null);
   const { dismiss } = useBottomSheetModal();
+
+  const snapPoints = useMemo(() => ["50%", "90%"], []);
 
   // callbacks
   const handlePresentLocationPress = useCallback(() => {
@@ -114,7 +112,7 @@ const SelectedLocationModal = ({
   const renderFlatListItem = useCallback(({ item, index }) => (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("ReadThread");
+        navigation.navigate("ReadThread", { threadData: item });
       }}
     >
       <ThreadBubble item={item} />
@@ -165,8 +163,6 @@ const SelectedLocationModal = ({
       snapPoints={snapPoints}
       handleComponent={renderHeaderHandle(selectedLocation)}
       enablePanDownToClose={false}
-
-      // children={renderBottomSheetContent(handleDismissLocationPress)}
     >
       <BottomSheetFlatList
         data={threadDummy.threads}
