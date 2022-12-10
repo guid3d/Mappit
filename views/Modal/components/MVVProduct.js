@@ -2,10 +2,16 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Svg, { Circle, G, Path, Rect } from "react-native-svg";
 
-const MVVProduct = (product) => {
+const MVVProduct = ({ product }) => {
   if (product === "BUS") {
     return (
-      <Svg width="50px" height="50px" viewBox="0 0 50 50">
+      <Svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 1 1"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
         <Path
           d="M7.2,0 L6,0 C2.6,0.3 0,3.1 0,6.6 C0,10.3 3,13.2 6.6,13.2 C10.2,13.2 13.2,10.2 13.2,6.6 C13.2,3.1 10.6,0.3 7.2,0 Z"
           id="Path"

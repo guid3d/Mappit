@@ -85,8 +85,12 @@ const SelectedLocationModal = ({
           </View>
           <View style={{ flexDirection: "row", paddingBottom: 10 }}>
             {location?.products.map((product, index) => (
-              <View key={index} style={{ paddingHorizontal: 5 }}>
-                <MVVProduct product={"BUS"} />
+              <View
+                key={index}
+                // style={{ width: 30, height: 30, backgroundColor: "grey" }}
+              >
+                {/* <MVVProduct product="BUS" /> */}
+                <Text>{product}</Text>
               </View>
             ))}
           </View>
