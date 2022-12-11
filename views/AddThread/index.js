@@ -1,42 +1,51 @@
-import { FlatList, Keyboard, TextInput, TouchableOpacity, StyleSheet, Text, View, Button } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { firebase } from '../../firebase/config'
+import {
+  FlatList,
+  Keyboard,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  View,
+  Button,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { firebase } from "../../firebase/config";
+import { ScrollView } from "react-native-gesture-handler";
 
-const AddThread = ({navigation}) => {
-
-  const entityRef = firebase.firestore().collection('threads')
-  const [entityText, setEntityText] = useState('')
+const AddThread = ({ navigation }) => {
+  const entityRef = firebase.firestore().collection("threads");
+  const [entityText, setEntityText] = useState("");
+  const [creator, setCreator] = useState("");
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0) {
-        const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-        const data = {
-            childThreadID: "",
-            commentIDArray: [],
-            content: entityText,
-            creatorName: "",
-            likes: 0,
-            lineColor: "",
-            lineName: "",
-            lineNumber: "",
-            motherThreadID: "",
-            numberOfComments: 0,
-            threadID: 0,
-            locationID: "",
-            timeStamp: timestamp,
-            timeToLast: 3000,
-        };
-        entityRef
-            .add(data)
-            .then(_doc => {
-                setEntityText('')
-                Keyboard.dismiss()
-            })
-            .catch((error) => {
-                alert(error)
-            });
+      const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+      const data = {
+        childThreadID: "",
+        commentIDArray: [],
+        content: entityText,
+        creatorName: creator,
+        likes: 0,
+        lineColor: "",
+        lineName: "",
+        lineNumber: "",
+        motherThreadID: "",
+        numberOfComments: 0,
+        threadID: 0,
+        locationID: "",
+        timeStamp: timestamp,
+        timeToLast: 3000,
+      };
+      entityRef
+        .add(data)
+        .then((_doc) => {
+          setEntityText("");
+          Keyboard.dismiss();
+        })
+        .catch((error) => {
+          alert(error);
+        });
     }
-  }
-
+  };
 
   // React.useEffect(() => {
   //   navigation.setOptions({
@@ -59,67 +68,92 @@ const AddThread = ({navigation}) => {
   }, [entityText]);
 
   return (
-    <View style={styles.container}>
-        <View style={styles.formContainer}>
-            {/* <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.formContainer}>
+        {/* <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
                 <Text style={styles.buttonText}>Add</Text>
             </TouchableOpacity> */}
-            <TextInput
-                style={styles.input}
-                placeholder='What is happening now?'
-                placeholderTextColor="#aaaaaa"
-                onChangeText={(text) => setEntityText(text)}
-                value={entityText}
-                underlineColorAndroid="transparent"
-                autoCapitalize="none"
-                numberOfLines={20}
-                multiline={true}
-            />
-        </View>
-    </View>
-  )
-}
+        <TextInput
+          style={styles.yourNameInput}
+          placeholder="Your Name"
+          placeholderTextColor="#aaaaaa"
+          onChangeText={(text) => setCreator(text)}
+          value={creator}
+          underlineColorAndroid="transparent"
+          autoCapitalize="none"
+          numberOfLines={1}
+          // multiline={true}
+          autoFocus
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="What is happening now?"
+          placeholderTextColor="#aaaaaa"
+          onChangeText={(text) => setEntityText(text)}
+          value={entityText}
+          underlineColorAndroid="transparent"
+          autoCapitalize="none"
+          numberOfLines={10}
+          multiline={true}
+          // autoFocus
+        />
+      </View>
+    </ScrollView>
+  );
+};
 
-export default AddThread
+export default AddThread;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: "center",
   },
   formContainer: {
-      flexDirection: 'column',
-      height: '100%',
-      width: '100%',
-      marginTop: 0,
-      marginBottom: 0,
-      flex: 1,
-      paddingTop: 0,
-      paddingBottom: 0,
-      paddingLeft: 0,
-      paddingRight: 0,
-      justifyContent: 'right',
-      alignItems: 'top'
+    flexDirection: "column",
+    height: "100%",
+    width: "100%",
+    marginTop: 0,
+    marginBottom: 0,
+    flex: 1,
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: 0,
+    paddingRight: 0,
+    justifyContent: "right",
+    alignItems: "top",
   },
   input: {
-      width: '100%',
-      height: '100%',
-      borderRadius: 0,
-      overflow: 'hidden',
-      backgroundColor: 'white',
-      paddingLeft: 18,
-      paddingTop: 15,
-      flex: 1,
-      marginRight: 0,
-      fontSize:20
+    width: "100%",
+    // height: "100%",
+    borderRadius: 0,
+    overflow: "hidden",
+    backgroundColor: "white",
+    paddingLeft: 18,
+    paddingTop: 15,
+    flex: 1,
+    marginRight: 0,
+    fontSize: 20,
+  },
+  yourNameInput: {
+    width: "100%",
+    // height: "100%",
+    borderRadius: 0,
+    overflow: "hidden",
+    backgroundColor: "white",
+    paddingLeft: 18,
+    paddingTop: 15,
+    // flex: 1,
+    marginRight: 0,
+    fontSize: 20,
   },
   button: {
-      backgroundColor: "#24a0ed",
-      padding: 5,
-      borderRadius: 30,
-      paddingHorizontal: 20,
-      alignItems: "center",
-      justifyContent: 'center'
+    backgroundColor: "#24a0ed",
+    padding: 5,
+    borderRadius: 30,
+    paddingHorizontal: 20,
+    alignItems: "center",
+    justifyContent: "center",
   },
   // button2: {
   //   backgroundColor: "white",
@@ -130,21 +164,21 @@ const styles = StyleSheet.create({
   //   justifyContent: 'center'
   // },
   buttonText: {
-      color: 'white',
-      fontSize: 16
+    color: "white",
+    fontSize: 16,
   },
   listContainer: {
-      marginTop: 20,
-      padding: 20,
+    marginTop: 20,
+    padding: 20,
   },
   entityContainer: {
-      marginTop: 16,
-      borderBottomColor: '#cccccc',
-      borderBottomWidth: 1,
-      paddingBottom: 16
+    marginTop: 16,
+    borderBottomColor: "#cccccc",
+    borderBottomWidth: 1,
+    paddingBottom: 16,
   },
   entityText: {
-      fontSize: 20,
-      color: '#333333'
-  }
-})
+    fontSize: 20,
+    color: "#333333",
+  },
+});
