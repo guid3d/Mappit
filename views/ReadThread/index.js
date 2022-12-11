@@ -1,6 +1,15 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
-import ThreadBubble from "../Modal/components/ThreadBubble";
+import {
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import TopThread from "./components/TopThread";
+import SubThread from "./components/SubThread";
+import { commentDummy } from "../../api/api";
 
 const ReadThread = ({ route }) => {
   const [threadData, setThreadData] = useState();
@@ -10,17 +19,30 @@ const ReadThread = ({ route }) => {
     }
   }, [route.params?.threadData]);
 
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {threadData ? <ThreadBubble item={threadData} /> : null}
-    </ScrollView>
-  );
+  const renderFlatListItem = useCallback(({ item, index }) => (
+    <SubThread item={item} />
+  ));
+
+  const renderFlatListHeader = useCallback(() => (
+    <TopThread item={threadData} />
+  ));
+
+  if (threadData) {
+    return (
+      <FlatList
+        data={commentDummy.comments}
+        renderItem={renderFlatListItem}
+        contentContainerStyle={styles.container}
+        ListHeaderComponent={renderFlatListHeader}
+      />
+    );
+  }
 };
 
 export default ReadThread;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
   },
 });

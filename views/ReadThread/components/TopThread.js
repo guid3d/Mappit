@@ -3,7 +3,7 @@ import React from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import moment from "moment";
 
-const ThreadBubble = ({ item }) => {
+const TopThread = ({ item }) => {
   return (
     <View style={styles.container}>
       <View>
@@ -23,7 +23,6 @@ const ThreadBubble = ({ item }) => {
           </Text>
         </View>
         <Text style={styles.creatorName}>{item.creatorName}</Text>
-
         <Text style={{ marginBottom: 10 }}>{item.content}</Text>
       </View>
       <View style={styles.bottomLine}>
@@ -61,16 +60,17 @@ const ThreadBubble = ({ item }) => {
   );
 };
 
-export default ThreadBubble;
+export default TopThread;
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 15,
-    backgroundColor: "#F4F4F4",
+    backgroundColor: "#FFF",
     padding: 15,
     minHeight: 150,
     justifyContent: "space-between",
-    marginVertical: 5,
+    // marginVertical: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: "rgba(0,0,0,0.075)",
   },
   destinationNameContainer: {
     borderRadius: 20,
