@@ -21,8 +21,16 @@ const MainStackView = () => {
           component={Maps}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="AddThread" component={AddThread} />
-        <Stack.Screen name="ReadThread" component={ReadThread} />
+        <Stack.Screen
+          name="AddThread"
+          component={AddThread}
+          options={{ presentation: "modal" }}
+        />
+        <Stack.Screen
+          name="ReadThread"
+          component={ReadThread}
+          options={{ title: "" }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

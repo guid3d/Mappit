@@ -11,6 +11,7 @@ import {
 import { Provider as PaperProvider } from "react-native-paper";
 import Toast from "react-native-toast-message";
 import { CurrentLocationProvider } from "./hooks/useCurrentLocation";
+import { StatusBar } from "expo-status-bar";
 
 const queryClient = new QueryClient();
 
@@ -20,8 +21,9 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <SafeAreaProvider>
           {/* <CurrentLocationProvider> */}
-            <MainStackView />
-            <Toast />
+          {/* <StatusBar /> */}
+          <MainStackView />
+          <Toast />
           {/* </CurrentLocationProvider> */}
         </SafeAreaProvider>
       </QueryClientProvider>

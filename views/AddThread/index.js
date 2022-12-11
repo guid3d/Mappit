@@ -11,8 +11,11 @@ import {
 import React, { useEffect, useState } from "react";
 import { firebase } from "../../firebase/config";
 import { ScrollView } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 
-const AddThread = ({ navigation }) => {
+const AddThread = () => {
+  const navigation = useNavigation();
   const entityRef = firebase.firestore().collection("threads");
   const [entityText, setEntityText] = useState("");
   const [creator, setCreator] = useState("");
@@ -39,7 +42,9 @@ const AddThread = ({ navigation }) => {
         .add(data)
         .then((_doc) => {
           setEntityText("");
+          setCreator("");
           Keyboard.dismiss();
+          navigation.goBack();
         })
         .catch((error) => {
           alert(error);
@@ -47,32 +52,29 @@ const AddThread = ({ navigation }) => {
     }
   };
 
-  // React.useEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => (
-  //       <TouchableOpacity style={styles.button2} onPress={console.log("no input")}>
-  //         <Text style={styles.buttonText}>Add</Text>
-  //       </TouchableOpacity>
-  //     ),
-  //   });
-  // }, []);
-
   React.useEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
-          <Text style={styles.buttonText}>Add</Text>
-        </TouchableOpacity>
+      headerRight: () => <Button title="Add" onPress={onAddButtonPress} />,
+      title: "New Thread",
+      headerLeft: () => (
+        <Button
+          title="Close"
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />
       ),
     });
-  }, [entityText]);
+
+    // StatusBar.setStatusBarStyle("dark-content");
+    return () => {
+      // StatusBar.setStatusBarStyle("auto");
+    };
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.formContainer}>
-        {/* <TouchableOpacity style={styles.button} onPress={onAddButtonPress}>
-                <Text style={styles.buttonText}>Add</Text>
-            </TouchableOpacity> */}
         <TextInput
           style={styles.yourNameInput}
           placeholder="Your Name"
@@ -82,7 +84,6 @@ const AddThread = ({ navigation }) => {
           underlineColorAndroid="transparent"
           autoCapitalize="none"
           numberOfLines={1}
-          // multiline={true}
           autoFocus
         />
         <TextInput
@@ -95,7 +96,6 @@ const AddThread = ({ navigation }) => {
           autoCapitalize="none"
           numberOfLines={10}
           multiline={true}
-          // autoFocus
         />
       </View>
     </ScrollView>
