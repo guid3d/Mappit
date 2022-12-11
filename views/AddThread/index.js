@@ -9,10 +9,10 @@ import {
   Button,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { firebase } from "../../firebase/config";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
+import { firebase } from "../../firebase/config";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore, collection, addDoc, getDocs, setDoc, doc } from "firebase/firestore"; 
@@ -77,9 +77,9 @@ const AddThread = () => {
             content: entityText,
             creatorName: creator,
             likes: 0,
-            lineColor: "",
-            lineName: "",
-            lineNumber: "",
+            lineColor: "orange",
+            lineName: "Fürstenried West",
+            lineNumber: "U3",
             motherThreadID: "",
             numberOfComments: 0,
             threadID: 0,

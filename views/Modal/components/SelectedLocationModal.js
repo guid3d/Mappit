@@ -26,6 +26,23 @@ import ThreadBubble from "./ThreadBubble";
 import { threadDummy } from "../../../api/api";
 import MVVProduct from "./MVVProduct";
 import { useNavigation } from "@react-navigation/native";
+import { getFirestore, collection, getDocs, limit, query, where } from "firebase/firestore"; 
+
+const db = getFirestore();
+const allDocs = []
+
+async function queryForDocuments(lineName) {
+  const threadsQuery = query(
+    collection(db, 'threads'),
+    where('lineName', '==', lineName),
+    // limit(10)
+  );
+  const querySnapshot = await getDocs(threadsQuery);
+  querySnapshot.forEach((snap) => {
+    allDocs.push(snap.data())
+  });
+};
+queryForDocuments('Fürstenried West');
 
 const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
   const navigation = useNavigation();
@@ -165,7 +182,7 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
       enablePanDownToClose={false}
     >
       <BottomSheetFlatList
-        data={threadDummy.threads}
+        data={allDocs}
         renderItem={renderFlatListItem}
         contentContainerStyle={styles.container}
         ListHeaderComponent={renderFlatListHeader}
