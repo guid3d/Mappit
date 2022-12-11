@@ -1,15 +1,17 @@
-// import firebase from "firebase/compat/app";
-// import "firebase/compat/auth";
-// import "firebase/compat/firestore";
-// const firebaseConfig = {
-// apiKey: '',
-// authDomain: 'mappit-df955.firebaseapp.com',
-// projectId: 'mappit-df955',
-// storageBucket: 'mappit-df955.appspot.com',
-// messagingSenderId: '681226213582',
-// appId: 'insert yours: ',
-// };
-// if (!firebase.apps.length) {
-// firebase.initializeApp(firebaseConfig);
-// }
-// export { firebase };
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyD1g_VTP4V4MBDeT8OJcB28ogjKedMNcAg",
+    authDomain: "mappit-c8d5d.firebaseapp.com",
+    projectId: "mappit-c8d5d",
+    storageBucket: "mappit-c8d5d.appspot.com",
+    messagingSenderId: "233256493371",
+    appId: "1:233256493371:web:00a95f440a246cde9ed71e",
+    measurementId: "G-WBQPW3XYQT"
+  };
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+export { firebase };

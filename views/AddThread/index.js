@@ -30,22 +30,7 @@ import { Timestamp } from "@firebase/firestore";
 //   const onAddButtonPress = () => {
 //     if (entityText && entityText.length > 0) {
 //       const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-//       const data = {
-//         childThreadID: "",
-//         commentIDArray: [],
-//         content: entityText,
-//         creatorName: creator,
-//         likes: 0,
-//         lineColor: "",
-//         lineName: "",
-//         lineNumber: "",
-//         motherThreadID: "",
-//         numberOfComments: 0,
-//         threadID: 0,
-//         locationID: "",
-//         timeStamp: timestamp,
-//         timeToLast: 3000,
-//       };
+
 //       entityRef
 //         .add(data)
 //         .then((_doc) => {
@@ -60,18 +45,19 @@ import { Timestamp } from "@firebase/firestore";
 //     }
 //   };
 
-const firebaseConfig = {
-  apiKey: "AIzaSyD1g_VTP4V4MBDeT8OJcB28ogjKedMNcAg",
-  authDomain: "mappit-c8d5d.firebaseapp.com",
-  projectId: "mappit-c8d5d",
-  storageBucket: "mappit-c8d5d.appspot.com",
-  messagingSenderId: "233256493371",
-  appId: "1:233256493371:web:00a95f440a246cde9ed71e",
-  measurementId: "G-WBQPW3XYQT"
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyD1g_VTP4V4MBDeT8OJcB28ogjKedMNcAg",
+//   authDomain: "mappit-c8d5d.firebaseapp.com",
+//   projectId: "mappit-c8d5d",
+//   storageBucket: "mappit-c8d5d.appspot.com",
+//   messagingSenderId: "233256493371",
+//   appId: "1:233256493371:web:00a95f440a246cde9ed71e",
+//   measurementId: "G-WBQPW3XYQT"
+// };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = firebase;
+//initializeApp(firebaseConfig);
 const db = getFirestore();
 // const auth = getAuth(app);
 
@@ -85,13 +71,23 @@ const AddThread = () => {
     console.log("By: ", creator);
     if (entityText && entityText.length > 0) {
         async function addNewDocument() {
-          const threadData = {
-            text: entityText,
-            date: Timestamp.fromDate(new Date()),
+          const data = {
+            childThreadID: "",
+            commentIDArray: [],
+            content: entityText,
+            creatorName: creator,
             likes: 0,
-            creator: creator
+            lineColor: "",
+            lineName: "",
+            lineNumber: "",
+            motherThreadID: "",
+            numberOfComments: 0,
+            threadID: 0,
+            locationID: "",
+            timeStamp: Timestamp.fromDate(new Date()),
+            timeToLast: 3000,
           };
-          const docRef = await addDoc(entityRef, threadData);
+          const docRef = await addDoc(entityRef, data);
           console.log("Document written with ID: ", docRef.id);
           setEntityText('');
           Keyboard.dismiss();
