@@ -58,7 +58,7 @@ import { Timestamp } from "@firebase/firestore";
 // Initialize Firebase
 const app = firebase;
 //initializeApp(firebaseConfig);
-const db = getFirestore();
+const db = getFirestore(app);
 // const auth = getAuth(app);
 
 const AddThread = () => {

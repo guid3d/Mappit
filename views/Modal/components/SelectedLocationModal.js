@@ -25,10 +25,13 @@ import { Ionicons } from "@expo/vector-icons";
 import ThreadBubble from "./ThreadBubble";
 import { threadDummy } from "../../../api/api";
 import MVVProduct from "./MVVProduct";
+import { firebase } from "../../../firebase/config";
 import { useNavigation } from "@react-navigation/native";
 import { getFirestore, collection, getDocs, limit, query, where } from "firebase/firestore"; 
 
-const db = getFirestore();
+const app = firebase;
+//initializeApp(firebaseConfig);
+const db = getFirestore(app);
 const allDocs = []
 
 async function queryForDocuments(lineName) {
