@@ -17,6 +17,8 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore, collection, addDoc, getDocs, setDoc, doc } from "firebase/firestore"; 
 import { Timestamp } from "@firebase/firestore";
+import moment from "moment";
+
 // const { InstantSearch, SearchBox, Hits, Highlight, Configure } = 'react-instantsearch-dom';
 // import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
 // const searchClient = instantMeiliSearch(
@@ -49,7 +51,7 @@ const AddThread = () => {
             numberOfComments: 0,
             threadID: 0,
             locationID: "",
-            timeStamp: Timestamp.fromDate(new Date()),
+            timeStamp: moment().format(),
             timeToLast: 3000,
           };
           const docRef = await addDoc(entityRef, data);
