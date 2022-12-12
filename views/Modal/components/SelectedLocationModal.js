@@ -1,6 +1,7 @@
 import {
   ActivityIndicator,
   Button,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -27,34 +28,48 @@ import { threadDummy } from "../../../api/api";
 import MVVProduct from "./MVVProduct";
 import { firebaseConfig } from "../../../firebase/config";
 import { useNavigation } from "@react-navigation/native";
-import { initializeApp  } from "firebase/app"; 
-import { getFirestore, collection, getDocs, limit, query, where,  } from "firebase/firestore"; 
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const allDocs = []
-
-async function queryForDocuments(lineName) {
-  const threadsQuery = query(
-    collection(db, 'threads'),
-    where('lineName', '==', lineName),
-    // limit(10)
-  );
-  const querySnapshot = await getDocs(threadsQuery);
-  querySnapshot.forEach((snap) => {
-    allDocs.push(snap.data())
-  });
-};
+import { initializeApp } from "firebase/app";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  limit,
+  query,
+  where,
+} from "firebase/firestore";
+import { firebaseApp } from "../../../api/firebaseConfig";
 
 const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
   const navigation = useNavigation();
 
+  const db = getFirestore(firebaseApp);
+  const [threadData, setthreadData] = useState([]);
+  const [isFetching, setisFetching] = useState(false);
+
+  const queryForDocuments = async (lineName) => {
+    setisFetching(true);
+    const threadsQuery = query(
+      collection(db, "threads"),
+      where("lineName", "==", lineName)
+      // limit(10)
+    );
+    const querySnapshot = await getDocs(threadsQuery);
+    const allDocs = [];
+    querySnapshot.forEach((snap) => {
+      allDocs.push(snap.data());
+    });
+    setthreadData(allDocs);
+    console.log(threadData);
+    setisFetching(false);
+  };
+
   useEffect(() => {
     if (selectedLocation) {
       handlePresentLocationPress();
-      queryForDocuments('Fürstenried West');
+      queryForDocuments("Fürstenried West");
+      // queryForDocuments(selectedLocation.name);
     }
-    console.log(selectedLocation);
+    // console.log(selectedLocation);
   }, [selectedLocation]);
 
   const bottomSheetModalLocationRef = useRef(null);
@@ -185,10 +200,14 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
       enablePanDownToClose={false}
     >
       <BottomSheetFlatList
-        data={allDocs}
+        data={threadData}
         renderItem={renderFlatListItem}
         contentContainerStyle={styles.container}
         ListHeaderComponent={renderFlatListHeader}
+        refreshing={isFetching}
+        onRefresh={() => {
+          queryForDocuments("Fürstenried West");
+        }}
       />
     </BottomSheetModal>
   );
