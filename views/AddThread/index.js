@@ -134,7 +134,7 @@ const AddThread = () => {
     return () => {
       // StatusBar.setStatusBarStyle("auto");
     };
-  }, []);
+  }, [entityText, creator]);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

@@ -55,7 +55,6 @@ async function queryForDocuments(lineName) {
     allDocs.push(snap.data())
   });
 };
-queryForDocuments('Fürstenried West');
 
 const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
   const navigation = useNavigation();
@@ -63,6 +62,7 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
   useEffect(() => {
     if (selectedLocation) {
       handlePresentLocationPress();
+      queryForDocuments('Fürstenried West');
     }
     console.log(selectedLocation);
   }, [selectedLocation]);
