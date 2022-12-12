@@ -25,12 +25,22 @@ import { Ionicons } from "@expo/vector-icons";
 import ThreadBubble from "./ThreadBubble";
 import { threadDummy } from "../../../api/api";
 import MVVProduct from "./MVVProduct";
-import { firebase } from "../../../firebase/config";
+// import { firebase } from "../../../firebase/config";
 import { useNavigation } from "@react-navigation/native";
-import { getFirestore, collection, getDocs, limit, query, where } from "firebase/firestore"; 
+import { initializeApp  } from "firebase/app"; 
+import { getFirestore, collection, getDocs, limit, query, where,  } from "firebase/firestore"; 
 
-const app = firebase;
-//initializeApp(firebaseConfig);
+const firebaseConfig = {
+  apiKey: "AIzaSyD1g_VTP4V4MBDeT8OJcB28ogjKedMNcAg",
+  authDomain: "mappit-c8d5d.firebaseapp.com",
+  projectId: "mappit-c8d5d",
+  storageBucket: "mappit-c8d5d.appspot.com",
+  messagingSenderId: "233256493371",
+  appId: "1:233256493371:web:00a95f440a246cde9ed71e",
+  measurementId: "G-WBQPW3XYQT"
+};
+
+const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const allDocs = []
 

@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
-import { firebase } from "../../firebase/config";
+// import { firebase } from "../../firebase/config";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore, collection, addDoc, getDocs, setDoc, doc } from "firebase/firestore"; 
@@ -56,8 +56,17 @@ import { Timestamp } from "@firebase/firestore";
 // };
 
 // Initialize Firebase
-const app = firebase;
-//initializeApp(firebaseConfig);
+const firebaseConfig = {
+  apiKey: "AIzaSyD1g_VTP4V4MBDeT8OJcB28ogjKedMNcAg",
+  authDomain: "mappit-c8d5d.firebaseapp.com",
+  projectId: "mappit-c8d5d",
+  storageBucket: "mappit-c8d5d.appspot.com",
+  messagingSenderId: "233256493371",
+  appId: "1:233256493371:web:00a95f440a246cde9ed71e",
+  measurementId: "G-WBQPW3XYQT"
+};
+
+const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 // const auth = getAuth(app);
 
