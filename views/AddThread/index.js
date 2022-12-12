@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
-// import { firebase } from "../../firebase/config";
+import { firebaseConfig } from "../../firebase/config";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore, collection, addDoc, getDocs, setDoc, doc } from "firebase/firestore"; 
@@ -23,52 +23,8 @@ import { Timestamp } from "@firebase/firestore";
 //   "http://localhost:7700"
 // );
 
-// const AddThread = () => {
-//   const entityRef = firebase.firestore().collection("threads");
-//   const [entityText, setEntityText] = useState("");
-//   const [creator, setCreator] = useState("");
-//   const onAddButtonPress = () => {
-//     if (entityText && entityText.length > 0) {
-//       const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-
-//       entityRef
-//         .add(data)
-//         .then((_doc) => {
-//           setEntityText("");
-//           setCreator("");
-//           Keyboard.dismiss();
-//           navigation.goBack();
-//         })
-//         .catch((error) => {
-//           alert(error);
-//         });
-//     }
-//   };
-
-// const firebaseConfig = {
-//   apiKey: "AIzaSyD1g_VTP4V4MBDeT8OJcB28ogjKedMNcAg",
-//   authDomain: "mappit-c8d5d.firebaseapp.com",
-//   projectId: "mappit-c8d5d",
-//   storageBucket: "mappit-c8d5d.appspot.com",
-//   messagingSenderId: "233256493371",
-//   appId: "1:233256493371:web:00a95f440a246cde9ed71e",
-//   measurementId: "G-WBQPW3XYQT"
-// };
-
-// Initialize Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyD1g_VTP4V4MBDeT8OJcB28ogjKedMNcAg",
-  authDomain: "mappit-c8d5d.firebaseapp.com",
-  projectId: "mappit-c8d5d",
-  storageBucket: "mappit-c8d5d.appspot.com",
-  messagingSenderId: "233256493371",
-  appId: "1:233256493371:web:00a95f440a246cde9ed71e",
-  measurementId: "G-WBQPW3XYQT"
-};
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-// const auth = getAuth(app);
 
 const AddThread = () => {
   const navigation = useNavigation();
