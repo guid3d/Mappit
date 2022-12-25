@@ -119,28 +119,15 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
               </View>
             </TouchableOpacity>
           </View>
-          <View style={{ flexDirection: "row", paddingBottom: 10 }}>
+          <View style={{ paddingVertical: 5, flexDirection: "row" }}>
             {location?.products.map((product, index) => (
-              <View
-                key={index}
-                // style={{ width: 30, height: 30, backgroundColor: "grey" }}
-              >
-                {/* <MVVProduct product="BUS" /> */}
-                <Text>{product}</Text>
+              <View key={index} style={{ paddingRight: 3 }}>
+                <MVVProduct product={product} />
               </View>
             ))}
           </View>
         </BottomSheetHandle>
       ),
-    []
-  );
-  const renderBottomSheetContent = useCallback(
-    (onPress, isLoading) => (
-      // <ContactList type="FlatList" onItemPress={onPress} count={6} />
-      <View style={styles.contentContainer}>
-        <Button title="Modal Location" onPress={onPress} />
-      </View>
-    ),
     []
   );
 
