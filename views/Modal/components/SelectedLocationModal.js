@@ -23,7 +23,7 @@ import {
   useBottomSheetModal,
 } from "@gorhom/bottom-sheet";
 import { Ionicons } from "@expo/vector-icons";
-import ThreadBubble from "./ThreadBubble";
+import ThreadBubble from "../../../components/ThreadBubble";
 import { threadDummy } from "../../../api/api";
 import MVVProduct from "./MVVProduct";
 import { firebaseConfig } from "../../../firebase/config";
@@ -137,7 +137,9 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
         navigation.navigate("ReadThread", { threadData: item });
       }}
     >
-      <ThreadBubble item={item} />
+      <View style={styles.threadBubble}>
+        <ThreadBubble item={item} />
+      </View>
     </TouchableOpacity>
   ));
 
@@ -226,5 +228,13 @@ const styles = StyleSheet.create({
   indicator: {
     height: 4,
     opacity: 0.5,
+  },
+  threadBubble: {
+    borderRadius: 15,
+    backgroundColor: "#F4F4F4",
+    // padding: 15,
+    // minHeight: 150,
+    // justifyContent: "space-between",
+    marginVertical: 5,
   },
 });
