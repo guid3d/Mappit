@@ -19,24 +19,20 @@ import { getFirestore, collection, addDoc, getDocs, setDoc, doc } from "firebase
 import { Timestamp } from "@firebase/firestore";
 import moment from "moment";
 
-// const { InstantSearch, SearchBox, Hits, Highlight, Configure } = 'react-instantsearch-dom';
-// import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
-// const searchClient = instantMeiliSearch(
-//   "http://localhost:7700"
-// );
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const AddThread = () => {
+const AddThread = ({ route }) => {
   const navigation = useNavigation();
   const entityRef = collection(db, 'threads')
   const [entityText, setEntityText] = useState("");
   const [creator, setCreator] = useState("");
+
   const onAddButtonPress = () => {
     console.log("Adding message: ", entityText);
     console.log("By: ", creator);
-    if (entityText && entityText.length > 0) {
+    if (entityText && entityText.length > 0 && route.params?.locationID) {
         async function addNewDocument() {
           const data = {
             childThreadID: "",
@@ -50,7 +46,7 @@ const AddThread = () => {
             motherThreadID: "",
             numberOfComments: 0,
             threadID: 0,
-            locationID: "",
+            locationID: route.params.locationID,
             timeStamp: moment().format(),
             timeToLast: 3000,
           };
@@ -60,7 +56,7 @@ const AddThread = () => {
           Keyboard.dismiss();
           navigation.goBack();
         }
-        addNewDocument()
+        addNewDocument();
     }
   }
 

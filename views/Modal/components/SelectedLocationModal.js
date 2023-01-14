@@ -46,11 +46,11 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
   const [threadData, setthreadData] = useState([]);
   const [isFetching, setisFetching] = useState(false);
 
-  const queryForDocuments = async (lineName) => {
+  const queryForDocuments = async (locationID) => {
     setisFetching(true);
     const threadsQuery = query(
       collection(db, "threads"),
-      where("lineName", "==", lineName)
+      where("locationID", "==", locationID)
       // limit(10)
     );
     const querySnapshot = await getDocs(threadsQuery);
@@ -66,11 +66,14 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
   useEffect(() => {
     if (selectedLocation) {
       handlePresentLocationPress();
-      queryForDocuments("Fürstenried West");
-      // queryForDocuments(selectedLocation.name);
+      queryForDocuments(selectedLocation.name);
     }
-    // console.log(selectedLocation);
-  }, [selectedLocation]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (selectedLocation)
+        queryForDocuments(selectedLocation.name);
+    });
+    return unsubscribe;
+  }, [navigation, selectedLocation]);
 
   const bottomSheetModalLocationRef = useRef(null);
   const { dismiss } = useBottomSheetModal();
@@ -170,7 +173,7 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
           paddingHorizontal: 20,
         }}
         onPress={() => {
-          navigation.navigate("AddThread");
+          navigation.navigate("AddThread", { locationID: selectedLocation.name });
         }}
       >
         <Text style={{ fontWeight: "500", fontSize: 16, color: "#fff" }}>
@@ -195,7 +198,9 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
         ListHeaderComponent={renderFlatListHeader}
         refreshing={isFetching}
         onRefresh={() => {
-          queryForDocuments("Fürstenried West");
+          if (selectedLocation) {
+            queryForDocuments(selectedLocation.name);
+          }
         }}
       />
     </BottomSheetModal>

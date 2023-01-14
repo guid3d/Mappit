@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Keyboard,
 } from "react-native";
 import React, {
   useCallback,
@@ -24,7 +25,6 @@ import { getUserLocation } from "./components/GetUserLocation";
 import Modal from "../Modal";
 import { MeiliSearch } from 'meilisearch';
 import { SearchBar } from 'react-native-elements';
-import { Keyboard } from 'react-native';
 
 const client = new MeiliSearch({
   host: 'http://34.65.82.213',
@@ -43,11 +43,10 @@ const Maps = () => {
   const markerRef = useRef(null);
   const [query, setQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  
+
   const handleSearch = async (text) => {
     setQuery(text);
     const results = await index.search(text);
-    console.log('results.hits', results.hits);
     setSearchResults(results.hits);
   }
   return (
@@ -55,14 +54,14 @@ const Maps = () => {
       {region && currentLocation ? (
         <View style={styles.container}>
           <SearchBar 
-            placeholder="Search for a location..." 
+            placeholder="Search in threads..." 
             onChangeText={handleSearch} 
             value={query} 
           />
           {searchResults.length > 0 && (
             <View>
               {searchResults.map((result, index) => (
-                <Text key={index}>{result.name}</Text>
+                <Text key={index}>{result}</Text>
               ))}
             </View>
           )}
