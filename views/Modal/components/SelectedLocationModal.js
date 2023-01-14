@@ -170,7 +170,7 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
           paddingHorizontal: 20,
         }}
         onPress={() => {
-          navigation.navigate("AddThread");
+          navigation.navigate("AddThread", {selectedLocation: selectedLocation,});
         }}
       >
         <Text style={{ fontWeight: "500", fontSize: 16, color: "#fff" }}>

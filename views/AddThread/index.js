@@ -28,11 +28,19 @@ import moment from "moment";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const AddThread = () => {
+const AddThread = ({ route }) => {
   const navigation = useNavigation();
   const entityRef = collection(db, 'threads')
   const [entityText, setEntityText] = useState("");
   const [creator, setCreator] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
+
+  useEffect(() => {
+    if (route.params?.selectedLocation) {
+      setSelectedLocation(route.params.selectedLocation);
+    }
+  }, [route.params?.selectedLocation]);
+
   const onAddButtonPress = () => {
     console.log("Adding message: ", entityText);
     console.log("By: ", creator);
@@ -45,12 +53,12 @@ const AddThread = () => {
             creatorName: creator,
             likes: 0,
             lineColor: "orange",
-            lineName: "Fürstenried West",
+            stationName: selectedLocation?.name,
             lineNumber: "U3",
             motherThreadID: "",
             numberOfComments: 0,
             threadID: 0,
-            locationID: "",
+            locationID: selectedLocation?.id,
             timeStamp: moment().format(),
             timeToLast: 3000,
           };
