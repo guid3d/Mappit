@@ -24,6 +24,7 @@ import { getUserLocation } from "./components/GetUserLocation";
 import Modal from "../Modal";
 import { MeiliSearch } from 'meilisearch';
 import { SearchBar } from 'react-native-elements';
+import { Keyboard } from 'react-native';
 
 const client = new MeiliSearch({
   host: 'http://34.65.82.213',
@@ -76,6 +77,10 @@ const Maps = () => {
             // showsMyLocationButton
             // followsUserLocation
             // ref={mapRef}
+            onPress={() => {
+              Keyboard.dismiss();
+              setSearchResults([]);
+            }}          
           >
             {stationDummy.locations.map((marker, index) => (
               <Marker
