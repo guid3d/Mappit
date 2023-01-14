@@ -8,7 +8,7 @@ const fmtMSS = (s) => {
   return (s - (s %= 60)) / 60 + (9 < s ? ":" : ":0") + s;
 };
 
-const ThreadCountdown = ({ timeToLast }) => {
+const ThreadCountdown = ({ timeToLast, isExpired, setIsExpired }) => {
   const [time, setTime] = useState(Date.now());
   const [pressed, setPressed] = useState(false);
 
@@ -19,35 +19,64 @@ const ThreadCountdown = ({ timeToLast }) => {
     };
   }, []);
 
-  const diffTimeSeconds = 600 - moment().diff(timeToLast, "seconds"); // 10min - valid
+  useEffect(() => {
+    if (diffTimeSeconds <= 0) {
+      setIsExpired(true);
+    }
+  }, [diffTimeSeconds]);
+
+  const diffTimeSeconds = 1800 - moment().diff(timeToLast, "seconds"); // 30min - valid
   // const minutes = Math.floor(diffTimeSeconds / 60);
   // const seconds = diffTimeSeconds % 60;
-  // if (diffTimeSeconds > 0) {
-  return (
-    <TouchableOpacity
-      disabled={diffTimeSeconds > 300 ? true : false}
-      onPress={() => {
-        setPressed(true);
-      }}
-    >
-      <View
-        style={
-          pressed
-            ? { ...styles.iconAndText, backgroundColor: "green" }
-            : styles.iconAndText
-        }
+
+  if (diffTimeSeconds > 0) {
+    return (
+      <TouchableOpacity
+        disabled={diffTimeSeconds > 900 ? true : false}
+        onPress={() => {
+          setPressed(true);
+        }}
       >
+        <View
+          style={
+            diffTimeSeconds <= 900
+              ? { ...styles.iconAndText, backgroundColor: "#36d964" }
+              : styles.iconAndText
+          }
+        >
+          {diffTimeSeconds > 900 ? (
+            <MaterialCommunityIcons
+              name="clock-outline"
+              size={21}
+              style={styles.icon}
+            />
+          ) : (
+            <MaterialCommunityIcons
+              name="clock-plus-outline"
+              size={21}
+              style={styles.icon}
+            />
+          )}
+
+          <Text style={styles.textAfterIcon}>{`${fmtMSS(
+            diffTimeSeconds
+          )}`}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  } else {
+    return (
+      <View style={styles.iconAndText}>
         <MaterialCommunityIcons
-          name="clock-plus-outline"
+          name="clock-outline"
           size={21}
-          color="black"
           style={styles.icon}
         />
-        <Text style={styles.textAfterIcon}>{`${fmtMSS(diffTimeSeconds)}`}</Text>
+
+        <Text style={styles.textAfterIcon}>Expired</Text>
       </View>
-    </TouchableOpacity>
-  );
-  // }
+    );
+  }
 };
 
 export default ThreadCountdown;
@@ -65,9 +94,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 1,
-    width: 80,
+    width: 90,
     padding: 5,
-    backgroundColor: "#8a8a8a",
+    backgroundColor: "#a1a1a1",
     borderRadius: 20,
   },
 });

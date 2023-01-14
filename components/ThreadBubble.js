@@ -8,10 +8,15 @@ import ThreadCountdown from "./ThreadCountdown";
 
 const ThreadBubble = ({ item, disableCommentButton }) => {
   const [pressedLike, setPressedLike] = useState(false);
-  const [pressedTimer, setPressedTimer] = useState(false);
-  const [timeToLast, setTimeToLast] = useState("2022-12-26T13:03:17+01:00");
+  // const [pressedTimer, setPressedTimer] = useState(false);
+  const [timeToLast, setTimeToLast] = useState("2023-01-14T14:43:17+01:00");
+  const [isExpired, setIsExpired] = useState(false);
   return (
-    <View style={styles.container}>
+    <View
+      style={
+        !isExpired ? styles.container : { ...styles.container, opacity: 0.5 }
+      }
+    >
       <View>
         <View style={styles.topLine}>
           <View
@@ -55,7 +60,11 @@ const ThreadBubble = ({ item, disableCommentButton }) => {
             )}
           </View>
         </View>
-        <ThreadCountdown timeToLast={timeToLast} />
+        <ThreadCountdown
+          timeToLast={timeToLast}
+          isExpired={isExpired}
+          setIsExpired={setIsExpired}
+        />
       </View>
     </View>
   );
