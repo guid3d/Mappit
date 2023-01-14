@@ -22,6 +22,14 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import api, { stationDummy } from "../../api/api";
 import { getUserLocation } from "./components/GetUserLocation";
 import Modal from "../Modal";
+import { MeiliSearch } from 'meilisearch';
+import { SearchBar } from 'react-native-elements';
+
+const client = new MeiliSearch({
+  host: 'http://34.65.82.213',
+  apiKey: 'MAPPIT',
+});
+const index = client.index('threads')
 
 const Maps = () => {
   useEffect(() => {
@@ -32,11 +40,31 @@ const Maps = () => {
   const [region, setRegion] = useState();
   const [selectedLocation, setSelectedLocation] = useState();
   const markerRef = useRef(null);
-
+  const [query, setQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  
+  const handleSearch = async (text) => {
+    setQuery(text);
+    const results = await index.search(text);
+    console.log('results.hits', results.hits);
+    setSearchResults(results.hits);
+  }
   return (
     <BottomSheetModalProvider>
       {region && currentLocation ? (
         <View style={styles.container}>
+          <SearchBar 
+            placeholder="Search for a location..." 
+            onChangeText={handleSearch} 
+            value={query} 
+          />
+          {searchResults.length > 0 && (
+            <View>
+              {searchResults.map((result, index) => (
+                <Text key={index}>{result.name}</Text>
+              ))}
+            </View>
+          )}
           <MapView
             style={styles.map}
             region={region}
