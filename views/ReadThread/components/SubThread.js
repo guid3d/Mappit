@@ -1,38 +1,39 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import moment from "moment";
+import ThreadLikeButton from "../../../components/ThreadLikeButton";
 
 const SubThread = ({ item }) => {
+  const [pressedLike, setPressedLike] = useState(false);
+
   return (
     <View style={styles.container}>
       <View>
         <View style={styles.topLine}>
           <View
-            style={{
-              // ...styles.creatorNameContainer,
-              // backgroundColor: item.lineColor,
-            }}
+            style={
+              {
+                // ...styles.creatorNameContainer,
+                // backgroundColor: item.lineColor,
+              }
+            }
           >
-            <Text style={styles.creatorName}>
-              {item.creatorName}
-            </Text>
+            <Text style={styles.creatorName}>{item.creatorName}</Text>
           </View>
-          <Text style={styles.timestamp}>{moment(item.timeStamp).fromNow()}</Text>
+          <Text style={styles.timestamp}>
+            {moment(item.timeStamp).fromNow()}
+          </Text>
         </View>
         <Text style={{ marginBottom: 10 }}>{item.text}</Text>
       </View>
       <View style={styles.bottomLine}>
         <View style={styles.bottomLineIcon}>
-          <View style={styles.iconAndText}>
-            <Ionicons
-              name="heart-outline"
-              size={24}
-              color="black"
-              style={styles.icon}
-            />
-            <Text style={styles.textAfterIcon}>{item.likes}</Text>
-          </View>
+          <ThreadLikeButton
+            pressedLike={pressedLike}
+            setPressedLike={setPressedLike}
+            item={item}
+          />
         </View>
       </View>
     </View>
@@ -66,12 +67,12 @@ const styles = StyleSheet.create({
   },
   timestamp: {
     margin: 5,
-    color: "#696969"
+    color: "#696969",
   },
   creatorName: {
     fontWeight: "500",
     marginVertical: 5,
-    marginRight: 5
+    marginRight: 5,
   },
   bottomLine: {
     flexDirection: "row",
@@ -79,13 +80,11 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 5,
-    color: "#494949"
-
+    color: "#494949",
   },
   textAfterIcon: {
     marginRight: 10,
-    color: "#494949"
-
+    color: "#494949",
   },
   iconAndText: {
     flexDirection: "row",

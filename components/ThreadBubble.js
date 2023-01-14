@@ -1,11 +1,22 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import moment from "moment";
+import { TouchableOpacity } from "@gorhom/bottom-sheet";
+import ThreadLikeButton from "./ThreadLikeButton";
+import ThreadCountdown from "./ThreadCountdown";
 
-const ThreadBubble = ({ item }) => {
+const ThreadBubble = ({ item, disableCommentButton }) => {
+  const [pressedLike, setPressedLike] = useState(false);
+  // const [pressedTimer, setPressedTimer] = useState(false);
+  const [timeToLast, setTimeToLast] = useState("2023-01-14T14:43:17+01:00");
+  const [isExpired, setIsExpired] = useState(false);
   return (
-    <View style={styles.container}>
+    <View
+      style={
+        !isExpired ? styles.container : { ...styles.container, opacity: 0.5 }
+      }
+    >
       <View>
         <View style={styles.topLine}>
           <View
@@ -27,35 +38,33 @@ const ThreadBubble = ({ item }) => {
         <Text style={{ marginBottom: 10 }}>{item.content}</Text>
       </View>
       <View style={styles.bottomLine}>
-        <View style={styles.bottomLineIcon}>
-          <View style={styles.iconAndText}>
-            <Ionicons
-              name="heart-outline"
-              size={24}
-              color="black"
-              style={styles.icon}
+        <View>
+          <View style={styles.bottomLineIcon}>
+            <ThreadLikeButton
+              pressedLike={pressedLike}
+              setPressedLike={setPressedLike}
+              item={item}
             />
-            <Text style={styles.textAfterIcon}>{item.likes}</Text>
-          </View>
-          <View style={styles.iconAndText}>
-            <Ionicons
-              name="chatbubble-outline"
-              size={20}
-              color="black"
-              style={styles.icon}
-            />
-            <Text style={styles.textAfterIcon}>{item.numberOfComments}</Text>
-          </View>
-          <View style={styles.iconAndText}>
-            <Ionicons
-              name="timer-outline"
-              size={21}
-              color="black"
-              style={styles.icon}
-            />
-            <Text style={styles.textAfterIcon}>09:55 left</Text>
+            {disableCommentButton ? null : (
+              <View style={styles.iconAndText}>
+                <Ionicons
+                  name="chatbubble-outline"
+                  size={20}
+                  color="black"
+                  style={styles.icon}
+                />
+                <Text style={styles.textAfterIcon}>
+                  {item.numberOfComments}
+                </Text>
+              </View>
+            )}
           </View>
         </View>
+        <ThreadCountdown
+          timeToLast={timeToLast}
+          isExpired={isExpired}
+          setIsExpired={setIsExpired}
+        />
       </View>
     </View>
   );
@@ -65,12 +74,12 @@ export default ThreadBubble;
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 15,
-    backgroundColor: "#F4F4F4",
+    // borderRadius: 15,
+    // backgroundColor: "#F4F4F4",
     padding: 15,
     minHeight: 150,
     justifyContent: "space-between",
-    marginVertical: 5,
+    // marginVertical: 5,
   },
   destinationNameContainer: {
     borderRadius: 20,
@@ -109,6 +118,7 @@ const styles = StyleSheet.create({
   iconAndText: {
     flexDirection: "row",
     alignItems: "center",
+    paddingVertical: 5,
   },
   creatorName: {
     fontWeight: "500",
