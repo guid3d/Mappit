@@ -25,6 +25,7 @@ import { getUserLocation } from "./components/GetUserLocation";
 import Modal from "../Modal";
 import { MeiliSearch } from 'meilisearch';
 import { SearchBar } from 'react-native-elements';
+import { useNavigation } from "@react-navigation/native";
 
 const client = new MeiliSearch({
   host: 'http://34.65.82.213',
@@ -43,6 +44,7 @@ const Maps = () => {
   const markerRef = useRef(null);
   const [query, setQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const navigation = useNavigation();
 
   const handleSearch = async (text) => {
     setQuery(text);
@@ -58,10 +60,20 @@ const Maps = () => {
             onChangeText={handleSearch} 
             value={query} 
           />
-          {searchResults.length > 0 && (
+          {searchResults.length > 0 && query.length > 1 && (
             <View>
               {searchResults.map((result, index) => (
-                <Text key={index}>{result}</Text>
+                  <TouchableOpacity onPress={() => {
+                    console.log('pressed');
+                    navigation.navigate('ReadThread', {threadData: result});
+                  }}>
+
+                    <View 
+                    style={ styles.container }
+                    item={result} >
+                      <Text key={index}>{result.content}</Text>
+                    </View>
+                  </TouchableOpacity>            
               ))}
             </View>
           )}
@@ -149,5 +161,11 @@ const styles = StyleSheet.create({
     height: 5,
     backgroundColor: "blue",
     borderRadius: 10,
+  },
+  container: {
+    borderRadius: 15,
+    padding: 5,
+    minHeight: 15,
+    justifyContent: "space-between",
   },
 });

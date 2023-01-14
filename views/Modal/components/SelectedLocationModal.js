@@ -43,7 +43,7 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
   const navigation = useNavigation();
 
   const db = getFirestore(firebaseApp);
-  const [threadData, setthreadData] = useState([]);
+  const [threadData, setThreadData] = useState([]);
   const [isFetching, setisFetching] = useState(false);
 
   const queryForDocuments = async (locationID) => {
@@ -51,14 +51,13 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
     const threadsQuery = query(
       collection(db, "threads"),
       where("locationID", "==", locationID)
-      // limit(10)
     );
     const querySnapshot = await getDocs(threadsQuery);
     const allDocs = [];
     querySnapshot.forEach((snap) => {
       allDocs.push(snap.data());
     });
-    setthreadData(allDocs);
+    setThreadData(allDocs);
     console.log(threadData);
     setisFetching(false);
   };
