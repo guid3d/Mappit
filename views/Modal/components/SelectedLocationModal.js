@@ -43,34 +43,35 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
   const navigation = useNavigation();
 
   const db = getFirestore(firebaseApp);
-  const [threadData, setthreadData] = useState([]);
+  const [threadData, setThreadData] = useState([]);
   const [isFetching, setisFetching] = useState(false);
 
-  const queryForDocuments = async (lineName) => {
+  const queryForDocuments = async (name) => {
     setisFetching(true);
     const threadsQuery = query(
       collection(db, "threads"),
-      where("lineName", "==", lineName)
-      // limit(10)
+      where("stationName", "==", name)
     );
     const querySnapshot = await getDocs(threadsQuery);
     const allDocs = [];
     querySnapshot.forEach((snap) => {
       allDocs.push(snap.data());
     });
-    setthreadData(allDocs);
-    console.log(threadData);
+    setThreadData(allDocs);
     setisFetching(false);
   };
 
   useEffect(() => {
     if (selectedLocation) {
       handlePresentLocationPress();
-      queryForDocuments("Fürstenried West");
-      // queryForDocuments(selectedLocation.name);
+      queryForDocuments(selectedLocation.name);
     }
-    // console.log(selectedLocation);
-  }, [selectedLocation]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (selectedLocation)
+        queryForDocuments(selectedLocation.name);
+    });
+    return unsubscribe;
+  }, [navigation, selectedLocation]);
 
   const bottomSheetModalLocationRef = useRef(null);
   const { dismiss } = useBottomSheetModal();
@@ -195,7 +196,9 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
         ListHeaderComponent={renderFlatListHeader}
         refreshing={isFetching}
         onRefresh={() => {
-          queryForDocuments("Fürstenried West");
+          if (selectedLocation) {
+            queryForDocuments(selectedLocation.name);
+          }
         }}
       />
     </BottomSheetModal>
