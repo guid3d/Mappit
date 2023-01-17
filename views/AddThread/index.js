@@ -23,12 +23,14 @@ import moment from "moment";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const AddThread = ({ route }) => {
+const AddThread = ({ route }) => {  
   const navigation = useNavigation();
   const entityRef = collection(db, 'threads')
   const [entityText, setEntityText] = useState("");
   const [creator, setCreator] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
+  const [selectedTags, setSelectedTags] = useState([]);
+  const tags = ["Lost and Found", "Ticket Control", "Delays", "Construction", "Meetup", "Rideshare", "Ticketshare", "U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S20"];
 
   useEffect(() => {
     if (route.params?.selectedLocation) {
@@ -45,9 +47,8 @@ const AddThread = ({ route }) => {
             content: entityText,
             creatorName: creator,
             likes: 0,
-            lineColor: "orange",
             stationName: selectedLocation?.name,
-            lineNumber: "U3",
+            tag: selectedTags,
             motherThreadID: "",
             numberOfComments: 0,
             threadID: 0,
@@ -98,6 +99,19 @@ const AddThread = ({ route }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.formContainer}>
+        <View style={styles.tagContainer}>
+          {tags.map((tag, index) => (
+            <TouchableOpacity key={index} style={styles.tagButton} onPress={() => {
+              if (selectedTags.includes(tag)) {
+                setSelectedTags(selectedTags.filter(selectedTag => selectedTag !== tag));
+              } else {
+                setSelectedTags([...selectedTags, tag]);
+              }
+            }}>
+              <Text style={[styles.tagText, selectedTags.includes(tag) && styles.selectedTagText]}>{tag}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
         <TextInput
           style={styles.yourNameInput}
           placeholder="Your Name"
@@ -204,4 +218,23 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#333333",
   },
+  tagContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center'
+  },
+  tagButton: {
+    backgroundColor: '#f0f0f0',
+    padding: 8,
+    borderRadius: 10,
+    margin: 5,
+  },
+  tagText: {
+    color: '#555555',
+    fontWeight: 'bold'
+  },
+  selectedTagText: {
+    backgroundColor: '#555555',
+    color: 'white'
+  }
 });
