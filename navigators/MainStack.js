@@ -29,7 +29,6 @@ const MainStackView = () => {
         <Stack.Screen
           name="ReadThread"
           component={ReadThread}
-          options={{ title: "" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

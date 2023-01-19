@@ -11,13 +11,19 @@ import TopThread from "./components/TopThread";
 import SubThread from "./components/SubThread";
 import { commentDummy } from "../../api/api";
 
-const ReadThread = ({ route }) => {
+const ReadThread = ({ navigation, route }) => {
   const [threadData, setThreadData] = useState();
   useEffect(() => {
     if (route.params?.threadData) {
       setThreadData(route.params.threadData);
     }
   }, [route.params?.threadData]);
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: threadData?.stationName,
+    });
+  });
 
   const renderFlatListItem = useCallback(({ item, index }) => (
     <SubThread item={item} />
