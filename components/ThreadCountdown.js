@@ -1,8 +1,7 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import moment from "moment";
-import { TouchableOpacity } from "@gorhom/bottom-sheet";
 
 const fmtMSS = (s) => {
   return (s - (s %= 60)) / 60 + (9 < s ? ":" : ":0") + s;

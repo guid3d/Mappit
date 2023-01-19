@@ -15,17 +15,23 @@ import { StatusBar } from "expo-status-bar";
 import { firebaseConfig } from "../../firebase/config";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore, collection, addDoc, getDocs, setDoc, doc } from "firebase/firestore"; 
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  setDoc,
+  doc,
+} from "firebase/firestore";
 import { Timestamp } from "@firebase/firestore";
 import moment from "moment";
-
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const AddThread = ({ route }) => {
   const navigation = useNavigation();
-  const entityRef = collection(db, 'threads')
+  const entityRef = collection(db, "threads");
   const [entityText, setEntityText] = useState("");
   const [creator, setCreator] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
@@ -38,43 +44,33 @@ const AddThread = ({ route }) => {
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0 && selectedLocation?.id) {
-        async function addNewDocument() {
-          const data = {
-            childThreadID: "",
-            commentIDArray: [],
-            content: entityText,
-            creatorName: creator,
-            likes: 0,
-            lineColor: "orange",
-            stationName: selectedLocation?.name,
-            lineNumber: "U3",
-            motherThreadID: "",
-            numberOfComments: 0,
-            locationID: selectedLocation?.id,
-            timeStamp: moment().format(),
-            latestTimeAlive: moment().format(),
-          };
-          const docRef = await addDoc(entityRef, data);
-          console.log("Document written with ID: ", docRef.id);
-          setEntityText('');
-          Keyboard.dismiss();
-          navigation.goBack();
-        }
-        addNewDocument();
+      async function addNewDocument() {
+        const data = {
+          childThreadID: "",
+          commentIDArray: [],
+          content: entityText,
+          creatorName: creator,
+          likes: 0,
+          lineColor: "orange",
+          stationName: selectedLocation?.name,
+          lineNumber: "U3",
+          motherThreadID: "",
+          numberOfComments: 0,
+          locationID: selectedLocation?.id,
+          timeStamp: moment().format(),
+          latestTimeAlive: moment().format(),
+        };
+        const docRef = await addDoc(entityRef, data);
+        console.log("Document written with ID: ", docRef.id);
+        setEntityText("");
+        Keyboard.dismiss();
+        navigation.goBack();
+      }
+      addNewDocument();
     }
-  }
+  };
 
-  // React.useEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => (
-  //       <TouchableOpacity style={styles.button2} onPress={console.log("no input")}>
-  //         <Text style={styles.buttonText}>Add</Text>
-  //       </TouchableOpacity>
-  //     ),
-  //   });
-  // }, []);
-
-  React.useEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       headerRight: () => <Button title="Add" onPress={onAddButtonPress} />,
       title: "New Thread",
@@ -96,30 +92,28 @@ const AddThread = ({ route }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.formContainer}>
-        <TextInput
-          style={styles.yourNameInput}
-          placeholder="Your Name"
-          placeholderTextColor="#aaaaaa"
-          onChangeText={(text) => setCreator(text)}
-          value={creator}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
-          numberOfLines={1}
-          autoFocus
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="What is happening now?"
-          placeholderTextColor="#aaaaaa"
-          onChangeText={(text) => setEntityText(text)}
-          value={entityText}
-          underlineColorAndroid="transparent"
-          autoCapitalize="none"
-          numberOfLines={10}
-          multiline={true}
-        />
-      </View>
+      <TextInput
+        style={styles.yourNameInput}
+        placeholder="Your Name"
+        placeholderTextColor="#aaaaaa"
+        onChangeText={(text) => setCreator(text)}
+        value={creator}
+        underlineColorAndroid="transparent"
+        autoCapitalize="none"
+        numberOfLines={1}
+        autoFocus
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="What is happening now?"
+        placeholderTextColor="#aaaaaa"
+        onChangeText={(text) => setEntityText(text)}
+        value={entityText}
+        underlineColorAndroid="transparent"
+        autoCapitalize="none"
+        numberOfLines={10}
+        multiline={true}
+      />
     </ScrollView>
   );
 };
@@ -131,20 +125,20 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
-  formContainer: {
-    flexDirection: "column",
-    height: "100%",
-    width: "100%",
-    marginTop: 0,
-    marginBottom: 0,
-    flex: 1,
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingLeft: 0,
-    paddingRight: 0,
-    justifyContent: "right",
-    alignItems: "top",
-  },
+  // formContainer: {
+  //   flexDirection: "column",
+  //   height: "100%",
+  //   width: "100%",
+  //   marginTop: 0,
+  //   marginBottom: 0,
+  //   flex: 1,
+  //   paddingTop: 0,
+  //   paddingBottom: 0,
+  //   paddingLeft: 0,
+  //   paddingRight: 0,
+  //   justifyContent: "right",
+  //   // alignItems: "top",
+  // },
   input: {
     width: "100%",
     // height: "100%",

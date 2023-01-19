@@ -89,7 +89,7 @@ const Maps = () => {
               setSearchResults([]);
             }}          
           >
-            {stationDummy.locations.map((marker, index) => (
+            {/* {stationDummy.locations.map((marker, index) => (
               <Marker
                 key={index}
                 // image={markerPng}
@@ -104,7 +104,7 @@ const Maps = () => {
               >
                 <View style={styles.marker} />
               </Marker>
-            ))}
+            ))} */}
           </MapView>
           {/* <FAB
             icon={"crosshairs-gps"}
