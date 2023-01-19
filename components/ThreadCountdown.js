@@ -8,7 +8,7 @@ const fmtMSS = (s) => {
   return (s - (s %= 60)) / 60 + (9 < s ? ":" : ":0") + s;
 };
 
-const ThreadCountdown = ({ timeToLast, isExpired, setIsExpired }) => {
+const ThreadCountdown = ({ latestTimeAlive, isExpired, setIsExpired }) => {
   const [time, setTime] = useState(Date.now());
   const [pressed, setPressed] = useState(false);
 
@@ -25,7 +25,7 @@ const ThreadCountdown = ({ timeToLast, isExpired, setIsExpired }) => {
     }
   }, [diffTimeSeconds]);
 
-  const diffTimeSeconds = 1800 - moment().diff(timeToLast, "seconds"); // 30min - valid
+  const diffTimeSeconds = 1800 - moment().diff(latestTimeAlive, "seconds"); // 30min - valid
   // const minutes = Math.floor(diffTimeSeconds / 60);
   // const seconds = diffTimeSeconds % 60;
 

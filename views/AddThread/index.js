@@ -50,10 +50,9 @@ const AddThread = ({ route }) => {
             lineNumber: "U3",
             motherThreadID: "",
             numberOfComments: 0,
-            threadID: 0,
             locationID: selectedLocation?.id,
             timeStamp: moment().format(),
-            timeToLast: 3000,
+            latestTimeAlive: moment().format(),
           };
           const docRef = await addDoc(entityRef, data);
           console.log("Document written with ID: ", docRef.id);
