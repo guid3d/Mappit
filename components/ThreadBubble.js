@@ -61,6 +61,7 @@ const ThreadBubble = ({ item, disableCommentButton }) => {
           latestTimeAlive={item.latestTimeAlive}
           isExpired={isExpired}
           setIsExpired={setIsExpired}
+          item={item}
         />
       </View>
     </View>

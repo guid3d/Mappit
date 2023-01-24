@@ -55,13 +55,23 @@ const AddThread = ({ route }) => {
           stationName: selectedLocation?.name,
           lineNumber: "U3",
           motherThreadID: "",
+          //threadID: "",
           numberOfComments: 0,
           locationID: selectedLocation?.id,
           timeStamp: moment().format(),
           latestTimeAlive: moment().format(),
         };
         const docRef = await addDoc(entityRef, data);
+        data.threadID = docRef.id;
+        setDoc(docRef, data)
+        .then(docRef => {
+            console.log("Entire Document has been updated successfully");
+        })
+        .catch(error => {
+            console.log(error);
+        })
         console.log("Document written with ID: ", docRef.id);
+        console.log("Data when adding thread: ", data);
         setEntityText("");
         Keyboard.dismiss();
         navigation.goBack();
