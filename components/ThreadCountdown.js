@@ -39,7 +39,7 @@ const ThreadCountdown = ({ latestTimeAlive, isExpired, setIsExpired, item}) => {
   if (diffTimeSeconds > 0) {
     return (
       <TouchableOpacity
-        disabled={diffTimeSeconds < 900 ? true : false}
+        disabled={diffTimeSeconds > 900 ? true : false}
         onPress={() => {
           setPressed(true);
 
