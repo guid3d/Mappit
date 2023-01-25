@@ -20,7 +20,7 @@ const ThreadLikeButton = ({ pressedLike, setPressedLike, item }) => {
         onPress={() => {
 
           // Creates a reference to the current thread 
-          const threadRef = doc(db, "threads", item["_firestore_id"]);
+          const threadRef = doc(db, "threads", item["threadID"]);
 
           setPressedLike((v) => !v);
           setLikes((v) => (!pressedLike ? v + 1 : v - 1));

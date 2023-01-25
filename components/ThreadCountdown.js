@@ -44,7 +44,7 @@ const ThreadCountdown = ({ latestTimeAlive, isExpired, setIsExpired, item}) => {
           setPressed(true);
 
           // Creates a reference to the current thread before updating the "latestTimeAlive" field in the database
-          const threadRef = doc(db, "threads", item["_firestore_id"]);
+          const threadRef = doc(db, "threads", item["threadID"]);
 
           updateDoc(threadRef, {
             latestTimeAlive: moment().format()
