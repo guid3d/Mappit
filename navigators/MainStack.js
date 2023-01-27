@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Maps from "../views/Maps";
 import AddThread from "../views/AddThread";
 import ReadThread from "../views/ReadThread";
+import AddComment from "../views/AddComment";
 
 const MainStackView = () => {
   // const Tab = createBottomTabNavigator();
@@ -29,6 +30,10 @@ const MainStackView = () => {
         <Stack.Screen
           name="ReadThread"
           component={ReadThread}
+        />
+        <Stack.Screen
+          name="AddComment"
+          component={AddComment}
         />
       </Stack.Navigator>
     </NavigationContainer>
