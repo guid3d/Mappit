@@ -31,7 +31,6 @@ const db = getFirestore(app);
 
 const AddComment = ({ route }) => {
   const navigation = useNavigation();
-  const entityRef = collection(db, "comments");
   const [entityText, setEntityText] = useState("");
   const [creator, setCreator] = useState("");
   const [threadData, setthreadData] = useState("");
@@ -41,6 +40,8 @@ const AddComment = ({ route }) => {
       setthreadData(route.params.threadData);
     }
   }, [route.params?.threadData]);
+
+  const entityRef = collection(db, "threads/" + threadData?.threadID + "/comments");
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0) {
