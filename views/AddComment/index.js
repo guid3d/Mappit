@@ -44,7 +44,7 @@ const AddComment = ({ route }) => {
   const entityRef = collection(db, "threads/" + threadData?.threadID + "/comments");
 
   const onAddButtonPress = () => {
-    if (entityText && entityText.length > 0) {
+    if (entityText && entityText.length > 0 && threadData?.threadID) {
       async function addNewDocument() {
         const data = {
             commentID: "",
