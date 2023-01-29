@@ -2,14 +2,11 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import moment from "moment";
-import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import ThreadLikeButton from "./ThreadLikeButton";
 import ThreadCountdown from "./ThreadCountdown";
 
 const ThreadBubble = ({ item, disableCommentButton }) => {
   const [pressedLike, setPressedLike] = useState(false);
-  // const [pressedTimer, setPressedTimer] = useState(false);
-  const [timeToLast, setTimeToLast] = useState("2023-01-14T14:43:17+01:00");
   const [isExpired, setIsExpired] = useState(false);
   return (
     <View
@@ -61,9 +58,10 @@ const ThreadBubble = ({ item, disableCommentButton }) => {
           </View>
         </View>
         <ThreadCountdown
-          timeToLast={timeToLast}
+          latestTimeAlive={item.latestTimeAlive}
           isExpired={isExpired}
           setIsExpired={setIsExpired}
+          item={item}
         />
       </View>
     </View>

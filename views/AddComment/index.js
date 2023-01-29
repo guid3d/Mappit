@@ -1,12 +1,12 @@
 import {
-  FlatList,
-  Keyboard,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-  View,
-  Button,
+    FlatList,
+    Keyboard,
+    TextInput,
+    TouchableOpacity,
+    StyleSheet,
+    Text,
+    View,
+    Button,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
@@ -16,12 +16,12 @@ import { firebaseConfig } from "../../firebase/config";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  setDoc,
-  doc,
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    setDoc,
+    doc,
 } from "firebase/firestore";
 import { Timestamp } from "@firebase/firestore";
 import moment from "moment";
@@ -29,45 +29,34 @@ import moment from "moment";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const AddThread = ({ route }) => {  
+const AddComment = ({ route }) => {
   const navigation = useNavigation();
-  const entityRef = collection(db, "threads");
   const [entityText, setEntityText] = useState("");
   const [creator, setCreator] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [selectedLine, setSelectedLine] = useState([]);
-  const tags = ["Lost and Found", "Ticket Control", "Delays", "Construction", "Meetup", "Rideshare", "Ticketshare"];
-  const lines = ["U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S20"];
+  const [threadData, setthreadData] = useState("");
 
   useEffect(() => {
-    if (route.params?.selectedLocation) {
-      setSelectedLocation(route.params.selectedLocation);
+    if (route.params?.threadData) {
+      setthreadData(route.params.threadData);
     }
-  }, [route.params?.selectedLocation]);
+  }, [route.params?.threadData]);
+
+  const entityRef = collection(db, "threads/" + threadData?.threadID + "/comments");
 
   const onAddButtonPress = () => {
-    if (entityText && entityText.length > 0 && selectedLocation?.id) {
+    if (entityText && entityText.length > 0 && threadData?.threadID) {
       async function addNewDocument() {
         const data = {
-          childThreadID: "",
-          commentIDArray: [],
-          content: entityText,
-          creatorName: creator,
-          likes: 0,
-          lineColor: "orange",
-          stationName: selectedLocation?.name,
-          tag: selectedTags,
-          lineNumber: selectedLine,
-          motherThreadID: "",
-          //threadID: "",
-          numberOfComments: 0,
-          locationID: selectedLocation?.id,
-          timeStamp: moment().format(),
-          latestTimeAlive: moment().format(),
+            commentID: "",
+            text: entityText,
+            creatorName: creator,
+            timeStamp:  moment().format(),
+            likes: 0,
+            threadID: threadData?.threadID,
+            latestTimeAlive: moment().format(),
         };
         const docRef = await addDoc(entityRef, data);
-        data.threadID = docRef.id;
+        data.commentID = docRef.id;
         setDoc(docRef, data)
         .then(docRef => {
             console.log("Entire Document has been updated successfully");
@@ -76,7 +65,7 @@ const AddThread = ({ route }) => {
             console.log(error);
         })
         console.log("Document written with ID: ", docRef.id);
-        console.log("Data when adding thread: ", data);
+        console.log("Data when adding comment: ", data);
         setEntityText("");
         Keyboard.dismiss();
         navigation.goBack();
@@ -88,7 +77,7 @@ const AddThread = ({ route }) => {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => <Button title="Add" onPress={onAddButtonPress} />,
-      title: "New Thread",
+      title: "New Comment",
       headerLeft: () => (
         <Button
           title="Close"
@@ -107,29 +96,6 @@ const AddThread = ({ route }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.tagContainer}>
-        {tags.map((tag, index) => (
-          <TouchableOpacity key={index} style={styles.tagButton} onPress={() => {
-            if (selectedTags.includes(tag)) {
-              setSelectedTags(selectedTags.filter(selectedTag => selectedTag !== tag));
-            } else {
-              setSelectedTags([...selectedTags, tag]);
-            }
-          }}>
-            <Text style={[styles.tagText, selectedTags.includes(tag) && styles.selectedTagText]}>{tag}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-      <View style={styles.tagContainer}>
-          {lines.map((line, index) => (
-              <TouchableOpacity key={index} style={styles.tagButton} onPress={() => {
-                  setSelectedLine(line);
-                  console.log('selectedLine',selectedLine);
-              }}>
-                  <Text style={[styles.tagText, selectedLine.includes(line) && styles.selectedTagText]}>{line}</Text>
-              </TouchableOpacity>
-          ))}
-      </View>
       <TextInput
         style={styles.yourNameInput}
         placeholder="Your Name"
@@ -156,7 +122,7 @@ const AddThread = ({ route }) => {
   );
 };
 
-export default AddThread;
+export default AddComment;
 
 const styles = StyleSheet.create({
   container: {
@@ -235,23 +201,4 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#333333",
   },
-  tagContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center'
-  },
-  tagButton: {
-    backgroundColor: '#f0f0f0',
-    padding: 8,
-    borderRadius: 10,
-    margin: 5,
-  },
-  tagText: {
-    color: '#555555',
-    fontWeight: 'bold'
-  },
-  selectedTagText: {
-    backgroundColor: '#555555',
-    color: 'white'
-  }
 });

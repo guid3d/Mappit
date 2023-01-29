@@ -1,14 +1,21 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import moment from "moment";
-import { TouchableOpacity } from "@gorhom/bottom-sheet";
+import { firebaseConfig } from "../firebase/config";
+import { getFirestore, doc, updateDoc } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import firebase from "firebase/compat/app";
+
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const fmtMSS = (s) => {
   return (s - (s %= 60)) / 60 + (9 < s ? ":" : ":0") + s;
 };
 
-const ThreadCountdown = ({ timeToLast, isExpired, setIsExpired }) => {
+const ThreadCountdown = ({ latestTimeAlive, isExpired, setIsExpired, item}) => {
   const [time, setTime] = useState(Date.now());
   const [pressed, setPressed] = useState(false);
 
@@ -25,7 +32,7 @@ const ThreadCountdown = ({ timeToLast, isExpired, setIsExpired }) => {
     }
   }, [diffTimeSeconds]);
 
-  const diffTimeSeconds = 1800 - moment().diff(timeToLast, "seconds"); // 30min - valid
+  var diffTimeSeconds = 1800 - moment().diff(latestTimeAlive, "seconds"); // 30min - valid
   // const minutes = Math.floor(diffTimeSeconds / 60);
   // const seconds = diffTimeSeconds % 60;
 
@@ -35,6 +42,14 @@ const ThreadCountdown = ({ timeToLast, isExpired, setIsExpired }) => {
         disabled={diffTimeSeconds > 900 ? true : false}
         onPress={() => {
           setPressed(true);
+
+          // Creates a reference to the current thread before updating the "latestTimeAlive" field in the database
+          const threadRef = doc(db, "threads", item["threadID"]);
+
+          updateDoc(threadRef, {
+            latestTimeAlive: moment().format()
+          });
+
         }}
       >
         <View

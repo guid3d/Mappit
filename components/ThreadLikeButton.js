@@ -1,7 +1,16 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
-import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { firebaseConfig } from "../firebase/config";
+import { getFirestore, doc, updateDoc } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import firebase from "firebase/compat/app";
+
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const increment = firebase.firestore.FieldValue.increment(1);
+const decrement = firebase.firestore.FieldValue.increment(-1);
 
 const ThreadLikeButton = ({ pressedLike, setPressedLike, item }) => {
   const [likes, setLikes] = useState(item.likes);
@@ -9,9 +18,25 @@ const ThreadLikeButton = ({ pressedLike, setPressedLike, item }) => {
     <View style={styles.iconAndText}>
       <TouchableOpacity
         onPress={() => {
+
+          // Creates a reference to the current thread 
+          const threadRef = doc(db, "threads", item["threadID"]);
+
           setPressedLike((v) => !v);
           setLikes((v) => (!pressedLike ? v + 1 : v - 1));
-          // Do some update to Firebase of this Thread
+
+          // Now either increments or decrements the "Likes" of the specific thread
+          if(pressedLike) {
+            updateDoc(threadRef, {
+              likes: decrement
+            });
+          } else {
+            updateDoc(threadRef, {
+              likes: increment
+            });
+          }
+          
+
         }}
       >
         {pressedLike ? (
