@@ -29,7 +29,11 @@ const MainStackView = () => {
           options={{ presentation: "modal" }}
         />
         <Stack.Screen name="ReadThread" component={ReadThread} />
-        <Stack.Screen name="AddComment" component={AddComment} />
+        <Stack.Screen
+          name="AddComment"
+          component={AddComment}
+          options={{ presentation: "modal" }}
+        />
         <Stack.Screen
           name="Search"
           component={Search}
