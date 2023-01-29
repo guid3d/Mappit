@@ -68,9 +68,9 @@ const AddThread = ({ route }) => {
           content: entityText,
           creatorName: creator,
           likes: 0,
-          lineColor: lineColorMap.get(selectedLine),
+          lineColor: lineColorMap.get(selectedLine) || 'white',
           stationName: selectedLocation?.name,
-          tag: selectedTags,
+          tags: selectedTags,
           lineNumber: selectedLine,
           motherThreadID: "",
           //threadID: "",
@@ -125,6 +125,7 @@ const AddThread = ({ route }) => {
           <TouchableOpacity key={index} style={styles.tagButton} onPress={() => {
             if (selectedTags.includes(tag)) {
               setSelectedTags(selectedTags.filter(selectedTag => selectedTag !== tag));
+              console.log('selectedTags', selectedTags);
             } else {
               setSelectedTags([...selectedTags, tag]);
             }

@@ -16,15 +16,19 @@ const ThreadBubble = ({ item, disableCommentButton }) => {
     >
       <View>
         <View style={styles.topLine}>
-          <View
-            style={{
-              ...styles.destinationNameContainer,
-              backgroundColor: item.lineColor,
-            }}
-          >
-            <Text style={styles.destinationName}>
-              {item.lineNumber} {item.lineName}
-            </Text>
+          <View style={styles.tagLine}>
+            {item.lineNumber != "" && 
+            <View style={{...styles.destinationNameContainer, backgroundColor: item.lineColor}}>
+                    <Text style={styles.destinationName}>{item.lineNumber}</Text>
+            </View>
+            }
+            <View style={{...styles.destinationNameContainer, backgroundColor: "grey"}}>
+                {item.tags && item.tags.length > 0 && 
+                    item.tags.map((tag, index) => (
+                        <Text key={index} style={styles.destinationName}>{tag}</Text>
+                    ))
+                }
+            </View>
           </View>
           <Text style={styles.timestamp}>
             {moment(item.timeStamp).fromNow()}
@@ -87,6 +91,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 15,
+  },
+  tagLine: {
+    flexDirection: "row",
   },
   bottomLineIcon: {
     flexDirection: "row",
