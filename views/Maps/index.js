@@ -23,15 +23,14 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import api, { stationDummy } from "../../api/api";
 import { getUserLocation } from "./components/GetUserLocation";
 import Modal from "../Modal";
-import { MeiliSearch } from 'meilisearch';
-import { SearchBar } from 'react-native-elements';
+import { MeiliSearch } from "meilisearch";
+import { SearchBar } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
-
-const client = new MeiliSearch({
-  host: 'http://34.65.82.213',
-  apiKey: 'MAPPIT',
-});
-const index = client.index('threads')
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
+import SearchBarPlaceholder from "./components/SearchBarPlaceholder";
 
 const Maps = () => {
   useEffect(() => {
@@ -42,37 +41,12 @@ const Maps = () => {
   const [region, setRegion] = useState();
   const [selectedLocation, setSelectedLocation] = useState();
   const markerRef = useRef(null);
-  const [query, setQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const navigation = useNavigation();
 
-  const handleSearch = async (text) => {
-    setQuery(text);
-    const results = await index.search(text);
-    setSearchResults(results.hits);
-  }
   return (
     <BottomSheetModalProvider>
       {region && currentLocation ? (
         <View style={styles.container}>
-          <SearchBar 
-            placeholder="Search in threads..." 
-            onChangeText={handleSearch} 
-            value={query} 
-          />
-          {searchResults.length > 0 && query.length > 1 && (
-            <View>
-              {searchResults.map((result, index) => (
-                  <TouchableOpacity onPress={() => 
-                    navigation.navigate('ReadThread', {threadData: result})
-                  } key={index}>
-                    <View style={ styles.container } item={result} >
-                      <Text>{result.content}</Text>
-                    </View>
-                  </TouchableOpacity>            
-              ))}
-            </View>
-          )}
+          <SearchBarPlaceholder />
           <MapView
             style={styles.map}
             region={region}
@@ -84,12 +58,12 @@ const Maps = () => {
             // showsMyLocationButton
             // followsUserLocation
             // ref={mapRef}
-            onPress={() => {
-              Keyboard.dismiss();
-              setSearchResults([]);
-            }}          
+            // onPress={() => {
+            //   Keyboard.dismiss();
+            //   setSearchResults([]);
+            // }}
           >
-            {/* {stationDummy.locations.map((marker, index) => (
+            {stationDummy.locations.map((marker, index) => (
               <Marker
                 key={index}
                 // image={markerPng}
@@ -104,7 +78,7 @@ const Maps = () => {
               >
                 <View style={styles.marker} />
               </Marker>
-            ))} */}
+            ))}
           </MapView>
           {/* <FAB
             icon={"crosshairs-gps"}
@@ -158,7 +132,7 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
     borderRadius: 10,
   },
-  container: {
+  searchContainer: {
     borderRadius: 15,
     padding: 5,
     minHeight: 15,

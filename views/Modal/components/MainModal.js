@@ -23,12 +23,37 @@ import {
 } from "@gorhom/bottom-sheet";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../../api/api";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  limit,
+  query,
+  where,
+  orderBy,
+} from "firebase/firestore";
+import { firebaseApp } from "../../../api/firebaseConfig";
+import ThreadBubble from "../../../components/ThreadBubble";
+import { useNavigation } from "@react-navigation/native";
+import MVVProduct from "./MVVProduct";
 
-const MainModal = ({ currentLocation, setSelectedLocation, selectedLocation, snapPoints, markerRef }) => {
+const MainModal = ({
+  currentLocation,
+  setSelectedLocation,
+  selectedLocation,
+  snapPoints,
+  markerRef,
+}) => {
   useEffect(() => {
     // handlePresentMainPress();
     bottomSheetModalMainRef.current.present();
     // console.log(currentLocation);
+    queryForDocuments();
+
+    const unsubscribe = navigation.addListener("focus", () => {
+      queryForDocuments();
+    });
+    return unsubscribe;
   }, []);
 
   const { isFetching, isLoading, error, data, isInitialLoading, refetch } =
@@ -43,28 +68,29 @@ const MainModal = ({ currentLocation, setSelectedLocation, selectedLocation, sna
           latitude: currentLocation.latitude,
           longtitude: currentLocation.longitude,
         }),
-      // keepPreviousData: true,
-      // enabled: false,
-      // onSuccess: (data) => {
-      //   console.log(data);
-      // },
     });
+  const navigation = useNavigation();
+  const db = getFirestore(firebaseApp);
+  const [threadData, setThreadData] = useState([]);
+  const queryForDocuments = async (name) => {
+    // setisFetching(true);
+    const threadsQuery = query(
+      collection(db, "threads"),
+      orderBy("likes", "desc"),
+      limit(3)
+    );
+    const querySnapshot = await getDocs(threadsQuery);
+    const allDocs = [];
+    querySnapshot.forEach((snap) => {
+      allDocs.push(snap.data());
+    });
+    setThreadData(allDocs);
+    // setisFetching(false);
+    console.log(allDocs);
+  };
 
   // refs
   const bottomSheetModalMainRef = useRef(null);
-  // variables
-  // const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
-  // callbacks
-  const handlePresentMainPress = useCallback(() => {
-    if (bottomSheetModalMainRef.current) {
-      bottomSheetModalMainRef.current.present();
-    }
-  }, []);
-  const handleDismissMainPress = useCallback(() => {
-    if (bottomSheetModalMainRef.current) {
-      bottomSheetModalMainRef.current.dismiss();
-    }
-  }, []);
 
   // renders
   const renderHeaderHandle = useCallback(
@@ -86,19 +112,43 @@ const MainModal = ({ currentLocation, setSelectedLocation, selectedLocation, sna
       ref={bottomSheetModalMainRef}
       snapPoints={snapPoints}
       enablePanDownToClose={false}
-      handleComponent={renderHeaderHandle("Nearby Stations")}
+      // handleComponent={renderHeaderHandle("Nearby Stations")}
       // children={renderBottomSheetContent}
     >
       <BottomSheetScrollView contentContainerStyle={styles.container}>
         {isFetching ? (
           <ActivityIndicator />
         ) : (
-          // <BottomSheetFlatList
-          //   data={data?.locations}
-          //   keyExtractor={(i) => i.id}
-          //   renderItem={renderItem}
-          // />
           <View>
+            <Text
+              style={{
+                ...styles.title,
+                paddingBottom: 12,
+              }}
+            >
+              Hottest now in Munich 🔥
+            </Text>
+            {threadData?.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => {
+                  navigation.navigate("ReadThread", { threadData: item });
+                  console.log(item);
+                }}
+              >
+                <View style={styles.threadBubble}>
+                  <ThreadBubble item={item} />
+                </View>
+              </TouchableOpacity>
+            ))}
+            <Text
+              style={{
+                ...styles.title,
+                paddingBottom: 12,
+              }}
+            >
+              Nearby Stations
+            </Text>
             {data?.locations.map((station, index) => (
               <TouchableOpacity
                 key={index}
@@ -106,9 +156,15 @@ const MainModal = ({ currentLocation, setSelectedLocation, selectedLocation, sna
                 onPress={() => {
                   setSelectedLocation(station);
                   // markerRef.current.showCallout();
+                  console.log(station.products);
                 }}
               >
                 <Text style={styles.stationListText}>{station.name}</Text>
+                <View style={{ flexDirection: "row" }}>
+                  {station.products.map((product, index) => (
+                    <MVVProduct product={product} key={index} />
+                  ))}
+                </View>
               </TouchableOpacity>
             ))}
           </View>
@@ -124,15 +180,10 @@ const styles = StyleSheet.create({
   container: {
     paddingBottom: 12,
     paddingHorizontal: 16,
-    // borderBottomWidth: 1,
-    // borderBottomColor: "rgba(0,0,0,0.075)",
-    // zIndex: 99999,
   },
   title: {
     marginTop: 16,
     fontSize: 26,
-    // lineHeight: 20,
-    // textAlign: "center",
     fontWeight: "bold",
     color: "black",
   },
@@ -142,11 +193,21 @@ const styles = StyleSheet.create({
   },
   stationList: {
     padding: 15,
-    borderRadius: 5,
+    borderRadius: 15,
     backgroundColor: "#f0f0f0",
     marginVertical: 5,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   stationListText: {
     fontSize: 18,
+  },
+  threadBubble: {
+    borderRadius: 15,
+    backgroundColor: "#F4F4F4",
+    // padding: 15,
+    // minHeight: 150,
+    // justifyContent: "space-between",
+    marginVertical: 5,
   },
 });
