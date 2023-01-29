@@ -18,17 +18,12 @@ import {
   BottomSheetFlatList,
   BottomSheetHandle,
   BottomSheetModal,
-  BottomSheetModalProvider,
-  BottomSheetScrollView,
   useBottomSheetModal,
 } from "@gorhom/bottom-sheet";
 import { Ionicons } from "@expo/vector-icons";
 import ThreadBubble from "../../../components/ThreadBubble";
-import { threadDummy } from "../../../api/api";
 import MVVProduct from "./MVVProduct";
-import { firebaseConfig } from "../../../firebase/config";
 import { useNavigation } from "@react-navigation/native";
-import { initializeApp } from "firebase/app";
 import {
   getFirestore,
   collection,
@@ -76,7 +71,7 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
   const bottomSheetModalLocationRef = useRef(null);
   const { dismiss } = useBottomSheetModal();
 
-  const snapPoints = useMemo(() => ["50%", "90%"], []);
+  const snapPoints = useMemo(() => ["50%", "85%"], []);
 
   // callbacks
   const handlePresentLocationPress = useCallback(() => {
@@ -136,6 +131,7 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
     <TouchableOpacity
       onPress={() => {
         navigation.navigate("ReadThread", { threadData: item });
+        console.log(item)
       }}
     >
       <View style={styles.threadBubble}>
