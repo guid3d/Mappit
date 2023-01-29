@@ -16,7 +16,7 @@ const Modal = ({
   setSelectedLocation,
   markerRef,
 }) => {
-  const snapPoints = useMemo(() => ["25%", "50%", "90%"], []);
+  const snapPoints = useMemo(() => ["25%", "50%", "80%"], []);
 
   return (
     <View>

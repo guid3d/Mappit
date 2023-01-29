@@ -76,7 +76,7 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
   const bottomSheetModalLocationRef = useRef(null);
   const { dismiss } = useBottomSheetModal();
 
-  const snapPoints = useMemo(() => ["50%", "90%"], []);
+  const snapPoints = useMemo(() => ["50%", "85%"], []);
 
   // callbacks
   const handlePresentLocationPress = useCallback(() => {
@@ -136,6 +136,7 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
     <TouchableOpacity
       onPress={() => {
         navigation.navigate("ReadThread", { threadData: item });
+        console.log(item)
       }}
     >
       <View style={styles.threadBubble}>

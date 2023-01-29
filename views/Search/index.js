@@ -1,5 +1,11 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -22,8 +28,10 @@ const Search = () => {
 
   const handleSearch = async (text) => {
     setQuery(text);
-    const results = await index.search(text);
-    setSearchResults(results.hits);
+    await index.search(text).then((res) => {
+      setSearchResults(res.hits);
+      // console.log(res.hits);
+    });
   };
   return (
     <SafeAreaView edges={["top"]} style={styles.container}>
@@ -40,24 +48,29 @@ const Search = () => {
           // borderColor: "#696969",
         }}
         leftIconContainerStyle={{ paddingLeft: 10 }}
-        showCancel
+        platform="ios"
+        onCancel={() => {
+          navigation.goBack();
+        }}
+        autoFocus
       />
-      {searchResults.length > 0 && query.length > 1 && (
-        <View>
-          {searchResults.map((result, index) => (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("ReadThread", { threadData: result })
-              }
-              key={index}
-            >
-              <View style={styles.container} item={result}>
-                <Text>{result.content}</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
-      )}
+      {/* {searchResults.length > 0 && query.length > 1 && ( */}
+      <ScrollView>
+        {searchResults?.map((result, index) => (
+          <TouchableOpacity
+            onPress={() => {
+              console.log(result);
+              navigation.navigate("ReadThread", { threadData: result });
+            }}
+            key={index}
+          >
+            <View style={styles.searchResultContainer} item={result}>
+              <Text>{result.content}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+      {/* )} */}
     </SafeAreaView>
   );
 };
@@ -68,5 +81,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // backgroundColor: "white",
+  },
+  searchResultContainer: {
+    marginTop: 3,
+    padding: 10,
+    backgroundColor: "white",
   },
 });

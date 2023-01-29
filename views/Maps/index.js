@@ -32,8 +32,6 @@ import {
 } from "react-native-safe-area-context";
 import SearchBarPlaceholder from "./components/SearchBarPlaceholder";
 
-
-
 const Maps = () => {
   useEffect(() => {
     // This will start the app with user location, but have to handle it faster
@@ -48,7 +46,6 @@ const Maps = () => {
     <BottomSheetModalProvider>
       {region && currentLocation ? (
         <View style={styles.container}>
-           
           <SearchBarPlaceholder />
           <MapView
             style={styles.map}
@@ -61,10 +58,10 @@ const Maps = () => {
             // showsMyLocationButton
             // followsUserLocation
             // ref={mapRef}
-            onPress={() => {
-              Keyboard.dismiss();
-              setSearchResults([]);
-            }}
+            // onPress={() => {
+            //   Keyboard.dismiss();
+            //   setSearchResults([]);
+            // }}
           >
             {stationDummy.locations.map((marker, index) => (
               <Marker

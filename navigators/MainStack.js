@@ -33,7 +33,7 @@ const MainStackView = () => {
         <Stack.Screen
           name="Search"
           component={Search}
-          options={{ presentation: "fullScreenModal", headerShown: false }}
+          options={{ headerShown: false, animation: "slide_from_bottom" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

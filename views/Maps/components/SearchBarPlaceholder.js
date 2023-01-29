@@ -34,6 +34,9 @@ const styles = StyleSheet.create({
     right: 10,
     zIndex: 10000,
     flexDirection: "row",
+    shadowOffset: {height: 2},
+    shadowColor: "#999999",
+    shadowOpacity: 0.5
   },
   text: {
     fontSize: 17,
