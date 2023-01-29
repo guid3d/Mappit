@@ -1,5 +1,4 @@
 import {
-  FlatList,
   Keyboard,
   TextInput,
   TouchableOpacity,
@@ -11,19 +10,14 @@ import {
 import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
 import { firebaseConfig } from "../../firebase/config";
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
 import {
   getFirestore,
   collection,
   addDoc,
-  getDocs,
   setDoc,
-  doc,
 } from "firebase/firestore";
-import { Timestamp } from "@firebase/firestore";
 import moment from "moment";
 
 const app = initializeApp(firebaseConfig);
@@ -38,7 +32,26 @@ const AddThread = ({ route }) => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedLine, setSelectedLine] = useState([]);
   const tags = ["Lost and Found", "Ticket Control", "Delays", "Construction", "Meetup", "Rideshare", "Ticketshare"];
-  const lines = ["U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S20"];
+  const lines = ["U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8", "S1", "S2", "S3", "S4", "S6", "S7", "S8", "S20"];
+  const lineColors = {
+    "U1": "#52822f", 
+    "U2": "#c20831",
+    "U3": "#ec6725",
+    "U4": "#00a984",
+    "U5": "#bc7a00",
+    "U6": "#0065ae",
+    "U7": "#c76572",
+    "U8": "#e79da9",
+    "S1": "#16bae7",
+    "S2": "#76b82a",
+    "S3": "#951b81",
+    "S4": "#e3051b",
+    "S6": "#008d58",
+    "S7": "#892e22",
+    "S8": "#000000",
+    "S20": "#ea516d",
+    };
+  const lineColorMap = new Map(Object.entries(lineColors));
 
   useEffect(() => {
     if (route.params?.selectedLocation) {
@@ -55,7 +68,7 @@ const AddThread = ({ route }) => {
           content: entityText,
           creatorName: creator,
           likes: 0,
-          lineColor: "orange",
+          lineColor: lineColorMap.get(selectedLine),
           stationName: selectedLocation?.name,
           tag: selectedTags,
           lineNumber: selectedLine,
@@ -122,11 +135,13 @@ const AddThread = ({ route }) => {
       </View>
       <View style={styles.tagContainer}>
           {lines.map((line, index) => (
-              <TouchableOpacity key={index} style={styles.tagButton} onPress={() => {
+              <TouchableOpacity key={index} style={[{
+                ...styles.tagButton,
+                backgroundColor: lineColorMap.get(line)}, selectedLine == line && styles.selectedTagButton]} 
+                onPress={() => {
                   setSelectedLine(line);
-                  console.log('selectedLine',selectedLine);
               }}>
-                  <Text style={[styles.tagText, selectedLine.includes(line) && styles.selectedTagText]}>{line}</Text>
+                  <Text style={[styles.lineText, selectedLine == line && styles.selectedTagText]}>{line}</Text>
               </TouchableOpacity>
           ))}
       </View>
@@ -240,18 +255,31 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center'
   },
-  tagButton: {
-    backgroundColor: '#f0f0f0',
-    padding: 8,
-    borderRadius: 10,
+  selectedTagButton: {
+    backgroundColor: 'white',
+    borderRadius: 20,
     margin: 5,
+    borderWidth: 2,
+    borderColor: 'green',
+
+  },
+  tagButton: {
+    borderRadius: 20,
+    margin: 5,
+    borderWidth: 2,
+    borderColor: 'transparent',
   },
   tagText: {
     color: '#555555',
-    fontWeight: 'bold'
   },
   selectedTagText: {
-    backgroundColor: '#555555',
-    color: 'white'
-  }
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  lineText: {
+    color: "white",
+    fontWeight: "500",
+    marginVertical: 5,
+    marginHorizontal: 10,
+  },
 });
