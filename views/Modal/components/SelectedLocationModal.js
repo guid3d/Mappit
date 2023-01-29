@@ -18,17 +18,12 @@ import {
   BottomSheetFlatList,
   BottomSheetHandle,
   BottomSheetModal,
-  BottomSheetModalProvider,
-  BottomSheetScrollView,
   useBottomSheetModal,
 } from "@gorhom/bottom-sheet";
 import { Ionicons } from "@expo/vector-icons";
 import ThreadBubble from "../../../components/ThreadBubble";
-import { threadDummy } from "../../../api/api";
 import MVVProduct from "./MVVProduct";
-import { firebaseConfig } from "../../../firebase/config";
 import { useNavigation } from "@react-navigation/native";
-import { initializeApp } from "firebase/app";
 import {
   getFirestore,
   collection,
