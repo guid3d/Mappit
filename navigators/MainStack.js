@@ -6,6 +6,7 @@ import Maps from "../views/Maps";
 import AddThread from "../views/AddThread";
 import ReadThread from "../views/ReadThread";
 import AddComment from "../views/AddComment";
+import Search from "../views/Search";
 
 const MainStackView = () => {
   // const Tab = createBottomTabNavigator();
@@ -27,13 +28,12 @@ const MainStackView = () => {
           component={AddThread}
           options={{ presentation: "modal" }}
         />
+        <Stack.Screen name="ReadThread" component={ReadThread} />
+        <Stack.Screen name="AddComment" component={AddComment} />
         <Stack.Screen
-          name="ReadThread"
-          component={ReadThread}
-        />
-        <Stack.Screen
-          name="AddComment"
-          component={AddComment}
+          name="Search"
+          component={Search}
+          options={{ presentation: "fullScreenModal", headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

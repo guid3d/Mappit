@@ -40,9 +40,8 @@ const ReadThread = ({ navigation, route }) => {
     if (threadData) {
       queryForDocuments(threadData?.threadID);
     }
-    const unsubscribe = navigation.addListener('focus', () => {
-      if (threadData)
-        queryForDocuments(threadData?.threadID);
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (threadData) queryForDocuments(threadData?.threadID);
     });
     return unsubscribe;
   }, [navigation, threadData]);
@@ -72,28 +71,28 @@ const ReadThread = ({ navigation, route }) => {
 
   if (threadData) {
     return (
-      <View>
-      <FlatList
-        data={CommentData}
-        renderItem={renderFlatListItem}
-        contentContainerStyle={styles.container}
-        ListHeaderComponent={renderFlatListHeader}
-        refreshing={isFetching}
-        onRefresh={() => {
-          if (threadData) {
-            queryForDocuments(threadData?.threadID);
-          }
-        }}
-      />
-      <FAB
-        // visible={visible}
-        icon={{ name: "comment", color: "white" }}
-        color="#24a0ed"
-        style={styles.fab}
-        onPress={() => {
-          navigation.navigate("AddComment", {threadData: threadData,});
-        }}
-      />
+      <View style={{ flex: 1 }}>
+        <FlatList
+          data={CommentData}
+          renderItem={renderFlatListItem}
+          contentContainerStyle={styles.container}
+          ListHeaderComponent={renderFlatListHeader}
+          // refreshing={isFetching}
+          // onRefresh={() => {
+          //   if (threadData) {
+          //     queryForDocuments(threadData?.threadID);
+          //   }
+          // }}
+        />
+        <FAB
+          // visible={visible}
+          icon={{ name: "comment", color: "white" }}
+          color="#24a0ed"
+          style={styles.fab}
+          onPress={() => {
+            navigation.navigate("AddComment", { threadData: threadData });
+          }}
+        />
       </View>
     );
   }
