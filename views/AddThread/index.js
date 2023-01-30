@@ -29,7 +29,8 @@ const AddThread = ({ route }) => {
   const [entityText, setEntityText] = useState("");
   const [creator, setCreator] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedTags, setSelectedTags] = useState([]);
+  // const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedTag, setSelectedTag] = useState([]);
   const [selectedLine, setSelectedLine] = useState([]);
   const tags = ["Lost and Found", "Ticket Control", "Delays", "Construction", "Meetup", "Rideshare", "Ticketshare"];
   const lines = ["U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8", "S1", "S2", "S3", "S4", "S6", "S7", "S8", "S20"];
@@ -70,7 +71,8 @@ const AddThread = ({ route }) => {
           likes: 0,
           lineColor: lineColorMap.get(selectedLine) || 'white',
           stationName: selectedLocation?.name,
-          tags: selectedTags,
+          // tags: selectedTags,
+          tag: selectedTag,
           lineNumber: selectedLine,
           motherThreadID: "",
           //threadID: "",
@@ -122,6 +124,14 @@ const AddThread = ({ route }) => {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.tagContainer}>
         {tags.map((tag, index) => (
+              <TouchableOpacity key={index} style={styles.tagButton} 
+                onPress={() => {
+                  setSelectedTag(tag);
+              }}>
+                  <Text style={[styles.tagText, selectedTag == tag && styles.selectedTagText]}>{tag}</Text>
+              </TouchableOpacity>
+        ))}
+        {/* {tags.map((tag, index) => (
           <TouchableOpacity key={index} style={styles.tagButton} onPress={() => {
             if (selectedTags.includes(tag)) {
               setSelectedTags(selectedTags.filter(selectedTag => selectedTag !== tag));
@@ -132,7 +142,7 @@ const AddThread = ({ route }) => {
           }}>
             <Text style={[styles.tagText, selectedTags.includes(tag) && styles.selectedTagText]}>{tag}</Text>
           </TouchableOpacity>
-        ))}
+        ))} */}
       </View>
       <View style={styles.tagContainer}>
           {lines.map((line, index) => (

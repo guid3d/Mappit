@@ -17,18 +17,23 @@ const ThreadBubble = ({ item, disableCommentButton }) => {
       <View>
         <View style={styles.topLine}>
           <View style={styles.tagLine}>
-            {item.lineNumber != "" && 
+            {item.lineNumber && item.lineNumber != "" && 
             <View style={{...styles.destinationNameContainer, backgroundColor: item.lineColor}}>
                     <Text style={styles.destinationName}>{item.lineNumber}</Text>
             </View>
             }
+            {item.tag && item.tag != "" && 
             <View style={{...styles.destinationNameContainer, backgroundColor: "grey"}}>
+                    <Text style={styles.destinationName}>{item.tag}</Text>
+            </View>
+            }
+            {/* <View style={{...styles.destinationNameContainer, backgroundColor: "grey"}}>
                 {item.tags && item.tags.length > 0 && 
                     item.tags.map((tag, index) => (
                         <Text key={index} style={styles.destinationName}>{tag}</Text>
                     ))
                 }
-            </View>
+            </View> */}
           </View>
           <Text style={styles.timestamp}>
             {moment(item.timeStamp).fromNow()}
