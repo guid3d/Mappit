@@ -21,7 +21,8 @@ import {
 import moment from "moment";
 import ubahnLines from '../../data/ubahn_lines.json';
 import sbahnLines from '../../data/sbahn_lines.json';
-
+import tags from '../../data/tags.json';
+import lineColors from '../../data/line_colors.json';
 const ubahnLinesMap = new Map(Object.entries(ubahnLines));
 const sbahnLinesMap = new Map(Object.entries(sbahnLines));
 const linesMap = new Map(ubahnLinesMap);
@@ -42,29 +43,8 @@ const AddThread = ({ route }) => {
   const [entityText, setEntityText] = useState("");
   const [creator, setCreator] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
-  // const [selectedTags, setSelectedTags] = useState([]);
   const [selectedTag, setSelectedTag] = useState([]);
   const [selectedLine, setSelectedLine] = useState([]);
-  const tags = ["Lost and Found", "Ticket Control", "Delays", "Construction", "Meetup", "Rideshare", "Ticketshare"];
-  const lineColors = {
-    "U1": "#52822f", 
-    "U2": "#c20831",
-    "U3": "#ec6725",
-    "U4": "#00a984",
-    "U5": "#bc7a00",
-    "U6": "#0065ae",
-    "U7": "#c76572",
-    "U8": "#e79da9",
-    "S1": "#16bae7",
-    "S2": "#76b82a",
-    "S3": "#951b81",
-    "S4": "#e3051b",
-    "S6": "#008d58",
-    "S7": "#892e22",
-    "S8": "#000000",
-    "S20": "#ea516d",
-    };
-  const lines = ["U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8", "S1", "S2", "S3", "S4", "S6", "S7", "S8", "S20"];
   const lineColorMap = new Map(Object.entries(lineColors));
 
   useEffect(() => {
@@ -72,6 +52,12 @@ const AddThread = ({ route }) => {
       setSelectedLocation(route.params.selectedLocation);
     }
   }, [route.params?.selectedLocation]);
+
+  useEffect(() => {
+    if (selectedLine) {
+      console.log('selectedLine', selectedLine);
+    }
+  }, [selectedLine]);
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0 && selectedLocation?.id) {
@@ -84,11 +70,10 @@ const AddThread = ({ route }) => {
           likes: 0,
           lineColor: lineColorMap.get(selectedLine) || 'white',
           stationName: selectedLocation?.name,
-          // tags: selectedTags,
           tag: selectedTag,
           lineNumber: selectedLine,
           motherThreadID: "",
-          threadID: "",
+          // threadID: "",
           numberOfComments: 0,
           locationID: selectedLocation?.id,
           timeStamp: moment().format(),
@@ -152,6 +137,7 @@ const AddThread = ({ route }) => {
                     ...styles.tagButton,
                     backgroundColor: lineColorMap.get(line)}, selectedLine == line && styles.selectedTagButton]} 
                     onPress={() => {
+                      console.log(line);
                       setSelectedLine(line);
                   }}>
                       <Text style={[styles.lineText, selectedLine == line && styles.selectedTagText]}>{line}</Text>

@@ -20,26 +20,13 @@ const client = new MeiliSearch({
   apiKey: "MAPPIT",
 });
 const index = client.index("threads");
-const tags = ["Lost and Found", "Ticket Control", "Delays", "Construction", "Meetup", "Rideshare", "Ticketshare"];
-const lineColors = {
-  "U1": "#52822f", 
-  "U2": "#c20831",
-  "U3": "#ec6725",
-  "U4": "#00a984",
-  "U5": "#bc7a00",
-  "U6": "#0065ae",
-  "U7": "#c76572",
-  "U8": "#e79da9",
-  "S1": "#16bae7",
-  "S2": "#76b82a",
-  "S3": "#951b81",
-  "S4": "#e3051b",
-  "S6": "#008d58",
-  "S7": "#892e22",
-  "S8": "#000000",
-  "S20": "#ea516d",
-  };
-const lines = ["U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8", "S1", "S2", "S3", "S4", "S6", "S7", "S8", "S20"];
+index.updateSettings({
+  filterableAttributes: ['lineNumber', 'tag'],
+});
+
+import tags from '../../data/tags.json';
+import lineColors from '../../data/line_colors.json';
+import lines from '../../data/lines.json';
 const lineColorMap = new Map(Object.entries(lineColors));
 
 const Search = () => {
@@ -51,11 +38,25 @@ const Search = () => {
   const [selectedLines, setSelectedLines] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
 
+  useEffect(() => {
+    if (selectedLines || selectedTags) {
+      handleSearch(query);
+    }
+  }, [selectedLines, selectedTags]);
+
   const handleSearch = async (text) => {
     setQuery(text);
-    await index.search(text).then((res) => {
+    lineFilter = []
+    selectedLines.forEach((line) => {
+      lineFilter.push("lineNumber = ".concat(line));
+    });
+    tagFilter = []
+    selectedTags.forEach((tag) => {
+      tagFilter.push("tag = \""+tag+"\"");
+    });
+    const filter = [lineFilter, tagFilter];
+    await index.search(text, { filter }).then((res) => {
       setSearchResults(res.hits);
-      // console.log(res.hits);
     });
   };
   return (

@@ -27,13 +27,6 @@ const ThreadBubble = ({ item, disableCommentButton }) => {
                     <Text style={styles.destinationName}>{item.tag}</Text>
             </View>
             }
-            {/* <View style={{...styles.destinationNameContainer, backgroundColor: "grey"}}>
-                {item.tags && item.tags.length > 0 && 
-                    item.tags.map((tag, index) => (
-                        <Text key={index} style={styles.destinationName}>{tag}</Text>
-                    ))
-                }
-            </View> */}
           </View>
           <Text style={styles.timestamp}>
             {moment(item.timeStamp).fromNow()}
