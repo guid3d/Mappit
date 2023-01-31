@@ -75,7 +75,7 @@ const AddThread = ({ route }) => {
           tag: selectedTag,
           lineNumber: selectedLine,
           motherThreadID: "",
-          //threadID: "",
+          threadID: "",
           numberOfComments: 0,
           locationID: selectedLocation?.id,
           timeStamp: moment().format(),

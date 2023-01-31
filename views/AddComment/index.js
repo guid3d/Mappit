@@ -22,6 +22,7 @@ import {
     getDocs,
     setDoc,
     doc,
+    updateDoc,
 } from "firebase/firestore";
 import { Timestamp } from "@firebase/firestore";
 import moment from "moment";
@@ -42,6 +43,7 @@ const AddComment = ({ route }) => {
   }, [route.params?.threadData]);
 
   const entityRef = collection(db, "threads/" + threadData?.threadID + "/comments");
+  const threadRef = doc(db, "threads/" + threadData?.threadID);
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0 && threadData?.threadID) {
@@ -64,6 +66,10 @@ const AddComment = ({ route }) => {
         .catch(error => {
             console.log(error);
         })
+        const numberOfComments = threadData.hasOwnProperty("numberOfComments") ? (threadData.numberOfComments + 1) : 1;
+        updateDoc(threadRef, {
+          numberOfComments: numberOfComments
+        });
         console.log("Document written with ID: ", docRef.id);
         console.log("Data when adding comment: ", data);
         setEntityText("");
