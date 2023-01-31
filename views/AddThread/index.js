@@ -46,7 +46,6 @@ const AddThread = ({ route }) => {
   const [selectedTag, setSelectedTag] = useState([]);
   const [selectedLine, setSelectedLine] = useState([]);
   const tags = ["Lost and Found", "Ticket Control", "Delays", "Construction", "Meetup", "Rideshare", "Ticketshare"];
-  const lines = ["U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8", "S1", "S2", "S3", "S4", "S6", "S7", "S8", "S20"];
   const lineColors = {
     "U1": "#52822f", 
     "U2": "#c20831",
@@ -65,6 +64,7 @@ const AddThread = ({ route }) => {
     "S8": "#000000",
     "S20": "#ea516d",
     };
+  const lines = ["U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8", "S1", "S2", "S3", "S4", "S6", "S7", "S8", "S20"];
   const lineColorMap = new Map(Object.entries(lineColors));
 
   useEffect(() => {
@@ -144,20 +144,7 @@ const AddThread = ({ route }) => {
                   <Text style={[styles.tagText, selectedTag == tag && styles.selectedTagText]}>{tag}</Text>
               </TouchableOpacity>
         ))}
-        {/* {tags.map((tag, index) => (
-          <TouchableOpacity key={index} style={styles.tagButton} onPress={() => {
-            if (selectedTags.includes(tag)) {
-              setSelectedTags(selectedTags.filter(selectedTag => selectedTag !== tag));
-              console.log('selectedTags', selectedTags);
-            } else {
-              setSelectedTags([...selectedTags, tag]);
-            }
-          }}>
-            <Text style={[styles.tagText, selectedTags.includes(tag) && styles.selectedTagText]}>{tag}</Text>
-          </TouchableOpacity>
-        ))} */}
       </View>
-      {console.log(linesMap.get(selectedLocation?.name))}
         {selectedLocation?.name && linesMap.get(selectedLocation?.name) && 
           <View style={styles.tagContainer}>
               {linesMap.get(selectedLocation?.name).map((line, index) => (
@@ -205,23 +192,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
-  // formContainer: {
-  //   flexDirection: "column",
-  //   height: "100%",
-  //   width: "100%",
-  //   marginTop: 0,
-  //   marginBottom: 0,
-  //   flex: 1,
-  //   paddingTop: 0,
-  //   paddingBottom: 0,
-  //   paddingLeft: 0,
-  //   paddingRight: 0,
-  //   justifyContent: "right",
-  //   // alignItems: "top",
-  // },
   input: {
     width: "100%",
-    // height: "100%",
     borderRadius: 0,
     overflow: "hidden",
     backgroundColor: "white",
@@ -233,13 +205,11 @@ const styles = StyleSheet.create({
   },
   yourNameInput: {
     width: "100%",
-    // height: "100%",
     borderRadius: 0,
     overflow: "hidden",
     backgroundColor: "white",
     paddingLeft: 18,
     paddingTop: 15,
-    // flex: 1,
     marginRight: 0,
     fontSize: 20,
   },
@@ -251,14 +221,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  // button2: {
-  //   backgroundColor: "white",
-  //   padding: 5,
-  //   borderRadius: 30,
-  //   paddingHorizontal: 20,
-  //   alignItems: "center",
-  //   justifyContent: 'center'
-  // },
   buttonText: {
     color: "white",
     fontSize: 16,
@@ -284,14 +246,12 @@ const styles = StyleSheet.create({
   },
   selectedTagButton: {
     backgroundColor: 'white',
-    borderRadius: 20,
     margin: 5,
     borderWidth: 2,
     borderColor: 'green',
 
   },
   tagButton: {
-    borderRadius: 20,
     margin: 5,
     borderWidth: 2,
     borderColor: 'transparent',
