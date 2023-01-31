@@ -14,13 +14,14 @@ const decrement = firebase.firestore.FieldValue.increment(-1);
 
 const ThreadLikeButton = ({ pressedLike, setPressedLike, item }) => {
   const [likes, setLikes] = useState(item.likes);
+  const threadRef = item.hasOwnProperty("commentID") ? (doc(db, "threads/" + item["threadID"] + "/comments", item["commentID"])) : (doc(db, "threads", item["threadID"]));
   return (
     <View style={styles.iconAndText}>
       <TouchableOpacity
         onPress={() => {
 
           // Creates a reference to the current thread 
-          const threadRef = doc(db, "threads", item["threadID"]);
+          // const threadRef = doc(db, "threads", item["threadID"]);
 
           setPressedLike((v) => !v);
           setLikes((v) => (!pressedLike ? v + 1 : v - 1));
