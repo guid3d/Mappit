@@ -19,6 +19,19 @@ import {
   setDoc,
 } from "firebase/firestore";
 import moment from "moment";
+import ubahnLines from '../../data/ubahn_lines.json';
+import sbahnLines from '../../data/sbahn_lines.json';
+
+const ubahnLinesMap = new Map(Object.entries(ubahnLines));
+const sbahnLinesMap = new Map(Object.entries(sbahnLines));
+const linesMap = new Map(ubahnLinesMap);
+for (const [key, value] of sbahnLinesMap.entries()) {
+  if (linesMap.has(key)) {
+    linesMap.set(key, linesMap.get(key).concat(value));
+  } else {
+    linesMap.set(key, value);
+  }
+}
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -144,18 +157,21 @@ const AddThread = ({ route }) => {
           </TouchableOpacity>
         ))} */}
       </View>
-      <View style={styles.tagContainer}>
-          {lines.map((line, index) => (
-              <TouchableOpacity key={index} style={[{
-                ...styles.tagButton,
-                backgroundColor: lineColorMap.get(line)}, selectedLine == line && styles.selectedTagButton]} 
-                onPress={() => {
-                  setSelectedLine(line);
-              }}>
-                  <Text style={[styles.lineText, selectedLine == line && styles.selectedTagText]}>{line}</Text>
-              </TouchableOpacity>
-          ))}
-      </View>
+      {console.log(linesMap.get(selectedLocation?.name))}
+        {selectedLocation?.name && linesMap.get(selectedLocation?.name) && 
+          <View style={styles.tagContainer}>
+              {linesMap.get(selectedLocation?.name).map((line, index) => (
+                  <TouchableOpacity key={index} style={[{
+                    ...styles.tagButton,
+                    backgroundColor: lineColorMap.get(line)}, selectedLine == line && styles.selectedTagButton]} 
+                    onPress={() => {
+                      setSelectedLine(line);
+                  }}>
+                      <Text style={[styles.lineText, selectedLine == line && styles.selectedTagText]}>{line}</Text>
+                  </TouchableOpacity>
+              ))}
+          </View>
+      }
       <TextInput
         style={styles.yourNameInput}
         placeholder="Your Name"

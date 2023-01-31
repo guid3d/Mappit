@@ -1,0 +1,572 @@
+{
+    "Allach": [
+        "S2"
+    ],
+    "Altenerding": [
+        "S2"
+    ],
+    "Altom\u00fcnster": [
+        "S2"
+    ],
+    "Arnbach": [
+        "S2"
+    ],
+    "Aubing": [
+        "S4",
+        "S20"
+    ],
+    "Aufhausen": [
+        "S2"
+    ],
+    "Aying": [
+        "S7"
+    ],
+    "Bachern": [
+        "S2"
+    ],
+    "Baierbrunn": [
+        "S7"
+    ],
+    "Baldham": [
+        "S4",
+        "S6"
+    ],
+    "Berg am Laim": [
+        "S2",
+        "S4",
+        "S6"
+    ],
+    "Buchenau": [
+        "S4",
+        "S20"
+    ],
+    "Buchenhain": [
+        "S7"
+    ],
+    "Dachau": [
+        "S2"
+    ],
+    "Dachau Stadt": [
+        "S2"
+    ],
+    "Daglfing": [
+        "S8"
+    ],
+    "Deisenhofen": [
+        "S3"
+    ],
+    "Donnersbergerbr\u00fccke": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S6",
+        "S7",
+        "S8"
+    ],
+    "D\u00fcrrnhaar": [
+        "S7"
+    ],
+    "Ebenhausen-Sch\u00e4ftlarn": [
+        "S7"
+    ],
+    "Ebersberg": [
+        "S4",
+        "S6"
+    ],
+    "Eching": [
+        "S1"
+    ],
+    "Eglharting": [
+        "S4",
+        "S6"
+    ],
+    "Eichenau": [
+        "S4",
+        "S20"
+    ],
+    "Englschalking": [
+        "S8"
+    ],
+    "Erding": [
+        "S2"
+    ],
+    "Erding-Fliegerhorst": [
+        "S2"
+    ],
+    "Erdweg": [
+        "S2"
+    ],
+    "Esting": [
+        "S3"
+    ],
+    "Fasanenpark": [
+        "S3"
+    ],
+    "Fasanerie": [
+        "S1"
+    ],
+    "Fasangarten": [
+        "S3"
+    ],
+    "Feldafing": [
+        "S6"
+    ],
+    "Feldkirchen": [
+        "S2"
+    ],
+    "Feldmoching": [
+        "S1"
+    ],
+    "Flughafen Besucherpark": [
+        "S1",
+        "S8"
+    ],
+    "Flughafen M\u00fcnchen": [
+        "S1",
+        "S8"
+    ],
+    "Freiham": [
+        "S8"
+    ],
+    "Freising": [
+        "S1"
+    ],
+    "F\u00fcrstenfeldbruck": [
+        "S4",
+        "S20"
+    ],
+    "Furth": [
+        "S3"
+    ],
+    "Gauting": [
+        "S6"
+    ],
+    "Geisenbrunn": [
+        "S8"
+    ],
+    "Geltendorf": [
+        "S4",
+        "S20"
+    ],
+    "Gelting": [
+        "S7"
+    ],
+    "Geretsried Mitte": [
+        "S7"
+    ],
+    "Geretsried S\u00fcd": [
+        "S7"
+    ],
+    "Germering-Unterpfaffenhofen": [
+        "S8"
+    ],
+    "Gernlinden": [
+        "S3"
+    ],
+    "Giesing": [
+        "S3",
+        "S7"
+    ],
+    "Gilching-Argelsried": [
+        "S8"
+    ],
+    "Gr\u00e4felfing": [
+        "S6"
+    ],
+    "Grafing Bahnhof": [
+        "S4",
+        "S6"
+    ],
+    "Grafing Stadt": [
+        "S4",
+        "S6"
+    ],
+    "Grafrath": [
+        "S4",
+        "S20"
+    ],
+    "Gr\u00f6benzell": [
+        "S3"
+    ],
+    "Gronsdorf": [
+        "S4",
+        "S6"
+    ],
+    "Gro\u00dfhelfendorf": [
+        "S7"
+    ],
+    "Gro\u00dfhesselohe Isartalbahnhof": [
+        "S7",
+        "S20"
+    ],
+    "Grub": [
+        "S2"
+    ],
+    "Haar": [
+        "S4",
+        "S6"
+    ],
+    "Hackerbr\u00fccke": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S6",
+        "S7",
+        "S8"
+    ],
+    "Hallbergmoos": [
+        "S8"
+    ],
+    "Harras": [
+        "S7"
+    ],
+    "Harthaus": [
+        "S8"
+    ],
+    "Hauptbahnhof": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S6",
+        "S7",
+        "S8"
+    ],
+    "Hauptbahnhof \u2013 Starnberger Bf.": [
+        "S4",
+        "S20"
+    ],
+    "Hebertshausen": [
+        "S2"
+    ],
+    "Heimeranplatz": [
+        "S7",
+        "S20"
+    ],
+    "Heimstetten": [
+        "S2"
+    ],
+    "Herrsching": [
+        "S8"
+    ],
+    "Hirschgarten": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S6",
+        "S8"
+    ],
+    "Hohenbrunn": [
+        "S7"
+    ],
+    "H\u00f6henkirchen-Siegertsbrunn": [
+        "S7"
+    ],
+    "Hohensch\u00e4ftlarn": [
+        "S7"
+    ],
+    "H\u00f6llriegelskreuth": [
+        "S7",
+        "S20"
+    ],
+    "Holzkirchen": [
+        "S3"
+    ],
+    "Icking": [
+        "S7"
+    ],
+    "Isartor": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S6",
+        "S7",
+        "S8"
+    ],
+    "Ismaning": [
+        "S8"
+    ],
+    "Johanneskirchen": [
+        "S8"
+    ],
+    "Karlsfeld": [
+        "S2"
+    ],
+    "Karlsplatz (Stachus)": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S6",
+        "S7",
+        "S8"
+    ],
+    "Kirchseeon": [
+        "S4",
+        "S6"
+    ],
+    "Kleinberghofen": [
+        "S2"
+    ],
+    "Kreuzstra\u00dfe": [
+        "S7"
+    ],
+    "Laim": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S6",
+        "S8"
+    ],
+    "Langwied": [
+        "S3"
+    ],
+    "Leienfelsstra\u00dfe": [
+        "S4",
+        "S20"
+    ],
+    "Leuchtenbergring": [
+        "S2",
+        "S4",
+        "S6",
+        "S8"
+    ],
+    "Lochham": [
+        "S6"
+    ],
+    "Lochhausen": [
+        "S3"
+    ],
+    "Lohhof": [
+        "S1"
+    ],
+    "Maisach": [
+        "S3"
+    ],
+    "Malching": [
+        "S3"
+    ],
+    "Mammendorf": [
+        "S3"
+    ],
+    "Marienplatz": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S6",
+        "S7",
+        "S8"
+    ],
+    "Markt Indersdorf": [
+        "S2"
+    ],
+    "Markt Schwaben": [
+        "S2"
+    ],
+    "Mittersendling": [
+        "S7",
+        "S20"
+    ],
+    "Moosach": [
+        "S1"
+    ],
+    "M\u00fchlthal": [
+        "S6"
+    ],
+    "Neuaubing": [
+        "S8"
+    ],
+    "Neubiberg": [
+        "S7"
+    ],
+    "Neufahrn": [
+        "S1"
+    ],
+    "Neugilching": [
+        "S8"
+    ],
+    "Neuperlach S\u00fcd": [
+        "S7"
+    ],
+    "Niederroth": [
+        "S2"
+    ],
+    "Obermenzing": [
+        "S2"
+    ],
+    "Oberschlei\u00dfheim": [
+        "S1"
+    ],
+    "Olching": [
+        "S3"
+    ],
+    "Ostbahnhof": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S6",
+        "S7",
+        "S8"
+    ],
+    "Ottenhofen": [
+        "S2"
+    ],
+    "Otterfing": [
+        "S3"
+    ],
+    "Ottobrunn": [
+        "S7"
+    ],
+    "Pasing": [
+        "S3",
+        "S4",
+        "S6",
+        "S8",
+        "S20"
+    ],
+    "Pei\u00df": [
+        "S7"
+    ],
+    "Perlach": [
+        "S7"
+    ],
+    "Petershausen": [
+        "S2"
+    ],
+    "Planegg": [
+        "S6"
+    ],
+    "Poing": [
+        "S2"
+    ],
+    "Possenhofen": [
+        "S6"
+    ],
+    "Puchheim": [
+        "S4",
+        "S20"
+    ],
+    "Pullach": [
+        "S7"
+    ],
+    "Pulling": [
+        "S1"
+    ],
+    "Riem": [
+        "S2"
+    ],
+    "R\u00f6hrmoos": [
+        "S2"
+    ],
+    "Rosenheimer Platz": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S6",
+        "S7",
+        "S8"
+    ],
+    "Sauerlach": [
+        "S3"
+    ],
+    "Sch\u00f6ngeising": [
+        "S4",
+        "S20"
+    ],
+    "Schwabhausen": [
+        "S2"
+    ],
+    "Schwaigerloh": [
+        "S1",
+        "S2",
+        "S8"
+    ],
+    "Seefeld-Hechendorf": [
+        "S8"
+    ],
+    "Siemenswerke": [
+        "S7",
+        "S20"
+    ],
+    "Solln": [
+        "S7",
+        "S20"
+    ],
+    "Starnberg": [
+        "S6"
+    ],
+    "Starnberg Nord": [
+        "S6"
+    ],
+    "Steinebach": [
+        "S8"
+    ],
+    "St. Koloman": [
+        "S2"
+    ],
+    "St.-Martin-Stra\u00dfe": [
+        "S3",
+        "S7"
+    ],
+    "Stockdorf": [
+        "S6"
+    ],
+    "Taufkirchen": [
+        "S3"
+    ],
+    "Trudering": [
+        "S4",
+        "S6"
+    ],
+    "T\u00fcrkenfeld": [
+        "S4",
+        "S20"
+    ],
+    "Tutzing": [
+        "S6"
+    ],
+    "Unterf\u00f6hring": [
+        "S8"
+    ],
+    "Unterhaching": [
+        "S3"
+    ],
+    "Untermenzing": [
+        "S2"
+    ],
+    "Unterschlei\u00dfheim": [
+        "S1"
+    ],
+    "Vaterstetten": [
+        "S4",
+        "S6"
+    ],
+    "Vierkirchen-Esterhofen": [
+        "S2"
+    ],
+    "W\u00e4chterhof": [
+        "S7"
+    ],
+    "We\u00dfling": [
+        "S8"
+    ],
+    "Westkreuz": [
+        "S6",
+        "S8"
+    ],
+    "Wolfratshausen": [
+        "S7"
+    ],
+    "Zorneding": [
+        "S4",
+        "S6"
+    ]
+}
