@@ -55,7 +55,7 @@ const AddThread = ({ route }) => {
           stationName: selectedLocation?.name,
           lineNumber: "U3",
           motherThreadID: "",
-          //threadID: "",
+          threadID: "",
           numberOfComments: 0,
           locationID: selectedLocation?.id,
           timeStamp: moment().format(),
