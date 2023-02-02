@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -8,15 +8,34 @@ import ReadThread from "../views/ReadThread";
 import AddComment from "../views/AddComment";
 import Search from "../views/Search";
 
+import * as SecureStore from "expo-secure-store";
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
+
+const generateDeviceUniqueID = async () => {
+  let uuid = uuidv4();
+  await SecureStore.getItemAsync("secure_deviceid").then((fetchUUID) => {
+    if (fetchUUID) {
+      uuid = fetchUUID;
+      console.log("getStoreDeviceID: ", JSON.parse(uuid));
+    } else {
+      SecureStore.setItemAsync("secure_deviceid", JSON.stringify(uuid)).then(
+        () => {
+          console.log("setNewDeviceID: ", uuid);
+        }
+      );
+    }
+  });
+};
+
 const MainStackView = () => {
-  // const Tab = createBottomTabNavigator();
+  useEffect(() => {
+    generateDeviceUniqueID();
+  }, []);
+
   const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
-      {/* <Tab.Navigator>
-        <Tab.Screen name="Map" component={Maps} />
-        <Tab.Screen name="ThreadList" component={ThreadList} />
-      </Tab.Navigator> */}
       <Stack.Navigator>
         <Stack.Screen
           name="Map"
@@ -37,7 +56,7 @@ const MainStackView = () => {
         <Stack.Screen
           name="Search"
           component={Search}
-          options={{ headerShown: false, animation: "slide_from_bottom" }}
+          options={{ headerShown: false, animation: "fade" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

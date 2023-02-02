@@ -1,12 +1,12 @@
 import {
-    FlatList,
-    Keyboard,
-    TextInput,
-    TouchableOpacity,
-    StyleSheet,
-    Text,
-    View,
-    Button,
+  FlatList,
+  Keyboard,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  View,
+  Button,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
@@ -16,16 +16,17 @@ import { firebaseConfig } from "../../firebase/config";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import {
-    getFirestore,
-    collection,
-    addDoc,
-    getDocs,
-    setDoc,
-    doc,
-    updateDoc,
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  setDoc,
+  doc,
+  updateDoc,
 } from "firebase/firestore";
 import { Timestamp } from "@firebase/firestore";
 import moment from "moment";
+import * as SecureStore from "expo-secure-store";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -42,39 +43,63 @@ const AddComment = ({ route }) => {
     }
   }, [route.params?.threadData]);
 
-  const entityRef = collection(db, "threads/" + threadData?.threadID + "/comments");
+  const entityRef = collection(
+    db,
+    "threads/" + threadData?.threadID + "/comments"
+  );
   const threadRef = doc(db, "threads/" + threadData?.threadID);
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0 && threadData?.threadID) {
       async function addNewDocument() {
-        const data = {
-            commentID: "",
-            text: entityText,
-            creatorName: creator,
-            timeStamp:  moment().format(),
-            likes: 0,
-            threadID: threadData?.threadID,
-            latestTimeAlive: moment().format(),
-        };
-        const docRef = await addDoc(entityRef, data);
-        data.commentID = docRef.id;
-        setDoc(docRef, data)
-        .then(docRef => {
-            console.log("Entire Document has been updated successfully");
-        })
-        .catch(error => {
-            console.log(error);
-        })
-        const numberOfComments = threadData.hasOwnProperty("numberOfComments") ? (threadData.numberOfComments + 1) : 1;
-        updateDoc(threadRef, {
-          numberOfComments: numberOfComments
+        await SecureStore.getItemAsync("secure_deviceid").then((fetchUUID) => {
+          if (fetchUUID) {
+            const data = {
+              commentID: "",
+              text: entityText,
+              creatorName: creator,
+              creatorDeviceID: JSON.parse(fetchUUID),
+              timeStamp: moment().format(),
+              likes: [],
+              threadID: threadData?.threadID,
+              latestTimeAlive: moment().format(),
+            };
+            addDoc(entityRef, data)
+              .then((result) => {
+                data.commentID = result.id;
+                setDoc(result, data)
+                  .then(() => {
+                    console.log(
+                      "Entire Document has been updated successfully"
+                    );
+                    const numberOfComments = threadData.hasOwnProperty(
+                      "numberOfComments"
+                    )
+                      ? threadData.numberOfComments + 1
+                      : 1;
+                    updateDoc(threadRef, {
+                      numberOfComments: numberOfComments,
+                    })
+                      .then(() => {
+                        console.log("Document written with ID: ", result.id);
+                        console.log("Data when adding comment: ", data);
+                        setEntityText("");
+                        Keyboard.dismiss();
+                        navigation.goBack();
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
         });
-        console.log("Document written with ID: ", docRef.id);
-        console.log("Data when adding comment: ", data);
-        setEntityText("");
-        Keyboard.dismiss();
-        navigation.goBack();
       }
       addNewDocument();
     }

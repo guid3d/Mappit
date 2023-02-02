@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import { firebaseConfig } from "../../firebase/config";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, setDoc } from "firebase/firestore";
+import * as SecureStore from "expo-secure-store";
 import moment from "moment";
 import ubahnLines from "../../data/ubahn_lines.json";
 import sbahnLines from "../../data/sbahn_lines.json";
@@ -58,39 +59,50 @@ const AddThread = ({ route }) => {
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0 && selectedLocation?.id) {
       async function addNewDocument() {
-        const data = {
-          // childThreadID: "",
-          // commentIDArray: [],
-          content: entityText,
-          creatorName: creator,
-          // likes: 0,
-          lineColor: lineColorMap.get(selectedLine) || "white",
-          stationName: selectedLocation?.name,
-          tag: selectedTag,
-          lineNumber: selectedLine,
-          // motherThreadID: "",
-          // threadID: "",
-          // numberOfComments: 0,
-          locationID: selectedLocation?.id,
-          timeStamp: moment().format(),
-          latestTimeAlive: moment().format(),
-        };
-        await addDoc(entityRef, data)
-          .then((result) => {
-            // console.log(result.id);
-            data.threadID = result.id;
-            setDoc(result, data)
-              .then(() => {
-                console.log("Entire Document has been updated successfully");
-                console.log("Document written with ID: ", result.id);
-                console.log("Data when adding thread: ", data);
-                setEntityText("");
-                Keyboard.dismiss();
-                navigation.goBack();
-              })
-              .catch((error) => {
-                console.log(error);
-              });
+        await SecureStore.getItemAsync("secure_deviceid")
+          .then((fetchUUID) => {
+            if (fetchUUID) {
+              const data = {
+                // childThreadID: "",
+                // commentIDArray: [],
+                content: entityText,
+                creatorName: creator,
+                creatorDeviceID: JSON.parse(fetchUUID),
+                likes: [],
+                lineColor: lineColorMap.get(selectedLine) || "white",
+                stationName: selectedLocation?.name,
+                tag: selectedTag,
+                lineNumber: selectedLine,
+                // motherThreadID: "",
+                // threadID: "",
+                numberOfComments: 0,
+                locationID: selectedLocation?.id,
+                timeStamp: moment().format(),
+                latestTimeAlive: moment().format(),
+              };
+              addDoc(entityRef, data)
+                .then((result) => {
+                  // console.log(result.id);
+                  data.threadID = result.id;
+                  setDoc(result, data)
+                    .then(() => {
+                      console.log(
+                        "Entire Document has been updated successfully"
+                      );
+                      console.log("Document written with ID: ", result.id);
+                      console.log("Data when adding thread: ", data);
+                      setEntityText("");
+                      Keyboard.dismiss();
+                      navigation.goBack();
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            }
           })
           .catch((error) => {
             console.log(error);
