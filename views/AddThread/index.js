@@ -12,17 +12,13 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { firebaseConfig } from "../../firebase/config";
 import { initializeApp } from "firebase/app";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  setDoc,
-} from "firebase/firestore";
+import { getFirestore, collection, addDoc, setDoc } from "firebase/firestore";
 import moment from "moment";
-import ubahnLines from '../../data/ubahn_lines.json';
-import sbahnLines from '../../data/sbahn_lines.json';
-import tags from '../../data/tags.json';
-import lineColors from '../../data/line_colors.json';
+import ubahnLines from "../../data/ubahn_lines.json";
+import sbahnLines from "../../data/sbahn_lines.json";
+import tags from "../../data/tags.json";
+import lineColors from "../../data/line_colors.json";
+
 const ubahnLinesMap = new Map(Object.entries(ubahnLines));
 const sbahnLinesMap = new Map(Object.entries(sbahnLines));
 const linesMap = new Map(ubahnLinesMap);
@@ -37,7 +33,7 @@ for (const [key, value] of sbahnLinesMap.entries()) {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const AddThread = ({ route }) => {  
+const AddThread = ({ route }) => {
   const navigation = useNavigation();
   const entityRef = collection(db, "threads");
   const [entityText, setEntityText] = useState("");
@@ -55,7 +51,7 @@ const AddThread = ({ route }) => {
 
   useEffect(() => {
     if (selectedLine) {
-      console.log('selectedLine', selectedLine);
+      console.log("selectedLine", selectedLine);
     }
   }, [selectedLine]);
 
@@ -63,36 +59,42 @@ const AddThread = ({ route }) => {
     if (entityText && entityText.length > 0 && selectedLocation?.id) {
       async function addNewDocument() {
         const data = {
-          childThreadID: "",
-          commentIDArray: [],
+          // childThreadID: "",
+          // commentIDArray: [],
           content: entityText,
           creatorName: creator,
-          likes: 0,
-          lineColor: lineColorMap.get(selectedLine) || 'white',
+          // likes: 0,
+          lineColor: lineColorMap.get(selectedLine) || "white",
           stationName: selectedLocation?.name,
           tag: selectedTag,
           lineNumber: selectedLine,
-          motherThreadID: "",
+          // motherThreadID: "",
           // threadID: "",
-          numberOfComments: 0,
+          // numberOfComments: 0,
           locationID: selectedLocation?.id,
           timeStamp: moment().format(),
           latestTimeAlive: moment().format(),
         };
-        const docRef = await addDoc(entityRef, data);
-        data.threadID = docRef.id;
-        setDoc(docRef, data)
-        .then(docRef => {
-            console.log("Entire Document has been updated successfully");
-        })
-        .catch(error => {
+        await addDoc(entityRef, data)
+          .then((result) => {
+            // console.log(result.id);
+            data.threadID = result.id;
+            setDoc(result, data)
+              .then(() => {
+                console.log("Entire Document has been updated successfully");
+                console.log("Document written with ID: ", result.id);
+                console.log("Data when adding thread: ", data);
+                setEntityText("");
+                Keyboard.dismiss();
+                navigation.goBack();
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          })
+          .catch((error) => {
             console.log(error);
-        })
-        console.log("Document written with ID: ", docRef.id);
-        console.log("Data when adding thread: ", data);
-        setEntityText("");
-        Keyboard.dismiss();
-        navigation.goBack();
+          });
       }
       addNewDocument();
     }
@@ -122,29 +124,53 @@ const AddThread = ({ route }) => {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.tagContainer}>
         {tags.map((tag, index) => (
-              <TouchableOpacity key={index} style={styles.tagButton} 
-                onPress={() => {
-                  setSelectedTag(tag);
-              }}>
-                  <Text style={[styles.tagText, selectedTag == tag && styles.selectedTagText]}>{tag}</Text>
-              </TouchableOpacity>
+          <TouchableOpacity
+            key={index}
+            style={styles.tagButton}
+            onPress={() => {
+              setSelectedTag(tag);
+            }}
+          >
+            <Text
+              style={[
+                styles.tagText,
+                selectedTag == tag && styles.selectedTagText,
+              ]}
+            >
+              {tag}
+            </Text>
+          </TouchableOpacity>
         ))}
       </View>
-        {selectedLocation?.name && linesMap.get(selectedLocation?.name) && 
-          <View style={styles.tagContainer}>
-              {linesMap.get(selectedLocation?.name).map((line, index) => (
-                  <TouchableOpacity key={index} style={[{
-                    ...styles.tagButton,
-                    backgroundColor: lineColorMap.get(line)}, selectedLine == line && styles.selectedTagButton]} 
-                    onPress={() => {
-                      console.log(line);
-                      setSelectedLine(line);
-                  }}>
-                      <Text style={[styles.lineText, selectedLine == line && styles.selectedTagText]}>{line}</Text>
-                  </TouchableOpacity>
-              ))}
-          </View>
-      }
+      {selectedLocation?.name && linesMap.get(selectedLocation?.name) && (
+        <View style={styles.tagContainer}>
+          {linesMap.get(selectedLocation?.name).map((line, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                {
+                  ...styles.tagButton,
+                  backgroundColor: lineColorMap.get(line),
+                },
+                selectedLine == line && styles.selectedTagButton,
+              ]}
+              onPress={() => {
+                console.log(line);
+                setSelectedLine(line);
+              }}
+            >
+              <Text
+                style={[
+                  styles.lineText,
+                  selectedLine == line && styles.selectedTagText,
+                ]}
+              >
+                {line}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
       <TextInput
         style={styles.yourNameInput}
         placeholder="Your Name"
@@ -226,28 +252,27 @@ const styles = StyleSheet.create({
     color: "#333333",
   },
   tagContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center'
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
   },
   selectedTagButton: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     margin: 5,
     borderWidth: 2,
-    borderColor: 'green',
-
+    borderColor: "green",
   },
   tagButton: {
     margin: 5,
     borderWidth: 2,
-    borderColor: 'transparent',
+    borderColor: "transparent",
   },
   tagText: {
-    color: '#555555',
+    color: "#555555",
   },
   selectedTagText: {
-    fontWeight: 'bold',
-    color: 'black',
+    fontWeight: "bold",
+    color: "black",
   },
   lineText: {
     color: "white",
