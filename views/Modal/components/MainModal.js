@@ -31,6 +31,7 @@ import {
   query,
   where,
   orderBy,
+  onSnapshot,
 } from "firebase/firestore";
 import { firebaseApp } from "../../../api/firebaseConfig";
 import ThreadBubble from "../../../components/ThreadBubble";
@@ -48,11 +49,25 @@ const MainModal = ({
     // handlePresentMainPress();
     bottomSheetModalMainRef.current.present();
     // console.log(currentLocation);
-    queryForDocuments();
-
-    const unsubscribe = navigation.addListener("focus", () => {
-      queryForDocuments();
+    const q = query(
+      collection(db, "threads"),
+      orderBy("likes", "desc"),
+      limit(3)
+    );
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const threadDataTemp = [];
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id);
+        threadDataTemp.push({ threadID: doc.id, ...doc.data() });
+      });
+      // console.log("threadDataTemp: ", threadDataTemp)
+      setThreadData(threadDataTemp);
     });
+    // queryForDocuments();
+
+    // const unsubscribe = navigation.addListener("focus", () => {
+    //   queryForDocuments();
+    // });
     return unsubscribe;
   }, []);
 
@@ -72,7 +87,7 @@ const MainModal = ({
   const navigation = useNavigation();
   const db = getFirestore(firebaseApp);
   const [threadData, setThreadData] = useState([]);
-  
+
   const queryForDocuments = async (name) => {
     // setisFetching(true);
     const threadsQuery = query(
@@ -83,7 +98,7 @@ const MainModal = ({
     const querySnapshot = await getDocs(threadsQuery);
     const allDocs = [];
     querySnapshot.forEach((snap) => {
-      allDocs.push(snap.data());
+      allDocs.push({ threadID: snap.id, ...snap.data() });
     });
     setThreadData(allDocs);
     // setisFetching(false);

@@ -1,19 +1,17 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { firebaseConfig } from "../firebase/config";
 import { getFirestore, doc, updateDoc } from "firebase/firestore";
-import { initializeApp } from "firebase/app";
 import * as SecureStore from "expo-secure-store";
 
-import firebase from "firebase/compat/app";
+import { firebaseApp } from "../api/firebaseConfig";
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 // const increment = firebase.firestore.FieldValue.increment(1);
 // const decrement = firebase.firestore.FieldValue.increment(-1);
 
 const ThreadLikeButton = ({ pressedLike, setPressedLike, item }) => {
+  const db = getFirestore(firebaseApp);
+
   const [deviceId, setDeviceID] = useState("");
   const [likes, setLikes] = useState(item.likes);
   const threadRef = item.hasOwnProperty("commentID")
@@ -34,6 +32,7 @@ const ThreadLikeButton = ({ pressedLike, setPressedLike, item }) => {
       }
     });
   }, []);
+
   return (
     <View style={styles.iconAndText}>
       <TouchableOpacity

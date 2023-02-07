@@ -29,7 +29,7 @@ const ReadThread = ({ navigation, route }) => {
 
   useEffect(() => {
     if (route.params?.threadData) {
-      console.log("if (route.params?.threadData)")
+      console.log("if (route.params?.threadData)");
       const threadData = route.params.threadData;
       setThreadData(threadData);
 
@@ -40,13 +40,13 @@ const ReadThread = ({ navigation, route }) => {
       });
 
       const q = query(
-        collection(db, "threads/" + threadData.threadID + "/comments"),
+        collection(db, "threads/" + threadData.threadID + "/comments")
         // where("threadID", "==", threadData.threadID)
       );
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const comments = [];
         querySnapshot.forEach((doc) => {
-          comments.push(doc.data());
+          comments.push({ commentID: doc.id, ...doc.data() });
         });
         setCommentData(comments);
         console.log(comments);

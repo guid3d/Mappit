@@ -16,12 +16,12 @@ import {
 } from "firebase/firestore";
 
 const ThreadBubble = ({ item, disableCommentButton }) => {
+  const db = getFirestore(firebaseApp);
   useEffect(() => {
-    const db = getFirestore(firebaseApp);
-
+    console.log(item.threadID)
     const q = query(doc(db, "threads", item.threadID));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      setThreadData(querySnapshot.data());
+      setThreadData({ threadID: querySnapshot.id, ...querySnapshot.data() });
     });
     return () => {
       unsubscribe();
