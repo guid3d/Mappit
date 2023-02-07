@@ -24,10 +24,12 @@ import { firebaseApp } from "../../api/firebaseConfig";
 const ReadThread = ({ navigation, route }) => {
   const [threadData, setThreadData] = useState();
   const [isFetching, setisFetching] = useState(false);
-  const [CommentData, setCommentData] = useState([]);
-  
+  const [commentData, setCommentData] = useState([]);
+  const db = getFirestore(firebaseApp);
+
   useEffect(() => {
     if (route.params?.threadData) {
+      console.log("if (route.params?.threadData)")
       const threadData = route.params.threadData;
       setThreadData(threadData);
 
@@ -36,11 +38,10 @@ const ReadThread = ({ navigation, route }) => {
       navigation.setOptions({
         title: threadData.stationName,
       });
-      const db = getFirestore(firebaseApp);
 
       const q = query(
         collection(db, "threads/" + threadData.threadID + "/comments"),
-        where("threadID", "==", threadData.threadID)
+        // where("threadID", "==", threadData.threadID)
       );
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const comments = [];
@@ -48,11 +49,14 @@ const ReadThread = ({ navigation, route }) => {
           comments.push(doc.data());
         });
         setCommentData(comments);
+        console.log(comments);
       });
-      return unsubscribe;
+      return () => {
+        unsubscribe();
+        setCommentData([]);
+      };
     }
   }, [route.params?.threadData]);
-
 
   const renderFlatListItem = useCallback(({ item, index }) => (
     <SubThread item={item} />
@@ -66,7 +70,7 @@ const ReadThread = ({ navigation, route }) => {
     return (
       <View style={{ flex: 1 }}>
         <FlatList
-          data={CommentData}
+          data={commentData}
           renderItem={renderFlatListItem}
           contentContainerStyle={styles.container}
           ListHeaderComponent={renderFlatListHeader}

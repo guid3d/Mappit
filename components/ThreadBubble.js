@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import moment from "moment";
 import ThreadLikeButton from "./ThreadLikeButton";
@@ -16,25 +16,23 @@ import {
 } from "firebase/firestore";
 
 const ThreadBubble = ({ item, disableCommentButton }) => {
-  // useEffect(() => {
-  //   const db = getFirestore(firebaseApp);
+  useEffect(() => {
+    const db = getFirestore(firebaseApp);
 
-  //   const q = query(
-  //     collection(db, "threads/" + threadData.threadID + "/comments"),
-  //     where("threadID", "==", threadData.threadID)
-  //   );
-  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //     const comments = [];
-  //     querySnapshot.forEach((doc) => {
-  //       comments.push(doc.data());
-  //     });
-  //     setCommentData(comments);
-  //   });
-  //   return unsubscribe;
-  // }, []);
+    const q = query(doc(db, "threads", item.threadID));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      setThreadData(querySnapshot.data());
+    });
+    return () => {
+      unsubscribe();
+      setThreadData(item);
+    };
+  }, []);
 
+  const [threadData, setThreadData] = useState(item);
   const [pressedLike, setPressedLike] = useState(false);
   const [isExpired, setIsExpired] = useState(false);
+  const [numberOfComment, setNumberOfComment] = useState(0);
   return (
     <View
       style={
@@ -44,37 +42,39 @@ const ThreadBubble = ({ item, disableCommentButton }) => {
       <View>
         <View style={styles.topLine}>
           <View style={styles.tagLine}>
-            {item.lineNumber && item.lineNumber != "" && (
+            {threadData.lineNumber && threadData.lineNumber != "" && (
               <View
                 style={{
                   ...styles.destinationNameContainer,
-                  backgroundColor: item.lineColor,
+                  backgroundColor: threadData.lineColor,
                 }}
               >
-                <Text style={styles.destinationName}>{item.lineNumber}</Text>
+                <Text style={styles.destinationName}>
+                  {threadData.lineNumber}
+                </Text>
               </View>
             )}
-            {item.tag && item.tag != "" && (
+            {threadData.tag && threadData.tag != "" && (
               <View
                 style={{
                   ...styles.destinationNameContainer,
                   backgroundColor: "grey",
                 }}
               >
-                <Text style={styles.destinationName}>{item.tag}</Text>
+                <Text style={styles.destinationName}>{threadData.tag}</Text>
               </View>
             )}
           </View>
           <Text style={styles.timestamp}>
-            {moment(item.timeStamp).fromNow()}
+            {moment(threadData.timeStamp).fromNow()}
           </Text>
         </View>
-        <Text style={styles.creatorName}>{item.creatorName}</Text>
+        <Text style={styles.creatorName}>{threadData.creatorName}</Text>
 
         {/* only for debugging */}
-        <Text style={{ color: "#989898" }}>{item.creatorDeviceID}</Text>
+        <Text style={{ color: "#989898" }}>{threadData.creatorDeviceID}</Text>
 
-        <Text style={{ marginBottom: 10 }}>{item.content}</Text>
+        <Text style={{ marginBottom: 10 }}>{threadData.content}</Text>
       </View>
       <View style={styles.bottomLine}>
         <View>
@@ -82,7 +82,7 @@ const ThreadBubble = ({ item, disableCommentButton }) => {
             {/* <ThreadLikeButton
               pressedLike={pressedLike}
               setPressedLike={setPressedLike}
-              item={item}
+              item={threadData}
             /> */}
             {disableCommentButton ? null : (
               <View style={styles.iconAndText}>
@@ -93,17 +93,17 @@ const ThreadBubble = ({ item, disableCommentButton }) => {
                   style={styles.icon}
                 />
                 <Text style={styles.textAfterIcon}>
-                  {item.numberOfComments}
+                  {threadData.numberOfComments}
                 </Text>
               </View>
             )}
           </View>
         </View>
         <ThreadCountdown
-          latestTimeAlive={item.latestTimeAlive}
+          latestTimeAlive={threadData.latestTimeAlive}
           isExpired={isExpired}
           setIsExpired={setIsExpired}
-          item={item}
+          item={threadData}
         />
       </View>
     </View>

@@ -40,6 +40,7 @@ const AddComment = ({ route }) => {
   useEffect(() => {
     if (route.params?.threadData) {
       setthreadData(route.params.threadData);
+      console.log(route.params.threadData);
     }
   }, [route.params?.threadData]);
 
@@ -61,7 +62,7 @@ const AddComment = ({ route }) => {
               creatorDeviceID: JSON.parse(fetchUUID),
               timeStamp: moment().format(),
               likes: [],
-              threadID: threadData?.threadID,
+              // threadID: threadData?.threadID,
               latestTimeAlive: moment().format(),
             };
             addDoc(entityRef, data)
@@ -72,24 +73,28 @@ const AddComment = ({ route }) => {
                     console.log(
                       "Entire Document has been updated successfully"
                     );
-                    const numberOfComments = threadData.hasOwnProperty(
-                      "numberOfComments"
-                    )
-                      ? threadData.numberOfComments + 1
-                      : 1;
-                    updateDoc(threadRef, {
-                      numberOfComments: numberOfComments,
-                    })
-                      .then(() => {
-                        console.log("Document written with ID: ", result.id);
-                        console.log("Data when adding comment: ", data);
-                        setEntityText("");
-                        Keyboard.dismiss();
-                        navigation.goBack();
-                      })
-                      .catch((error) => {
-                        console.log(error);
-                      });
+                    console.log(data);
+                    setEntityText("");
+                    Keyboard.dismiss();
+                    navigation.goBack();
+                    // const numberOfComments = threadData.hasOwnProperty(
+                    //   "numberOfComments"
+                    // )
+                    //   ? threadData.numberOfComments + 1
+                    //   : 1;
+                    // updateDoc(threadRef, {
+                    //   numberOfComments: numberOfComments,
+                    // })
+                    //   .then(() => {
+                    //     console.log("Document written with ID: ", result.id);
+                    //     console.log("Data when adding comment: ", data);
+                    //     setEntityText("");
+                    //     Keyboard.dismiss();
+                    //     navigation.goBack();
+                    //   })
+                    //   .catch((error) => {
+                    //     console.log(error);
+                    //   });
                   })
                   .catch((error) => {
                     console.log(error);

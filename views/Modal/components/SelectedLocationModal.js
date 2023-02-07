@@ -42,51 +42,54 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
   const [threadData, setThreadData] = useState([]);
   const [isFetching, setisFetching] = useState(false);
 
-  const queryForDocuments = async (name) => {
-    setisFetching(true);
-    // const threadsQuery = query(
-    //   collection(db, "threads"),
-    //   where("stationName", "==", name)
-    // );
+  // const queryForDocuments = async (name) => {
+  //   setisFetching(true);
+  //   // const threadsQuery = query(
+  //   //   collection(db, "threads"),
+  //   //   where("stationName", "==", name)
+  //   // );
 
-    const unsubscribe = onSnapshot(
-      collection(db, "threads"),
-      where("stationName", "==", name),
-      (querySnapshot) => {
-        const allDocs = [];
-        querySnapshot.forEach((snap) => {
-          allDocs.push(snap.data());
-        });
-        console.log("Snap: ", allDocs.join(", "));
-        setThreadData(allDocs);
-        setisFetching(false);
-      }
-    );
+  //   const unsubscribe = onSnapshot(
+  //     collection(db, "threads"),
+  //     where("stationName", "==", name),
+  //     (querySnapshot) => {
+  //       const allDocs = [];
+  //       querySnapshot.forEach((snap) => {
+  //         allDocs.push(snap.data());
+  //         s;
+  //       });
+  //       console.log("Snap: ", allDocs.join(", "));
+  //       setThreadData(allDocs);
+  //       setisFetching(false);
+  //     }
+  //   );
 
-    return unsubscribe;
-  };
+  //   return unsubscribe;
+  // };
 
   useEffect(() => {
+    console.log(threadData)
     if (selectedLocation) {
       handlePresentLocationPress();
-      queryForDocuments(selectedLocation.name);
-      // const unsub = onSnapshot(
-      //   collection(db, "threads"),
-      //   where("stationName", "==", selectedLocation.name),
-      //   (doc) => {
-      //     console.log("Current data: ", doc.data());
-      //     // setThreadData(doc.data());
-      //   }
-      // );
+      // queryForDocuments(selectedLocation.name);
 
-      // return unsub;
+      const q = query(
+        collection(db, "threads"),
+        where("stationName", "==", selectedLocation.name)
+      );
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const threadDataTemp = [];
+        querySnapshot.forEach((doc) => {
+          threadDataTemp.push(doc.data());
+        });
+        setThreadData(threadDataTemp);
+      });
+      return () => {
+        unsubscribe();
+        setThreadData([])
+      };
     }
-    // const unsubscribe = navigation.addListener('focus', () => {
-    //   if (selectedLocation)
-    //     queryForDocuments(selectedLocation.name);
-    // });
-    // return unsubscribe;
-  }, [navigation, selectedLocation]);
+  }, [selectedLocation]);
 
   const bottomSheetModalLocationRef = useRef(null);
   const { dismiss } = useBottomSheetModal();
@@ -212,12 +215,12 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
         renderItem={renderFlatListItem}
         contentContainerStyle={styles.container}
         ListHeaderComponent={renderFlatListHeader}
-        refreshing={isFetching}
-        onRefresh={() => {
-          if (selectedLocation) {
-            queryForDocuments(selectedLocation.name);
-          }
-        }}
+        // refreshing={isFetching}
+        // onRefresh={() => {
+        //   if (selectedLocation) {
+        //     queryForDocuments(selectedLocation.name);
+        //   }
+        // }}
       />
     </BottomSheetModal>
   );
