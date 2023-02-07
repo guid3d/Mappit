@@ -14,12 +14,13 @@ import {
   onSnapshot,
   doc,
 } from "firebase/firestore";
+import ThreadCommentButton from "./ThreadCommentButton";
 
-const ThreadBubble = ({ item, disableCommentButton }) => {
+const ThreadBubble = ({ item, disableCommentButton, from }) => {
   const db = getFirestore(firebaseApp);
   useEffect(() => {
-    console.log(item.threadID)
-    const q = query(doc(db, "threads", item.threadID));
+    console.log(item.threadID);
+    const q = doc(db, "threads", item.threadID);
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       setThreadData({ threadID: querySnapshot.id, ...querySnapshot.data() });
     });
@@ -32,7 +33,6 @@ const ThreadBubble = ({ item, disableCommentButton }) => {
   const [threadData, setThreadData] = useState(item);
   const [pressedLike, setPressedLike] = useState(false);
   const [isExpired, setIsExpired] = useState(false);
-  const [numberOfComment, setNumberOfComment] = useState(0);
   return (
     <View
       style={
@@ -72,30 +72,22 @@ const ThreadBubble = ({ item, disableCommentButton }) => {
         <Text style={styles.creatorName}>{threadData.creatorName}</Text>
 
         {/* only for debugging */}
-        <Text style={{ color: "#989898" }}>{threadData.creatorDeviceID}</Text>
+        {/* <Text style={{ color: "#989898" }}>{threadData.creatorDeviceID}</Text> */}
 
         <Text style={{ marginBottom: 10 }}>{threadData.content}</Text>
       </View>
       <View style={styles.bottomLine}>
         <View>
           <View style={styles.bottomLineIcon}>
-            {/* <ThreadLikeButton
+            <ThreadLikeButton
               pressedLike={pressedLike}
               setPressedLike={setPressedLike}
               item={threadData}
-            /> */}
+              type="thread"
+              from={from}
+            />
             {disableCommentButton ? null : (
-              <View style={styles.iconAndText}>
-                <Ionicons
-                  name="chatbubble-outline"
-                  size={20}
-                  color="black"
-                  style={styles.icon}
-                />
-                <Text style={styles.textAfterIcon}>
-                  {threadData.numberOfComments}
-                </Text>
-              </View>
+              <ThreadCommentButton item={threadData} />
             )}
           </View>
         </View>

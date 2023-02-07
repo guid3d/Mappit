@@ -56,7 +56,6 @@ const AddComment = ({ route }) => {
         await SecureStore.getItemAsync("secure_deviceid").then((fetchUUID) => {
           if (fetchUUID) {
             const data = {
-              commentID: "",
               text: entityText,
               creatorName: creator,
               creatorDeviceID: JSON.parse(fetchUUID),

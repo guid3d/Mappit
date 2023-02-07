@@ -51,10 +51,10 @@ const AddThread = ({ route }) => {
   }, [route.params?.selectedLocation]);
 
   useEffect(() => {
-    if (selectedLine) {
-      console.log("selectedLine", selectedLine);
-    }
-  }, [selectedLine]);
+    // if (selectedLine) {
+      console.log("selectedTag", selectedTag);
+    // }
+  }, [selectedTag]);
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0 && selectedLocation?.id) {
@@ -141,6 +141,7 @@ const AddThread = ({ route }) => {
             style={styles.tagButton}
             onPress={() => {
               setSelectedTag(tag);
+              // console.log(tag)
             }}
           >
             <Text

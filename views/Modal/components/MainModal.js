@@ -88,22 +88,22 @@ const MainModal = ({
   const db = getFirestore(firebaseApp);
   const [threadData, setThreadData] = useState([]);
 
-  const queryForDocuments = async (name) => {
-    // setisFetching(true);
-    const threadsQuery = query(
-      collection(db, "threads"),
-      orderBy("likes", "desc"),
-      limit(3)
-    );
-    const querySnapshot = await getDocs(threadsQuery);
-    const allDocs = [];
-    querySnapshot.forEach((snap) => {
-      allDocs.push({ threadID: snap.id, ...snap.data() });
-    });
-    setThreadData(allDocs);
-    // setisFetching(false);
-    // console.log(allDocs);
-  };
+  // const queryForDocuments = async (name) => {
+  //   // setisFetching(true);
+  //   const threadsQuery = query(
+  //     collection(db, "threads"),
+  //     orderBy("likes", "desc"),
+  //     limit(3)
+  //   );
+  //   const querySnapshot = await getDocs(threadsQuery);
+  //   const allDocs = [];
+  //   querySnapshot.forEach((snap) => {
+  //     allDocs.push({ threadID: snap.id, ...snap.data() });
+  //   });
+  //   setThreadData(allDocs);
+  //   // setisFetching(false);
+  //   // console.log(allDocs);
+  // };
 
   // refs
   const bottomSheetModalMainRef = useRef(null);
@@ -146,14 +146,14 @@ const MainModal = ({
             </Text>
             {threadData?.map((item, index) => (
               <TouchableOpacity
-                key={index}
+                key={item + index}
                 onPress={() => {
                   navigation.navigate("ReadThread", { threadData: item });
                   console.log(item);
                 }}
               >
                 <View style={styles.threadBubble}>
-                  <ThreadBubble item={item} />
+                  <ThreadBubble item={item} from={"MainModal"} />
                 </View>
               </TouchableOpacity>
             ))}

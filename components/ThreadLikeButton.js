@@ -1,49 +1,81 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { getFirestore, doc, updateDoc } from "firebase/firestore";
 import * as SecureStore from "expo-secure-store";
 
 import { firebaseApp } from "../api/firebaseConfig";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  where,
+  onSnapshot,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 
-// const increment = firebase.firestore.FieldValue.increment(1);
-// const decrement = firebase.firestore.FieldValue.increment(-1);
-
-const ThreadLikeButton = ({ pressedLike, setPressedLike, item }) => {
+const ThreadLikeButton = ({
+  pressedLike,
+  setPressedLike,
+  item,
+  type,
+  from,
+}) => {
   const db = getFirestore(firebaseApp);
 
   const [deviceId, setDeviceID] = useState("");
   const [likes, setLikes] = useState(item.likes);
-  const threadRef = item.hasOwnProperty("commentID")
-    ? doc(db, "threads/" + item["threadID"] + "/comments", item["commentID"])
-    : doc(db, "threads", item["threadID"]);
+  let q;
 
   useEffect(() => {
     SecureStore.getItemAsync("secure_deviceid").then((fetchUUID) => {
       if (fetchUUID) {
         const parsedUUID = JSON.parse(fetchUUID);
         setDeviceID(parsedUUID);
-        const alreadyLike = likes.find(
-          (likedByDeviceId) => (likedByDeviceId = parsedUUID)
-        );
-        if (alreadyLike) {
-          setPressedLike(true);
+        if (type === "comment") {
+          // console.log("Comment: ", item.commentID);
+          q = doc(db, "threads", item.threadID, "comments", item.commentID);
         }
+        if (type === "thread") {
+          q = doc(db, "threads", item.threadID);
+        }
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          const getLikes = querySnapshot.data().likes;
+          setLikes(getLikes);
+        });
+        return () => {
+          unsubscribe();
+        };
       }
     });
   }, []);
 
+  useEffect(() => {
+    const alreadyLike = likes.find(
+      (likedByDeviceId) => (likedByDeviceId = deviceId)
+    );
+    console.log("AlreadyLike: ", alreadyLike);
+    if (alreadyLike) {
+      setPressedLike(true);
+    }
+  }, [likes]);
+
   return (
     <View style={styles.iconAndText}>
       <TouchableOpacity
+        disabled={from === "MainModal" ? true : false}
         onPress={() => {
-          // Creates a reference to the current thread
-          // const threadRef = doc(db, "threads", item["threadID"]);
-
           setPressedLike((v) => !v);
-          // setLikes((v) => (!pressedLike ? v + 1 : v - 1));
-
           // Now either increments or decrements the "Likes" of the specific thread
+          let q;
+          if (type === "comment") {
+            // console.log("Comment: ", item.commentID);
+            q = doc(db, "threads", item.threadID, "comments", item.commentID);
+          }
+          if (type === "thread") {
+            q = doc(db, "threads", item.threadID);
+          }
           if (pressedLike) {
             // remove deviceID from likes[]
             const newLikes = likes.filter(
@@ -51,7 +83,7 @@ const ThreadLikeButton = ({ pressedLike, setPressedLike, item }) => {
             );
             console.log(newLikes);
             setLikes(newLikes);
-            updateDoc(threadRef, {
+            updateDoc(q, {
               likes: newLikes,
             });
           } else {
@@ -59,7 +91,7 @@ const ThreadLikeButton = ({ pressedLike, setPressedLike, item }) => {
             const newLikes = [...likes, deviceId];
             console.log(newLikes);
             setLikes(newLikes);
-            updateDoc(threadRef, {
+            updateDoc(q, {
               likes: newLikes,
             });
           }

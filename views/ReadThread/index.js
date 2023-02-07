@@ -29,7 +29,7 @@ const ReadThread = ({ navigation, route }) => {
 
   useEffect(() => {
     if (route.params?.threadData) {
-      console.log("if (route.params?.threadData)");
+      // console.log("if (route.params?.threadData)");
       const threadData = route.params.threadData;
       setThreadData(threadData);
 
@@ -39,21 +39,25 @@ const ReadThread = ({ navigation, route }) => {
         title: threadData.stationName,
       });
 
-      const q = query(
-        collection(db, "threads/" + threadData.threadID + "/comments")
-        // where("threadID", "==", threadData.threadID)
-      );
+      const q = collection(db, "threads", threadData.threadID, "comments");
+      // where("threadID", "==", threadData.threadID)
+
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const comments = [];
         querySnapshot.forEach((doc) => {
-          comments.push({ commentID: doc.id, ...doc.data() });
+          // console.log("CommentID", { ...doc.data(), commentID: doc.id,  })
+          comments.push({
+            ...doc.data(),
+            commentID: doc.id,
+            threadID: threadData.threadID,
+          });
         });
         setCommentData(comments);
-        console.log(comments);
+        // console.log(comments);
       });
       return () => {
         unsubscribe();
-        setCommentData([]);
+        // setCommentData([]);
       };
     }
   }, [route.params?.threadData]);
@@ -75,6 +79,7 @@ const ReadThread = ({ navigation, route }) => {
           contentContainerStyle={styles.container}
           ListHeaderComponent={renderFlatListHeader}
           refreshing={isFetching}
+          keyExtractor={(item, index) => item + index}
           // onRefresh={() => {
           //   if (threadData) {
           //     queryForDocuments(threadData?.threadID);

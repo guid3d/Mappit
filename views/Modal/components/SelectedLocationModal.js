@@ -10,6 +10,7 @@ import {
 import React, {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -83,12 +84,13 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
           console.log(doc.id);
           threadDataTemp.push({ threadID: doc.id, ...doc.data() });
         });
-        // console.log("threadDataTemp: ", threadDataTemp)
+        console.log("threadDataTemp: ", threadDataTemp)
         setThreadData(threadDataTemp);
+        console.log("threadData: ", threadData)
       });
       return () => {
         unsubscribe();
-        setThreadData([]);
+        // setThreadData([]);
       };
     }
   }, [selectedLocation]);
@@ -217,6 +219,7 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
         renderItem={renderFlatListItem}
         contentContainerStyle={styles.container}
         ListHeaderComponent={renderFlatListHeader}
+        keyExtractor={(item, index) => item + index}
         // refreshing={isFetching}
         // onRefresh={() => {
         //   if (selectedLocation) {
