@@ -82,22 +82,22 @@ const AddThread = ({ route }) => {
               };
               addDoc(entityRef, data)
                 .then((result) => {
-                  console.log(result.id);
-                  data.threadID = result.id;
-                  setDoc(result, data)
-                    .then(() => {
-                      console.log(
-                        "Entire Document has been updated successfully"
-                      );
-                      console.log("Document written with ID: ", result.id);
-                      console.log("Data when adding thread: ", data);
+                  // console.log(result.id);
+                  // data.threadID = result.id;
+                  // setDoc(result, data)
+                  //   .then(() => {
+                  //     console.log(
+                  //       "Entire Document has been updated successfully"
+                  //     );
+                  //     console.log("Document written with ID: ", result.id);
+                  //     console.log("Data when adding thread: ", data);
                       setEntityText("");
                       Keyboard.dismiss();
                       navigation.goBack();
-                    })
-                    .catch((error) => {
-                      console.log(error);
-                    });
+                    // })
+                    // .catch((error) => {
+                    //   console.log(error);
+                    // });
                 })
                 .catch((error) => {
                   console.log(error);

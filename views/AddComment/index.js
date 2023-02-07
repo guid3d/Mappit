@@ -67,13 +67,13 @@ const AddComment = ({ route }) => {
             };
             addDoc(entityRef, data)
               .then((result) => {
-                data.commentID = result.id;
-                setDoc(result, data)
-                  .then(() => {
-                    console.log(
-                      "Entire Document has been updated successfully"
-                    );
-                    console.log(data);
+                // data.commentID = result.id;
+                // setDoc(result, data)
+                //   .then(() => {
+                //     console.log(
+                //       "Entire Document has been updated successfully"
+                //     );
+                //     console.log(data);
                     setEntityText("");
                     Keyboard.dismiss();
                     navigation.goBack();
@@ -95,10 +95,10 @@ const AddComment = ({ route }) => {
                     //   .catch((error) => {
                     //     console.log(error);
                     //   });
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                  });
+                  // })
+                  // .catch((error) => {
+                  //   console.log(error);
+                  // });
               })
               .catch((error) => {
                 console.log(error);

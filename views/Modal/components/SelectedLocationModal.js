@@ -68,7 +68,7 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
   // };
 
   useEffect(() => {
-    console.log(threadData)
+    // console.log(threadData)
     if (selectedLocation) {
       handlePresentLocationPress();
       // queryForDocuments(selectedLocation.name);
@@ -80,13 +80,15 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const threadDataTemp = [];
         querySnapshot.forEach((doc) => {
-          threadDataTemp.push(doc.data());
+          console.log(doc.id);
+          threadDataTemp.push({ threadID: doc.id, ...doc.data() });
         });
+        // console.log("threadDataTemp: ", threadDataTemp)
         setThreadData(threadDataTemp);
       });
       return () => {
         unsubscribe();
-        setThreadData([])
+        setThreadData([]);
       };
     }
   }, [selectedLocation]);
@@ -154,7 +156,7 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
     <TouchableOpacity
       onPress={() => {
         navigation.navigate("ReadThread", { threadData: item });
-        console.log(item);
+        // console.log(item);
       }}
     >
       <View style={styles.threadBubble}>
