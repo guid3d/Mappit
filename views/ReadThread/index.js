@@ -16,6 +16,8 @@ import {
   getDocs,
   query,
   where,
+  onSnapshot,
+  doc,
 } from "firebase/firestore";
 import { firebaseApp } from "../../api/firebaseConfig";
 
@@ -23,43 +25,34 @@ const ReadThread = ({ navigation, route }) => {
   const [threadData, setThreadData] = useState();
   const [isFetching, setisFetching] = useState(false);
   const [CommentData, setCommentData] = useState([]);
-  const db = getFirestore(firebaseApp);
+  
   useEffect(() => {
     if (route.params?.threadData) {
-      setThreadData(route.params.threadData);
+      const threadData = route.params.threadData;
+      setThreadData(threadData);
+
+      // setThreadData(route.params.threadData);
+      // console.log(route.params.threadData)
+      navigation.setOptions({
+        title: threadData.stationName,
+      });
+      const db = getFirestore(firebaseApp);
+
+      const q = query(
+        collection(db, "threads/" + threadData.threadID + "/comments"),
+        where("threadID", "==", threadData.threadID)
+      );
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const comments = [];
+        querySnapshot.forEach((doc) => {
+          comments.push(doc.data());
+        });
+        setCommentData(comments);
+      });
+      return unsubscribe;
     }
   }, [route.params?.threadData]);
 
-  useEffect(() => {
-    navigation.setOptions({
-      title: threadData?.stationName,
-    });
-  });
-
-  useEffect(() => {
-    if (threadData) {
-      queryForDocuments(threadData?.threadID);
-    }
-    const unsubscribe = navigation.addListener("focus", () => {
-      if (threadData) queryForDocuments(threadData?.threadID);
-    });
-    return unsubscribe;
-  }, [navigation, threadData]);
-
-  const queryForDocuments = async (threadID) => {
-    setisFetching(true);
-    const threadsQuery = query(
-      collection(db, "threads/" + threadID + "/comments"),
-      where("threadID", "==", threadID)
-    );
-    const querySnapshot = await getDocs(threadsQuery);
-    const allDocs = [];
-    querySnapshot.forEach((snap) => {
-      allDocs.push(snap.data());
-    });
-    setCommentData(allDocs);
-    setisFetching(false);
-  };
 
   const renderFlatListItem = useCallback(({ item, index }) => (
     <SubThread item={item} />
@@ -77,7 +70,7 @@ const ReadThread = ({ navigation, route }) => {
           renderItem={renderFlatListItem}
           contentContainerStyle={styles.container}
           ListHeaderComponent={renderFlatListHeader}
-          // refreshing={isFetching}
+          refreshing={isFetching}
           // onRefresh={() => {
           //   if (threadData) {
           //     queryForDocuments(threadData?.threadID);

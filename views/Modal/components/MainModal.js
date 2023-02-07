@@ -72,6 +72,7 @@ const MainModal = ({
   const navigation = useNavigation();
   const db = getFirestore(firebaseApp);
   const [threadData, setThreadData] = useState([]);
+  
   const queryForDocuments = async (name) => {
     // setisFetching(true);
     const threadsQuery = query(
@@ -86,7 +87,7 @@ const MainModal = ({
     });
     setThreadData(allDocs);
     // setisFetching(false);
-    console.log(allDocs);
+    // console.log(allDocs);
   };
 
   // refs

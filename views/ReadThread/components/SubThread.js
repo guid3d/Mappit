@@ -20,7 +20,7 @@ const SubThread = ({ item }) => {
             }
           >
             <Text style={styles.creatorName}>{item.creatorName}</Text>
-            
+
             {/* only for debugging */}
             <Text style={{ color: "#989898" }}>{item.creatorDeviceID}</Text>
           </View>
@@ -32,11 +32,11 @@ const SubThread = ({ item }) => {
       </View>
       <View style={styles.bottomLine}>
         <View style={styles.bottomLineIcon}>
-          <ThreadLikeButton
+          {/* <ThreadLikeButton
             pressedLike={pressedLike}
             setPressedLike={setPressedLike}
             item={item}
-          />
+          /> */}
         </View>
       </View>
     </View>

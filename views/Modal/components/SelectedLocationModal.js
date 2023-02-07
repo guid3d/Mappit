@@ -31,6 +31,7 @@ import {
   limit,
   query,
   where,
+  onSnapshot,
 } from "firebase/firestore";
 import { firebaseApp } from "../../../api/firebaseConfig";
 
@@ -43,29 +44,48 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
 
   const queryForDocuments = async (name) => {
     setisFetching(true);
-    const threadsQuery = query(
+    // const threadsQuery = query(
+    //   collection(db, "threads"),
+    //   where("stationName", "==", name)
+    // );
+
+    const unsubscribe = onSnapshot(
       collection(db, "threads"),
-      where("stationName", "==", name)
+      where("stationName", "==", name),
+      (querySnapshot) => {
+        const allDocs = [];
+        querySnapshot.forEach((snap) => {
+          allDocs.push(snap.data());
+        });
+        console.log("Snap: ", allDocs.join(", "));
+        setThreadData(allDocs);
+        setisFetching(false);
+      }
     );
-    const querySnapshot = await getDocs(threadsQuery);
-    const allDocs = [];
-    querySnapshot.forEach((snap) => {
-      allDocs.push(snap.data());
-    });
-    setThreadData(allDocs);
-    setisFetching(false);
+
+    return unsubscribe;
   };
 
   useEffect(() => {
     if (selectedLocation) {
       handlePresentLocationPress();
       queryForDocuments(selectedLocation.name);
+      // const unsub = onSnapshot(
+      //   collection(db, "threads"),
+      //   where("stationName", "==", selectedLocation.name),
+      //   (doc) => {
+      //     console.log("Current data: ", doc.data());
+      //     // setThreadData(doc.data());
+      //   }
+      // );
+
+      // return unsub;
     }
-    const unsubscribe = navigation.addListener('focus', () => {
-      if (selectedLocation)
-        queryForDocuments(selectedLocation.name);
-    });
-    return unsubscribe;
+    // const unsubscribe = navigation.addListener('focus', () => {
+    //   if (selectedLocation)
+    //     queryForDocuments(selectedLocation.name);
+    // });
+    // return unsubscribe;
   }, [navigation, selectedLocation]);
 
   const bottomSheetModalLocationRef = useRef(null);
@@ -131,7 +151,7 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
     <TouchableOpacity
       onPress={() => {
         navigation.navigate("ReadThread", { threadData: item });
-        console.log(item)
+        console.log(item);
       }}
     >
       <View style={styles.threadBubble}>
@@ -167,7 +187,9 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
           paddingHorizontal: 20,
         }}
         onPress={() => {
-          navigation.navigate("AddThread", {selectedLocation: selectedLocation,});
+          navigation.navigate("AddThread", {
+            selectedLocation: selectedLocation,
+          });
         }}
       >
         <Text style={{ fontWeight: "500", fontSize: 16, color: "#fff" }}>

@@ -82,7 +82,7 @@ const AddThread = ({ route }) => {
               };
               addDoc(entityRef, data)
                 .then((result) => {
-                  // console.log(result.id);
+                  console.log(result.id);
                   data.threadID = result.id;
                   setDoc(result, data)
                     .then(() => {

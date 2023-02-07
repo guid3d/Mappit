@@ -4,8 +4,35 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import moment from "moment";
 import ThreadLikeButton from "./ThreadLikeButton";
 import ThreadCountdown from "./ThreadCountdown";
+import { firebaseApp } from "../api/firebaseConfig";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  where,
+  onSnapshot,
+  doc,
+} from "firebase/firestore";
 
 const ThreadBubble = ({ item, disableCommentButton }) => {
+  // useEffect(() => {
+  //   const db = getFirestore(firebaseApp);
+
+  //   const q = query(
+  //     collection(db, "threads/" + threadData.threadID + "/comments"),
+  //     where("threadID", "==", threadData.threadID)
+  //   );
+  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //     const comments = [];
+  //     querySnapshot.forEach((doc) => {
+  //       comments.push(doc.data());
+  //     });
+  //     setCommentData(comments);
+  //   });
+  //   return unsubscribe;
+  // }, []);
+
   const [pressedLike, setPressedLike] = useState(false);
   const [isExpired, setIsExpired] = useState(false);
   return (
@@ -43,7 +70,7 @@ const ThreadBubble = ({ item, disableCommentButton }) => {
           </Text>
         </View>
         <Text style={styles.creatorName}>{item.creatorName}</Text>
-        
+
         {/* only for debugging */}
         <Text style={{ color: "#989898" }}>{item.creatorDeviceID}</Text>
 
@@ -52,11 +79,11 @@ const ThreadBubble = ({ item, disableCommentButton }) => {
       <View style={styles.bottomLine}>
         <View>
           <View style={styles.bottomLineIcon}>
-            <ThreadLikeButton
+            {/* <ThreadLikeButton
               pressedLike={pressedLike}
               setPressedLike={setPressedLike}
               item={item}
-            />
+            /> */}
             {disableCommentButton ? null : (
               <View style={styles.iconAndText}>
                 <Ionicons
