@@ -1,0 +1,9 @@
+{
+    "Lost and Found": 86400,
+    "Ticket Control": 900,
+    "Delays": 900,
+    "Construction": 10800,
+    "Meetup": 7200,
+    "Rideshare": 3600,
+    "Ticketshare": 3600
+}

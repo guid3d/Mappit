@@ -6,13 +6,23 @@ import { firebaseConfig } from "../firebase/config";
 import { getFirestore, doc, updateDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import firebase from "firebase/compat/app";
+import tags_time from "../data/tags_time.json";
+import tags from "../data/tags.json";
 
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Format time to either MM:SS if the time is below 1 hour, or HH:MM::SS otherwise
 const fmtMSS = (s) => {
-  return (s - (s %= 60)) / 60 + (9 < s ? ":" : ":0") + s;
+
+  if (s > 3600) {
+    var newFormat = (s - (s %= 3600)) / 3600 + ":" + (s - (s %= 60)) / 60 + (9 < s ? ":" : ":0") + s
+  } else {
+    var newFormat = (s - (s %= 60)) / 60 + (9 < s ? ":" : ":0") + s;
+  }
+
+  return newFormat;
 };
 
 const ThreadCountdown = ({ latestTimeAlive, isExpired, setIsExpired, item}) => {
@@ -32,7 +42,14 @@ const ThreadCountdown = ({ latestTimeAlive, isExpired, setIsExpired, item}) => {
     }
   }, [diffTimeSeconds]);
 
-  var diffTimeSeconds = 1800 - moment().diff(latestTimeAlive, "seconds"); // 30min - valid
+  // Set standard maximum time of a thead to 1800 Seconds, however adjust if there is a tag on the thread.
+  var max_time = 1800
+
+  if (tags.includes(item.tag)) {
+    max_time = tags_time[item.tag]
+  }
+
+  var diffTimeSeconds = max_time - moment().diff(latestTimeAlive, "seconds"); // 30min - valid
   // const minutes = Math.floor(diffTimeSeconds / 60);
   // const seconds = diffTimeSeconds % 60;
 
