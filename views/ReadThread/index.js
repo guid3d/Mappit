@@ -79,7 +79,7 @@ const ReadThread = ({ navigation, route }) => {
           contentContainerStyle={styles.container}
           ListHeaderComponent={renderFlatListHeader}
           refreshing={isFetching}
-          keyExtractor={(item, index) => item + index}
+          keyExtractor={(item, index) => item.commentID}
           // onRefresh={() => {
           //   if (threadData) {
           //     queryForDocuments(threadData?.threadID);

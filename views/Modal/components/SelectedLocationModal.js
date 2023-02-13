@@ -154,7 +154,7 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
     []
   );
 
-  const renderFlatListItem = useCallback(({ item, index }) => (
+  const renderFlatListItem = (({ item, index }) => (
     <TouchableOpacity
       onPress={() => {
         navigation.navigate("ReadThread", { threadData: item });
@@ -219,7 +219,7 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
         renderItem={renderFlatListItem}
         contentContainerStyle={styles.container}
         ListHeaderComponent={renderFlatListHeader}
-        keyExtractor={(item, index) => item + index}
+        keyExtractor={(item) => item.threadID}
         // refreshing={isFetching}
         // onRefresh={() => {
         //   if (selectedLocation) {
