@@ -13,7 +13,7 @@ import {
 import { SearchBar } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import MeiliSearch from "meilisearch";
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const client = new MeiliSearch({
   host: "http://34.65.82.213",
@@ -21,12 +21,12 @@ const client = new MeiliSearch({
 });
 const index = client.index("threads");
 index.updateSettings({
-  filterableAttributes: ['lineNumber', 'tag'],
+  filterableAttributes: ["lineNumber", "tag"],
 });
 
-import tags from '../../data/tags.json';
-import lineColors from '../../data/line_colors.json';
-import lines from '../../data/lines.json';
+import tags from "../../data/tags.json";
+import lineColors from "../../data/line_colors.json";
+import lines from "../../data/lines.json";
 const lineColorMap = new Map(Object.entries(lineColors));
 
 const Search = () => {
@@ -46,13 +46,13 @@ const Search = () => {
 
   const handleSearch = async (text) => {
     setQuery(text);
-    lineFilter = []
+    lineFilter = [];
     selectedLines.forEach((line) => {
       lineFilter.push("lineNumber = ".concat(line));
     });
-    tagFilter = []
+    tagFilter = [];
     selectedTags.forEach((tag) => {
-      tagFilter.push("tag = \""+tag+"\"");
+      tagFilter.push('tag = "' + tag + '"');
     });
     const filter = [lineFilter, tagFilter];
     await index.search(text, { filter }).then((res) => {
@@ -81,56 +81,94 @@ const Search = () => {
         autoFocus
       />
       <View>
-      <TouchableOpacity onPress={() => setShowFilters(!showFilters)} style={styles.showFiltersButton}>
-    <Text style={styles.showFiltersText}>{showFilters ? "Hide filters" : "Show filters"}</Text>
-    {showFilters ? (
-      <Ionicons name="ios-arrow-up" size={20} color="#333" />
-    ) : (
-      <Ionicons name="ios-arrow-down" size={20} color="#333" />
-    )}
-  </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setShowFilters(!showFilters)}
+          style={styles.showFiltersButton}
+        >
+          <Text style={styles.showFiltersText}>
+            {showFilters ? "Hide filters" : "Show filters"}
+          </Text>
+          {showFilters ? (
+            <Ionicons name="ios-arrow-up" size={20} color="#333" />
+          ) : (
+            <Ionicons name="ios-arrow-down" size={20} color="#333" />
+          )}
+        </TouchableOpacity>
         {showFilters && (
           <>
-
-      <View style={styles.tagContainer}>
-        {tags.map((tag, index) => (
-          <TouchableOpacity key={index} style={styles.tagButton} onPress={() => {
-            if (selectedTags.includes(tag)) {
-              setSelectedTags(selectedTags.filter(selectedTag => selectedTag !== tag));
-            } else {
-              setSelectedTags([...selectedTags, tag]);
-            }
-          }}>
-            <Text style={[styles.tagText, selectedTags.includes(tag) && styles.selectedTagText]}>{tag}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-          <View style={styles.tagContainer}>
-              {lines.map((line, index) => (
-                  <TouchableOpacity key={index} style={[{
-                    ...styles.tagButton,
-                    backgroundColor: lineColorMap.get(line)}, selectedLines.includes(line) && styles.selectedTagButton]} 
-                    onPress={() => {
-                      if (selectedLines.includes(line)) {
-                        setSelectedLines(selectedLines.filter(selectedLine => selectedLine !== line));
-                      } else {
-                        setSelectedLines([...selectedLines, line]);
-                      }
-                }}>
-                      <Text style={[styles.lineText, selectedLines.includes(line) && styles.selectedTagText]}>{line}</Text>
-                  </TouchableOpacity>
+            <View style={styles.tagContainer}>
+              {tags.map((tag, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.tagButton}
+                  onPress={() => {
+                    if (selectedTags.includes(tag)) {
+                      setSelectedTags(
+                        selectedTags.filter(
+                          (selectedTag) => selectedTag !== tag
+                        )
+                      );
+                    } else {
+                      setSelectedTags([...selectedTags, tag]);
+                    }
+                  }}
+                >
+                  <Text
+                    style={[
+                      styles.tagText,
+                      selectedTags.includes(tag) && styles.selectedTagText,
+                    ]}
+                  >
+                    {tag}
+                  </Text>
+                </TouchableOpacity>
               ))}
-          </View>
+            </View>
+            <View style={styles.tagContainer}>
+              {lines.map((line, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    {
+                      ...styles.tagButton,
+                      backgroundColor: lineColorMap.get(line),
+                    },
+                    selectedLines.includes(line) && styles.selectedTagButton,
+                  ]}
+                  onPress={() => {
+                    if (selectedLines.includes(line)) {
+                      setSelectedLines(
+                        selectedLines.filter(
+                          (selectedLine) => selectedLine !== line
+                        )
+                      );
+                    } else {
+                      setSelectedLines([...selectedLines, line]);
+                    }
+                  }}
+                >
+                  <Text
+                    style={[
+                      styles.lineText,
+                      selectedLines.includes(line) && styles.selectedTagText,
+                    ]}
+                  >
+                    {line}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
           </>
-  )}
-</View>
+        )}
+      </View>
       {/* {searchResults.length > 0 && query.length > 1 && ( */}
       <ScrollView style={styles.searchResultsContainer}>
         {searchResults?.map((result, index) => (
           <TouchableOpacity
             onPress={() => {
+              const threadData = { ...result, threadID: result._firestore_id };
               console.log(result);
-              navigation.navigate("ReadThread", { threadData: result });
+              navigation.navigate("ReadThread", { threadData: threadData });
             }}
             key={index}
           >
@@ -157,30 +195,30 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   searchResultsContainer: {
-    height:10,
+    height: 10,
   },
   tagContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center'
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
   },
   selectedTagButton: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     margin: 5,
     borderWidth: 2,
-    borderColor: 'green',
+    borderColor: "green",
   },
   tagButton: {
     margin: 5,
     borderWidth: 2,
-    borderColor: 'transparent',
+    borderColor: "transparent",
   },
   tagText: {
-    color: '#555555',
+    color: "#555555",
   },
   selectedTagText: {
-    fontWeight: 'bold',
-    color: 'black',
+    fontWeight: "bold",
+    color: "black",
   },
   lineText: {
     color: "white",
@@ -189,18 +227,17 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   showFiltersButton: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 20,
     margin: 5,
     borderWidth: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   showFiltersText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginRight: 10,
   },
-
 });
