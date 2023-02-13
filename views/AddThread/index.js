@@ -130,7 +130,7 @@ const AddThread = ({ route }) => {
     return () => {
       // StatusBar.setStatusBarStyle("auto");
     };
-  }, [entityText, creator]);
+  }, [entityText, creator, selectedTag]);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
