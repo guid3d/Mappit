@@ -53,8 +53,9 @@ const ThreadLikeButton = ({
 
   useEffect(() => {
     const alreadyLike = likes.find(
-      (likedByDeviceId) => (likedByDeviceId = deviceId)
+      (likedByDeviceId) => likedByDeviceId === deviceId
     );
+    console.log("Current device ID: ", deviceId);
     console.log("AlreadyLike: ", alreadyLike);
     if (alreadyLike) {
       setPressedLike(true);
@@ -97,7 +98,9 @@ const ThreadLikeButton = ({
           }
         }}
       >
-        {pressedLike ? (
+        {from === "MainModal" ? (
+          <Ionicons name="heart-outline" size={24} style={styles.iconDisabled} />
+        ) : pressedLike ? (
           <Ionicons name="heart" size={24} style={styles.iconPressed} />
         ) : (
           <Ionicons name="heart-outline" size={24} style={styles.icon} />
@@ -127,5 +130,9 @@ const styles = StyleSheet.create({
   iconPressed: {
     marginRight: 5,
     color: "#F67280",
+  },
+  iconDisabled: {
+    marginRight: 5,
+    color: "#db8c94",
   },
 });

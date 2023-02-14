@@ -146,7 +146,7 @@ const MainModal = ({
             </Text>
             {threadData?.map((item, index) => (
               <TouchableOpacity
-                key={item + index}
+                key={item.threadID}
                 onPress={() => {
                   navigation.navigate("ReadThread", { threadData: item });
                   console.log(item);
