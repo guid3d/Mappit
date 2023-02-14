@@ -72,7 +72,7 @@ const ThreadBubble = ({ item, disableCommentButton, from }) => {
         <Text style={styles.creatorName}>{threadData.creatorName}</Text>
 
         {/* only for debugging */}
-        <Text style={{ color: "#989898" }}>{threadData.threadID}</Text>
+        {/* <Text style={{ color: "#989898" }}>{threadData.threadID}</Text> */}
 
         <Text style={{ marginBottom: 10 }}>{threadData.content}</Text>
       </View>
