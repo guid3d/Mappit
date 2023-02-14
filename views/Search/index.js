@@ -50,7 +50,7 @@ const Search = () => {
     selectedLines.forEach((line) => {
       lineFilter.push("lineNumber = ".concat(line));
     });
-    tagFilter = [];
+    let tagFilter = [];
     selectedTags.forEach((tag) => {
       tagFilter.push('tag = "' + tag + '"');
     });

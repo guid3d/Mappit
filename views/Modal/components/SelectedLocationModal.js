@@ -33,6 +33,7 @@ import {
   query,
   where,
   onSnapshot,
+  orderBy,
 } from "firebase/firestore";
 import { firebaseApp } from "../../../api/firebaseConfig";
 
@@ -76,7 +77,8 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
 
       const q = query(
         collection(db, "threads"),
-        where("stationName", "==", selectedLocation.name)
+        where("stationName", "==", selectedLocation.name),
+        orderBy("latestTimeAlive", "desc")
       );
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const threadDataTemp = [];
@@ -84,9 +86,9 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
           console.log(doc.id);
           threadDataTemp.push({ threadID: doc.id, ...doc.data() });
         });
-        console.log("threadDataTemp: ", threadDataTemp)
+        console.log("threadDataTemp: ", threadDataTemp);
         setThreadData(threadDataTemp);
-        console.log("threadData: ", threadData)
+        console.log("threadData: ", threadData);
       });
       return () => {
         unsubscribe();
@@ -154,7 +156,7 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
     []
   );
 
-  const renderFlatListItem = (({ item, index }) => (
+  const renderFlatListItem = ({ item, index }) => (
     <TouchableOpacity
       onPress={() => {
         navigation.navigate("ReadThread", { threadData: item });
@@ -165,7 +167,7 @@ const SelectedLocationModal = ({ selectedLocation, setSelectedLocation }) => {
         <ThreadBubble item={item} />
       </View>
     </TouchableOpacity>
-  ));
+  );
 
   const renderFlatListHeader = useCallback(() => (
     <View
