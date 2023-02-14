@@ -1,5 +1,12 @@
-# Programming Database Web Applications 
-## Mappit
+# Mappit
+🚀 A map-based social media application 🗺️
+
+
+This repository contains all code written for the App "Mappit", developed as part of the TUM course
+[IN2140 - Programming Database Web Applications](https://db.in.tum.de/teaching/ws2223/webdatabases/index.shtml?lang=en).
+
+
+![Screenshot](https://user-images.githubusercontent.com/29707419/218763158-a1d8b1f6-fdfa-4c18-b49a-b65c6bbe8e7b.png)
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
@@ -11,8 +18,6 @@
   </ol>
 </details>
 
-This repository contains all code written for the App "Mappit", developed as part of the TUM course
-[IN2140 - Programming Database Web Applications](https://db.in.tum.de/teaching/ws2223/webdatabases/index.shtml?lang=en).
 
 ## Introduction
 
