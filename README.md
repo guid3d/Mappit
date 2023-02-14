@@ -42,7 +42,7 @@ To run the app locally, the following steps have to be taken: <br />
 
 2. Installing all remaining dependencies
 ```sh
-  $ yarn install
+  $ yarn
 ```
 <br />
 
